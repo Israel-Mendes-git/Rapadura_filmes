@@ -1,7 +1,6 @@
-// src/services/tmdb.js
 import axios from 'axios';
 
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;     // Vamos configurar depois
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 const tmdbApi = axios.create({
@@ -12,7 +11,7 @@ const tmdbApi = axios.create({
   }
 });
 
-// Se estiver usando o Read Access Token (recomendado)
+// Interceptor para adicionar o token de autorização
 tmdbApi.interceptors.request.use((config) => {
   if (API_KEY) {
     config.headers.Authorization = `Bearer ${API_KEY}`;
@@ -20,6 +19,7 @@ tmdbApi.interceptors.request.use((config) => {
   return config;
 });
 
+// Funções existentes
 export const getPopularMovies = (page = 1) => 
   tmdbApi.get('/movie/popular', { params: { page } });
 
@@ -41,38 +41,36 @@ export const getMovieDetails = (movieId) =>
   tmdbApi.get(`/movie/${movieId}`, {
     params: { append_to_response: 'videos,credits,similar' }
   });
-  // Gêneros de filmes
+
+// Novas funções
 export const getGenres = () => 
   tmdbApi.get('/genre/movie/list');
 
-// Filmes por gênero
 export const getMoviesByGenre = (genreId, page = 1) => 
   tmdbApi.get('/discover/movie', {
     params: { with_genres: genreId, page }
   });
 
-// Trailer do filme
 export const getMovieVideos = (movieId) => 
   tmdbApi.get(`/movie/${movieId}/videos`);
 
-// Provedores de streaming por país
 export const getMovieProviders = (movieId) => 
   tmdbApi.get(`/movie/${movieId}/watch/providers`);
 
-// Avaliações do filme
 export const getMovieReviews = (movieId, page = 1) => 
   tmdbApi.get(`/movie/${movieId}/reviews`, { params: { page } });
 
-// Filmes similares
 export const getSimilarMovies = (movieId) => 
   tmdbApi.get(`/movie/${movieId}/similar`);
 
-// Elenco completo
 export const getMovieCredits = (movieId) => 
   tmdbApi.get(`/movie/${movieId}/credits`);
 
-// Recomendações baseadas no filme
 export const getRecommendations = (movieId) => 
   tmdbApi.get(`/movie/${movieId}/recommendations`);
+
+export const discoverMovies = (params = {}) => {
+  return tmdbApi.get('/discover/movie', { params });
+};
 
 export default tmdbApi;

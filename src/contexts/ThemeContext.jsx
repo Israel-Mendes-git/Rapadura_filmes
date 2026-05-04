@@ -5,6 +5,7 @@ const ThemeContext = createContext();
 export function ThemeProvider({ children }) {
   const [isDark, setIsDark] = useState(() => {
     const saved = localStorage.getItem('theme');
+    // Forçar modo escuro como padrão
     return saved !== null ? saved === 'dark' : true;
   });
 

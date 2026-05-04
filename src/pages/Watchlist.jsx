@@ -1,10 +1,12 @@
 import { useWatchlist } from '../contexts/WatchlistContext';
 import MovieCard from '../components/MovieCard';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function Watchlist() {
   const { watchlist, removeFromWatchlist } = useWatchlist();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleMovieClick = (id) => {
     navigate(`/movie/${id}`);
@@ -12,16 +14,16 @@ export default function Watchlist() {
 
   if (watchlist.length === 0) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4">📝</div>
-          <h2 className="text-2xl font-bold text-white mb-2">Sua lista está vazia</h2>
-          <p className="text-zinc-400 mb-6">Adicione filmes que você quer assistir mais tarde</p>
+          <h2 className="text-2xl font-bold text-white mb-2">{t('watchlistPage.empty')}</h2>
+          <p className="text-zinc-400 mb-6">{t('watchlistPage.emptyMessage')}</p>
           <button
             onClick={() => navigate('/')}
             className="px-6 py-3 bg-purple-600 rounded-lg hover:bg-purple-700 transition-colors"
           >
-            Explorar filmes
+            {t('home')}
           </button>
         </div>
       </div>
@@ -29,14 +31,14 @@ export default function Watchlist() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 pt-8">
+    <div className="min-h-screen bg-gray-950 pt-8">
       <div className="max-w-7xl mx-auto px-4">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">
-            📝 Minha Lista
+            📝 {t('watchlistPage.title')}
           </h1>
           <p className="text-zinc-400">
-            {watchlist.length} {watchlist.length === 1 ? 'filme para assistir' : 'filmes para assistir'}
+            {watchlist.length} {watchlist.length === 1 ? t('watchlistPage.items_one') : t('watchlistPage.items_other')}
           </p>
         </div>
 
@@ -46,13 +48,6 @@ export default function Watchlist() {
               <div onClick={() => handleMovieClick(movie.id)} className="cursor-pointer">
                 <MovieCard movie={movie} />
               </div>
-              <button
-                onClick={() => removeFromWatchlist(movie.id)}
-                className="absolute top-2 right-2 bg-red-600 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-700"
-                title="Remover da lista"
-              >
-                ❌
-              </button>
             </div>
           ))}
         </div>
@@ -62,7 +57,7 @@ export default function Watchlist() {
             onClick={() => navigate('/')}
             className="px-6 py-3 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
           >
-            + Adicionar mais filmes
+            + {t('watchlistPage.addMore')}
           </button>
         </div>
       </div>

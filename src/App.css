@@ -136,6 +136,27 @@
     }
   }
 
+  /* Animação de fade-in para o carrossel */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out;
+  }
+
+  /* Transição suave para o background do carrossel */
+  .bg-cover {
+    transition: background-image 0.5s ease-in-out;
+  }
+
   @media (max-width: 1024px) {
     margin-top: 20px;
     flex-wrap: wrap;

@@ -16,7 +16,7 @@ export default function Watchlist() {
     return (
       <div className="min-h-screen bg-gray-950 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-6xl mb-4">📝</div>
+          <div className="text-6xl mb-4"></div>
           <h2 className="text-2xl font-bold text-white mb-2">{t('watchlistPage.empty')}</h2>
           <p className="text-zinc-400 mb-6">{t('watchlistPage.emptyMessage')}</p>
           <button
@@ -35,7 +35,7 @@ export default function Watchlist() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">
-            📝 {t('watchlistPage.title')}
+            {t('watchlistPage.title')}
           </h1>
           <p className="text-zinc-400">
             {watchlist.length} {watchlist.length === 1 ? t('watchlistPage.items_one') : t('watchlistPage.items_other')}

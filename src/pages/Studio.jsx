@@ -125,13 +125,13 @@ export default function Studio() {
                               if (parent) {
                                 const span = document.createElement('span');
                                 span.className = 'text-gray-500';
-                                span.textContent = `📸 ${img.title}`;
+                                span.textContent = `${img.title}`;
                                 parent.appendChild(span);
                               }
                             }}
                           />
                         ) : (
-                          <span className="text-gray-500">📸 {img.title}</span>
+                          <span className="text-gray-500"> {img.title}</span>
                         )}
                       </div>
                       <p className="p-3 text-center text-sm">{img.title}</p>

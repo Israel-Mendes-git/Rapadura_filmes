@@ -4,6 +4,35 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   pt: {
     translation: {
+
+      // Adicione ao arquivo i18n.js
+      login: {
+        title: 'Entrar',
+        subtitle: 'Faça login para acessar sua conta',
+        email: 'E-mail',
+        password: 'Senha',
+        button: 'Entrar',
+        loading: 'Entrando...',
+        noAccount: 'Não tem uma conta?',
+        register: 'Cadastre-se'
+      },
+      register: {
+        title: 'Cadastrar',
+        subtitle: 'Crie sua conta para começar',
+        name: 'Nome',
+        email: 'E-mail',
+        password: 'Senha',
+        confirmPassword: 'Confirmar senha',
+        button: 'Cadastrar',
+        loading: 'Cadastrando...',
+        hasAccount: 'Já tem uma conta?',
+        login: 'Faça login',
+        passwordMismatch: 'As senhas não conferem'
+      },
+      logout: 'Sair',
+      login: 'Entrar',
+      register: 'Cadastrar',
+      
       // Navegação
       title: 'Rapadura Atômica',
       search: 'Buscar conteúdo...',

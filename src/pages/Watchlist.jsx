@@ -2,15 +2,22 @@ import { useWatchlist } from '../contexts/WatchlistContext';
 import MovieCard from '../components/MovieCard';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../contexts/AuthContext';
+import LoginAlert from '../components/LoginAlert';
 
 export default function Watchlist() {
   const { watchlist, removeFromWatchlist } = useWatchlist();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { user } = useAuth();
 
   const handleMovieClick = (id) => {
     navigate(`/movie/${id}`);
   };
+  
+  if (!user) {
+    return <LoginAlert message="Faça login para ver sua lista personalizada" />;
+  }
 
   if (watchlist.length === 0) {
     return (

@@ -3,8 +3,11 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import MovieCard from '../components/MovieCard';
 import { customMovies } from '../data/customMovies';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../contexts/AuthContext';
+import LoginAlert from '../components/LoginAlert';
 
 export default function Search() {
+  const { user } = useAuth();
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const navigate = useNavigate();
@@ -17,7 +20,9 @@ export default function Search() {
       navigate('/');
       return;
     }
-
+    if (!user) {
+      return <LoginAlert message="Faça login para pesquisar conteúdo" />;
+    }
     setLoading(true);
     try {
       const results = customMovies.all.filter(movie =>

@@ -1,34 +1,63 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import api from '../services/api';
+import { useAuth } from './AuthContext';
 
 const WatchlistContext = createContext();
 
 export function WatchlistProvider({ children }) {
+  const { user, isAuthenticated } = useAuth();
   const [watchlist, setWatchlist] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Carregar watchlist do localStorage ao iniciar
   useEffect(() => {
-    const saved = localStorage.getItem('watchlist');
-    if (saved) {
-      setWatchlist(JSON.parse(saved));
+    if (user && isAuthenticated) {
+      loadWatchlist();
+    } else {
+      setWatchlist([]);
+      setLoading(false);
     }
-  }, []);
+  }, [user, isAuthenticated]);
 
-  // Salvar watchlist no localStorage sempre que mudar
-  useEffect(() => {
-    localStorage.setItem('watchlist', JSON.stringify(watchlist));
-  }, [watchlist]);
-
-  const addToWatchlist = (movie) => {
-    setWatchlist(prev => {
-      if (prev.some(m => m.id === movie.id)) {
-        return prev;
-      }
-      return [...prev, movie];
-    });
+  const loadWatchlist = async () => {
+    try {
+      const response = await api.get(`/users/${user.id}`);
+      setWatchlist(response.data.watchlist || []);
+    } catch (error) {
+      console.error('Erro ao carregar watchlist:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const removeFromWatchlist = (movieId) => {
-    setWatchlist(prev => prev.filter(m => m.id !== movieId));
+  const addToWatchlist = async (movie) => {
+    if (!isAuthenticated) {
+      alert('Faça login para adicionar à lista');
+      return false;
+    }
+    
+    try {
+      const newWatchlist = [...watchlist, movie];
+      await api.patch(`/users/${user.id}`, { watchlist: newWatchlist });
+      setWatchlist(newWatchlist);
+      return true;
+    } catch (error) {
+      console.error('Erro ao adicionar:', error);
+      return false;
+    }
+  };
+
+  const removeFromWatchlist = async (movieId) => {
+    if (!isAuthenticated) return false;
+    
+    try {
+      const newWatchlist = watchlist.filter(m => m.id !== movieId);
+      await api.patch(`/users/${user.id}`, { watchlist: newWatchlist });
+      setWatchlist(newWatchlist);
+      return true;
+    } catch (error) {
+      console.error('Erro ao remover:', error);
+      return false;
+    }
   };
 
   const isInWatchlist = (movieId) => {
@@ -40,7 +69,8 @@ export function WatchlistProvider({ children }) {
       watchlist,
       addToWatchlist,
       removeFromWatchlist,
-      isInWatchlist
+      isInWatchlist,
+      loading
     }}>
       {children}
     </WatchlistContext.Provider>

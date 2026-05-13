@@ -36,7 +36,7 @@ export default function Studio() {
         <div className="absolute inset-0 bg-white/80 dark:bg-gray-950/80"></div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 py-12">
-          {/* Tabs de navegação */}
+          {/* Tabs de navegação - Agora apenas 2 abas */}
           <div className="flex gap-4 mb-8 border-b border-gray-200 dark:border-gray-800">
             <button
               onClick={() => setActiveTab('about')}
@@ -45,16 +45,10 @@ export default function Studio() {
               {t('studioPage.about')}
             </button>
             <button
-              onClick={() => setActiveTab('clients')}
-              className={`pb-3 px-4 font-semibold transition-colors ${activeTab === 'clients' ? 'border-b-2 border-purple-600 text-purple-600' : 'text-gray-600 dark:text-gray-400'}`}
+              onClick={() => setActiveTab('clients_contact')}
+              className={`pb-3 px-4 font-semibold transition-colors ${activeTab === 'clients_contact' ? 'border-b-2 border-purple-600 text-purple-600' : 'text-gray-600 dark:text-gray-400'}`}
             >
-              {t('studioPage.clients')}
-            </button>
-            <button
-              onClick={() => setActiveTab('contact')}
-              className={`pb-3 px-4 font-semibold transition-colors ${activeTab === 'contact' ? 'border-b-2 border-purple-600 text-purple-600' : 'text-gray-600 dark:text-gray-400'}`}
-            >
-              {t('studioPage.contact')}
+              {t('studioPage.clients')} & {t('studioPage.contact')}
             </button>
           </div>
 
@@ -142,8 +136,9 @@ export default function Studio() {
             </div>
           )}
 
-          {activeTab === 'clients' && (
+          {activeTab === 'clients_contact' && (
             <div className="space-y-12">
+              {/* Clientes & Parceiros */}
               <section className="bg-green-50/90 dark:bg-green-900/20 backdrop-blur-sm rounded-xl p-8">
                 <h2 className="text-3xl font-bold mb-4">{t('studioPage.outsourcing')}</h2>
                 <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
@@ -164,41 +159,40 @@ export default function Studio() {
                   </p>
                 </div>
               </section>
-            </div>
-          )}
 
-          {activeTab === 'contact' && (
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-xl p-8">
-                <h2 className="text-2xl font-bold mb-6">{t('studioPage.contact')}</h2>
-                <div className="space-y-4">
-                  <a href="https://wa.me/5585920028491" className="flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-green-600 transition-colors">
-                    <FaWhatsapp className="text-2xl text-green-600" />
-                    <span>(85) 92002-8491</span>
-                  </a>
-                  <div className="flex gap-4 pt-4">
-                    <a href="#" className="text-purple-600 hover:text-purple-700"><FaInstagram size={24} /></a>
-                    <a href="#" className="text-purple-600 hover:text-purple-700"><FaYoutube size={24} /></a>
-                    <a href="#" className="text-purple-600 hover:text-purple-700"><FaFacebook size={24} /></a>
+              {/* Contato */}
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-xl p-8">
+                  <h2 className="text-2xl font-bold mb-6">{t('studioPage.contact')}</h2>
+                  <div className="space-y-4">
+                    <a href="https://wa.me/5585920028491" className="flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-green-600 transition-colors">
+                      <FaWhatsapp className="text-2xl text-green-600" />
+                      <span>(85) 92002-8491</span>
+                    </a>
+                    <div className="flex gap-4 pt-4">
+                      <a href="#" className="text-purple-600 hover:text-purple-700"><FaInstagram size={24} /></a>
+                      <a href="#" className="text-purple-600 hover:text-purple-700"><FaYoutube size={24} /></a>
+                      <a href="#" className="text-purple-600 hover:text-purple-700"><FaFacebook size={24} /></a>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-xl p-8">
-                <h2 className="text-2xl font-bold mb-4">Endereço</h2>
-                <p className="text-gray-700 dark:text-gray-300 mb-2">{t('studioPage.address')}</p>
-                <p className="text-gray-700 dark:text-gray-300 mb-4">{t('studioPage.city')}</p>
-                <div className="bg-gray-200/90 dark:bg-gray-800/90 rounded-lg overflow-hidden">
-                  <iframe
-                    title="Mapa do Estúdio Rapadura Atômica"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3979.4557663512524!2d-38.25121968491568!3d-4.130365796996868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c749328bc7468d%3A0x3183e03fccf5a30a!2sRapadura%20At%C3%B4mica!5e0!3m2!1spt-BR!2sbr!4v1678463771958!5m2!1spt-BR!2sbr"
-                    width="100%"
-                    height="300"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
+                <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-xl p-8">
+                  <h2 className="text-2xl font-bold mb-4">Endereço</h2>
+                  <p className="text-gray-700 dark:text-gray-300 mb-2">{t('studioPage.address')}</p>
+                  <p className="text-gray-700 dark:text-gray-300 mb-4">{t('studioPage.city')}</p>
+                  <div className="bg-gray-200/90 dark:bg-gray-800/90 rounded-lg overflow-hidden">
+                    <iframe
+                      title="Mapa do Estúdio Rapadura Atômica"
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3979.4557663512524!2d-38.25121968491568!3d-4.130365796996868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c749328bc7468d%3A0x3183e03fccf5a30a!2sRapadura%20At%C3%B4mica!5e0!3m2!1spt-BR!2sbr!4v1678463771958!5m2!1spt-BR!2sbr"
+                      width="100%"
+                      height="300"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
+                  </div>
                 </div>
               </div>
             </div>

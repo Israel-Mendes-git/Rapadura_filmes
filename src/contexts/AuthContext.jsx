@@ -47,10 +47,14 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // src/contexts/AuthContext.jsx (adicione logs para debug)
   const login = async (email, password) => {
+    console.log('🔐 Tentando login com:', email);
     try {
       const response = await api.get(`/users?email=${email}`);
       const users = response.data;
+      
+      console.log('📦 Usuários encontrados:', users);
       
       if (users.length === 0) {
         return { success: false, error: 'Usuário não encontrado' };
@@ -67,9 +71,11 @@ export function AuthProvider({ children }) {
       localStorage.setItem('token', token);
       setUser({ id: user.id, email: user.email, name: user.name });
       
+      console.log('✅ Login bem sucedido! Usuário:', { id: user.id, email: user.email });
+      
       return { success: true };
     } catch (error) {
-      console.error('Erro no login:', error);
+      console.error('❌ Erro no login:', error);
       return { success: false, error: 'Erro ao fazer login' };
     }
   };

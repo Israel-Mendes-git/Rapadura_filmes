@@ -1,3 +1,4 @@
+// src/contexts/WatchlistContext.jsx
 import { createContext, useContext, useState, useEffect } from 'react';
 import api from '../services/api';
 import { useAuth } from './AuthContext';
@@ -5,21 +6,24 @@ import { useAuth } from './AuthContext';
 const WatchlistContext = createContext();
 
 export function WatchlistProvider({ children }) {
-  const { user, isAuthenticated } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [watchlist, setWatchlist] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user && isAuthenticated) {
+    if (authLoading) return;
+    
+    if (user && user.id) {
       loadWatchlist();
     } else {
       setWatchlist([]);
       setLoading(false);
     }
-  }, [user, isAuthenticated]);
+  }, [user, authLoading]);
 
   const loadWatchlist = async () => {
     try {
+      setLoading(true);
       const response = await api.get(`/users/${user.id}`);
       setWatchlist(response.data.watchlist || []);
     } catch (error) {
@@ -30,7 +34,7 @@ export function WatchlistProvider({ children }) {
   };
 
   const addToWatchlist = async (movie) => {
-    if (!isAuthenticated) {
+    if (!user || !user.id) {
       alert('Faça login para adicionar à lista');
       return false;
     }
@@ -47,7 +51,7 @@ export function WatchlistProvider({ children }) {
   };
 
   const removeFromWatchlist = async (movieId) => {
-    if (!isAuthenticated) return false;
+    if (!user || !user.id) return false;
     
     try {
       const newWatchlist = watchlist.filter(m => m.id !== movieId);

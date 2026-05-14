@@ -86,9 +86,7 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/studio" element={
-            <ProtectedRoute>
               <Studio />
-            </ProtectedRoute>
           } />
           <Route path="/watchlist" element={
             <ProtectedRoute>

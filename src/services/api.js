@@ -1,10 +1,14 @@
 import axios from 'axios';
 
-// API base (vamos usar JSON Server)
-const API_URL = 'http://localhost:3001';
+// Detecta se está em produção ou desenvolvimento
+const isProduction = import.meta.env.PROD;
+
+// Em produção, usa caminho relativo; em desenvolvimento, usa localhost
+const API_URL = isProduction ? '/api' : 'http://localhost:3001/api';
 
 const api = axios.create({
   baseURL: API_URL,
+  timeout: 10000,
 });
 
 // Interceptor para adicionar token
@@ -15,5 +19,18 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// Interceptor para tratamento de erros
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token expirado ou inválido
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default api;

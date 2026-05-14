@@ -14,9 +14,9 @@ export default function Studio() {
   ];
 
   const studioImages = [
-    { url: "/images/studio/estudio1.jpg", title: "Cabine de Gravação" },
-    { url: "/images/fulls/pessoal.png", title: "Equipe Rapadura" },
-    { url: "", title: "Estrutura do Estúdio" }
+    { url: "/images/studio/estudio1.jpg", title: t('studioPage.record') },
+    { url: "/images/fulls/pessoal.png", title: t('studioPage.team') },
+    { url: "", title: t('studioPage.structure') }
   ];
 
   return (
@@ -72,10 +72,10 @@ export default function Studio() {
               <section className="bg-purple-50/90 dark:bg-purple-900/20 backdrop-blur-sm rounded-xl p-8">
                 <h2 className="text-3xl font-bold mb-4">{t('studioPage.history')}</h2>
                 <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
-                  Desde 2016 atuamos em diversos projetos, seja publicidade, institucional, ou atendendo a produção de conteúdo original para streaming, cinema, TV e Internet.
+                  {t('studioPage.historyDesc1')}
                 </p>
                 <p className="text-lg text-gray-700 dark:text-gray-300">
-                  Estamos sediados em Cascavel, Ceará, 60km de Fortaleza, onde temos o ecosistema perfeito de criação e formação de novos animadores.
+                  {t('studioPage.historyDesc2')}
                 </p>
               </section>
 

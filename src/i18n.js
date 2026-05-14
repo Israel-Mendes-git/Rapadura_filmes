@@ -1,11 +1,21 @@
+// src/i18n.js
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 const resources = {
   pt: {
     translation: {
-
-      // Adicione ao arquivo i18n.js
+      // Navegação
+      title: 'Rapadura Atômica',
+      search: 'Buscar conteúdo...',
+      watchlist: 'Minha Lista',
+      discover: 'Explorar',
+      studio: 'Estúdio',
+      about: 'Sobre',
+      back: 'Voltar',
+      home: 'Início',
+      
+      // Login
       login: {
         title: 'Entrar',
         subtitle: 'Faça login para acessar sua conta',
@@ -16,6 +26,8 @@ const resources = {
         noAccount: 'Não tem uma conta?',
         register: 'Cadastre-se'
       },
+      
+      // Register
       register: {
         title: 'Cadastrar',
         subtitle: 'Crie sua conta para começar',
@@ -29,19 +41,8 @@ const resources = {
         login: 'Faça login',
         passwordMismatch: 'As senhas não conferem'
       },
-      logout: 'Sair',
-      login: 'Entrar',
-      register: 'Cadastrar',
       
-      // Navegação
-      title: 'Rapadura Atômica',
-      search: 'Buscar conteúdo...',
-      watchlist: 'Minha Lista',
-      discover: 'Explorar',
-      studio: 'Estúdio',
-      about: 'Sobre',
-      back: 'Voltar',
-      home: 'Início',
+      logout: 'Sair',
       
       // Ações
       watchTrailer: 'Assistir Trailer',
@@ -53,14 +54,14 @@ const resources = {
       
       // Categorias principais
       all: 'Todos',
-      autorais: ' Autorais',
-      jogos: ' Jogos',
-      parcerias: ' Parcerias',
+      autorais: 'Autorais',
+      jogos: 'Jogos',
+      parcerias: 'Parcerias',
       
       // Tipos de conteúdo
-      series: ' Séries',
-      curtas: ' Curtas',
-      longas: ' Longas',
+      series: 'Séries',
+      curtas: 'Curtas',
+      longas: 'Longas',
       
       // Mensagens
       allContent: 'Todo o Conteúdo',
@@ -72,16 +73,11 @@ const resources = {
       contentsFound: 'conteúdos encontrados',
       
       // Seções da Home
-      featured: ' Em Destaque',
-      mostRated: ' Mais Avaliados',
-      featuredIn: 'Em Destaque -',
+      featured: 'Em Destaque',
+      mostRated: 'Mais Avaliados',
       
       // Página de descoberta
       discoverTitle: 'Descobrir Conteúdo',
-      filters: 'Filtros',
-      clearFilters: 'Limpar filtros',
-      categoryFilter: 'Categorias',
-      typeFilter: 'Tipos',
       
       // Footer
       footer: {
@@ -127,7 +123,13 @@ const resources = {
         address: 'Avenida Chanceler Edson Queiroz 3406 - Altos',
         city: '62850-000 Cascavel/CE',
         cnpj: 'CNPJ: 24.800.280/0001-80',
-        copyright: 'Rapadura Atômica Estúdio de Animação e Jogos Digitais Ltda.'
+        copyright: 'Rapadura Atômica Estúdio de Animação e Jogos Digitais Ltda.',
+        historyDesc1: 'Desde 2016 atuamos em diversos projetos, seja publicidade, institucional, ou atendendo a produção de conteúdo original para streaming, cinema, TV e Internet.',
+        historyDesc2: 'Estamos sediados em Cascavel, Ceará, 60km de Fortaleza, onde temos o ecosistema perfeito de criação e formação de novos animadores.',
+        record: 'Cabine de Gravação',
+        team: 'Equipe Rapadura',
+        studioStructure: 'Estrutura do Estúdio',
+        location: 'Endereço'
       },
       
       // Watchlist
@@ -161,7 +163,6 @@ const resources = {
   },
   en: {
     translation: {
-      // Navigation
       title: 'Rapadura Atômica',
       search: 'Search content...',
       watchlist: 'My List',
@@ -170,27 +171,43 @@ const resources = {
       about: 'About',
       back: 'Back',
       home: 'Home',
-      
-      // Actions
+      login: {
+        title: 'Login',
+        subtitle: 'Login to access your account',
+        email: 'Email',
+        password: 'Password',
+        button: 'Login',
+        loading: 'Logging in...',
+        noAccount: "Don't have an account?",
+        register: 'Sign up'
+      },
+      register: {
+        title: 'Sign Up',
+        subtitle: 'Create your account to get started',
+        name: 'Name',
+        email: 'Email',
+        password: 'Password',
+        confirmPassword: 'Confirm password',
+        button: 'Sign Up',
+        loading: 'Signing up...',
+        hasAccount: 'Already have an account?',
+        login: 'Login',
+        passwordMismatch: 'Passwords do not match'
+      },
+      logout: 'Logout',
       watchTrailer: 'Watch Trailer',
       addToList: 'Add to list',
       inList: 'In my list',
       removeFromList: 'Remove from list',
       synopsis: 'Synopsis',
       genres: 'Genres',
-      
-      // Main categories
       all: 'All',
-      autorais: ' Originals',
-      jogos: ' Games',
-      parcerias: ' Partnerships',
-      
-      // Content types
-      series: ' Series',
-      curtas: ' Shorts',
-      longas: ' Features',
-      
-      // Messages
+      autorais: 'Originals',
+      jogos: 'Games',
+      parcerias: 'Partnerships',
+      series: 'Series',
+      curtas: 'Shorts',
+      longas: 'Features',
       allContent: 'All Content',
       moviesAvailable: 'content available',
       noMoviesFound: 'No content found',
@@ -198,20 +215,9 @@ const resources = {
       error: 'Error loading content',
       contentFound: 'content found',
       contentsFound: 'contents found',
-      
-      // Home sections
-      featured: ' Featured',
-      mostRated: ' Most Rated',
-      featuredIn: 'Featured in -',
-      
-      // Discover page
+      featured: 'Featured',
+      mostRated: 'Most Rated',
       discoverTitle: 'Discover Content',
-      filters: 'Filters',
-      clearFilters: 'Clear filters',
-      categoryFilter: 'Categories',
-      typeFilter: 'Types',
-      
-      // Footer
       footer: {
         about: 'About the Studio',
         description: 'Rapadura Atômica is an animation and digital games studio focused on creating unique and original experiences.',
@@ -223,8 +229,6 @@ const resources = {
         feature4: 'Partnership Projects',
         tech: 'Technologies'
       },
-      
-      // Studio
       studioPage: {
         title: 'Rapadura Atômica',
         subtitle: 'Animation and Digital Games Studio',
@@ -255,10 +259,14 @@ const resources = {
         address: 'Avenida Chanceler Edson Queiroz 3406 - Altos',
         city: '62850-000 Cascavel/CE',
         cnpj: 'CNPJ: 24.800.280/0001-80',
-        copyright: 'Rapadura Atômica Animation and Digital Games Studio Ltd.'
+        copyright: 'Rapadura Atômica Animation and Digital Games Studio Ltd.',
+        historyDesc1: 'Since 2016 we have worked on several projects, whether advertising, institutional, or producing original content for streaming, cinema, TV and the Internet.',
+        historyDesc2: 'We are based in Cascavel, Ceará, 60km from Fortaleza, where we have the perfect ecosystem for creating and training new animators.',
+        record: 'Recording Booth',
+        team: 'Rapadura Team',
+        studioStructure: 'Studio Structure',
+        location: 'Address'
       },
-      
-      // Watchlist
       watchlistPage: {
         title: 'My List',
         empty: 'Your list is empty',
@@ -267,15 +275,11 @@ const resources = {
         items_one: 'item to watch',
         items_other: 'items to watch'
       },
-      
-      // Search
       searchPage: {
         title: 'Results for',
         noResults: 'No content found for',
         backToHome: 'Back to Home'
       },
-      
-      // Movie Details
       details: {
         votes: 'votes',
         minutes: 'min',
@@ -289,8 +293,7 @@ const resources = {
   },
   es: {
     translation: {
-      // Navegación
-      title: 'Rapadura Atômica',
+      title: 'Rapadura Atómica',
       search: 'Buscar contenido...',
       watchlist: 'Mi Lista',
       discover: 'Descubrir',
@@ -298,27 +301,43 @@ const resources = {
       about: 'Acerca de',
       back: 'Volver',
       home: 'Inicio',
-      
-      // Acciones
+      login: {
+        title: 'Iniciar Sesión',
+        subtitle: 'Inicia sesión para acceder a tu cuenta',
+        email: 'Correo electrónico',
+        password: 'Contraseña',
+        button: 'Iniciar Sesión',
+        loading: 'Ingresando...',
+        noAccount: '¿No tienes una cuenta?',
+        register: 'Regístrate'
+      },
+      register: {
+        title: 'Registrarse',
+        subtitle: 'Crea tu cuenta para comenzar',
+        name: 'Nombre',
+        email: 'Correo electrónico',
+        password: 'Contraseña',
+        confirmPassword: 'Confirmar contraseña',
+        button: 'Registrarse',
+        loading: 'Registrando...',
+        hasAccount: '¿Ya tienes una cuenta?',
+        login: 'Iniciar Sesión',
+        passwordMismatch: 'Las contraseñas no coinciden'
+      },
+      logout: 'Salir',
       watchTrailer: 'Ver Trailer',
       addToList: 'Añadir a la lista',
       inList: 'En mi lista',
       removeFromList: 'Eliminar de la lista',
       synopsis: 'Sinopsis',
       genres: 'Géneros',
-      
-      // Categorías principales
       all: 'Todos',
-      autorais: ' Originales',
-      jogos: ' Juegos',
-      parcerias: ' Alianzas',
-      
-      // Tipos de contenido
-      series: ' Series',
-      curtas: ' Cortos',
-      longas: ' Largos',
-      
-      // Mensajes
+      autorais: 'Originales',
+      jogos: 'Juegos',
+      parcerias: 'Alianzas',
+      series: 'Series',
+      curtas: 'Cortos',
+      longas: 'Largos',
       allContent: 'Todo el Contenido',
       moviesAvailable: 'contenidos disponibles',
       noMoviesFound: 'No se encontró contenido',
@@ -326,23 +345,12 @@ const resources = {
       error: 'Error al cargar contenido',
       contentFound: 'contenido encontrado',
       contentsFound: 'contenidos encontrados',
-      
-      // Secciones de inicio
-      featured: ' Destacados',
-      mostRated: ' Mejor Valorados',
-      featuredIn: 'Destacado en -',
-      
-      // Página de descubrimiento
+      featured: 'Destacados',
+      mostRated: 'Mejor Valorados',
       discoverTitle: 'Descubrir Contenido',
-      filters: 'Filtros',
-      clearFilters: 'Limpiar filtros',
-      categoryFilter: 'Categorías',
-      typeFilter: 'Tipos',
-      
-      // Footer
       footer: {
         about: 'Sobre el Estudio',
-        description: 'Rapadura Atômica es un estudio de animación y juegos digitales enfocado en crear experiencias únicas y originales.',
+        description: 'Rapadura Atómica es un estudio de animación y juegos digitales enfocado en crear experiencias únicas y originales.',
         features: 'Contenido',
         credits: 'Créditos',
         feature1: 'Animaciones Originales',
@@ -351,10 +359,8 @@ const resources = {
         feature4: 'Proyectos en Alianza',
         tech: 'Tecnologías'
       },
-      
-      // Estudio
       studioPage: {
-        title: 'Rapadura Atômica',
+        title: 'Rapadura Atómica',
         subtitle: 'Estudio de Animación y Juegos Digitales',
         about: 'Sobre el Estudio',
         clients: 'Clientes & Socios',
@@ -383,10 +389,14 @@ const resources = {
         address: 'Avenida Chanceler Edson Queiroz 3406 - Altos',
         city: '62850-000 Cascavel/CE',
         cnpj: 'CNPJ: 24.800.280/0001-80',
-        copyright: 'Rapadura Atômica Estudio de Animación y Juegos Digitales Ltd.'
+        copyright: 'Rapadura Atómica Estudio de Animación y Juegos Digitales Ltd.',
+        historyDesc1: 'Desde 2016 hemos trabajado en diversos proyectos, ya sea publicidad, institucional, o produciendo contenido original para streaming, cine, TV e Internet.',
+        historyDesc2: 'Estamos ubicados en Cascavel, Ceará, a 60km de Fortaleza, donde tenemos el ecosistema perfecto para la creación y formación de nuevos animadores.',
+        record: 'Cabina de Grabación',
+        team: 'Equipo Rapadura',
+        studioStructure: 'Estructura del Estudio',
+        location: 'Dirección'
       },
-      
-      // Watchlist
       watchlistPage: {
         title: 'Mi Lista',
         empty: 'Tu lista está vacía',
@@ -395,15 +405,11 @@ const resources = {
         items_one: 'contenido para ver',
         items_other: 'contenidos para ver'
       },
-      
-      // Search
       searchPage: {
         title: 'Resultados para',
         noResults: 'No se encontró contenido para',
         backToHome: 'Volver al Inicio'
       },
-      
-      // Movie Details
       details: {
         votes: 'votos',
         minutes: 'min',

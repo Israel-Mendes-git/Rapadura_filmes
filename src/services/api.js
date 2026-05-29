@@ -4,8 +4,7 @@ import axios from 'axios';
 const isProduction = import.meta.env.PROD;
 
 // Em produção, usa o domínio; em desenvolvimento, usa localhost
-const API_URL = isProduction ? 'https://filmerama.com.br/api' : 'http://localhost:3002/api';
-
+const API_URL = isProduction ? '/api' : 'http://localhost:3001/api';
 const api = axios.create({
   baseURL: API_URL,
   timeout: 10000,

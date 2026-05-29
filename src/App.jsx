@@ -12,6 +12,8 @@ import Navbar from './components/Navbar';
 import BackToTop from './components/BackToTop';
 import Footer from './components/Footer';
 import { useAuth } from './contexts/AuthContext';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 // Componente para rotas protegidas (exigem login)
 function ProtectedRoute({ children }) {
@@ -68,6 +70,9 @@ function App() {
               <Register />
             </PublicRoute>
           } />
+
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           
           {/* Rotas protegidas (exigem login) */}
           <Route path="/" element={

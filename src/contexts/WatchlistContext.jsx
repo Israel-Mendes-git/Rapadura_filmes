@@ -24,8 +24,9 @@ export function WatchlistProvider({ children }) {
   const loadWatchlist = async () => {
     try {
       setLoading(true);
-      const response = await api.get(`/users/${user.id}`);
-      setWatchlist(response.data.watchlist || []);
+      // Usar a rota /api/watchlist
+      const response = await api.get('/watchlist');
+      setWatchlist(response.data || []);
     } catch (error) {
       console.error('Erro ao carregar watchlist:', error);
     } finally {
@@ -40,12 +41,13 @@ export function WatchlistProvider({ children }) {
     }
     
     try {
-      const newWatchlist = [...watchlist, movie];
-      await api.patch(`/users/${user.id}`, { watchlist: newWatchlist });
-      setWatchlist(newWatchlist);
+      // Usar a rota /api/watchlist
+      const response = await api.post('/watchlist', { movie });
+      setWatchlist([...watchlist, movie]);
       return true;
     } catch (error) {
       console.error('Erro ao adicionar:', error);
+      alert('Erro ao adicionar à watchlist');
       return false;
     }
   };
@@ -54,9 +56,9 @@ export function WatchlistProvider({ children }) {
     if (!user || !user.id) return false;
     
     try {
-      const newWatchlist = watchlist.filter(m => m.id !== movieId);
-      await api.patch(`/users/${user.id}`, { watchlist: newWatchlist });
-      setWatchlist(newWatchlist);
+      // Usar a rota /api/watchlist/:movieId
+      await api.delete(`/watchlist/${movieId}`);
+      setWatchlist(watchlist.filter(m => m.id !== movieId));
       return true;
     } catch (error) {
       console.error('Erro ao remover:', error);

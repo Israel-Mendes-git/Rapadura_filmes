@@ -9,15 +9,17 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Ao carregar a página, tenta recuperar os dados do localStorage
     const token = localStorage.getItem('token');
-    if (token) {
-      // Restaurar usuário do token
+    const savedUser = localStorage.getItem('user');
+    
+    if (token && savedUser) {
       try {
-        const userData = JSON.parse(atob(token));
-        setUser(userData);
+        setUser(JSON.parse(savedUser));
       } catch (e) {
         console.error('Erro ao restaurar usuário:', e);
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
       }
     }
     setLoading(false);
@@ -25,63 +27,52 @@ export function AuthProvider({ children }) {
 
   const register = async (name, email, password) => {
     try {
-      // Verificar se usuário já existe
-      const checkResponse = await api.get(`/users?email=${email}`);
+      const response = await api.post('/register', { name, email, password });
       
-      if (checkResponse.data.length > 0) {
-        return { success: false, error: 'E-mail já cadastrado' };
+      if (response.data.id) {
+        return { success: true, data: response.data };
       }
-      
-      // Criar novo usuário
-      const response = await api.post('/users', {
-        name,
-        email,
-        password,
-        watchlist: []
-      });
-      
-      return { success: true, data: response.data };
+      return { success: false, error: 'Erro ao cadastrar' };
     } catch (error) {
       console.error('Erro no cadastro:', error);
+      if (error.response?.status === 400) {
+        return { success: false, error: error.response?.data?.error || 'E-mail já cadastrado' };
+      }
       return { success: false, error: 'Erro ao cadastrar' };
     }
   };
 
-  // src/contexts/AuthContext.jsx (adicione logs para debug)
   const login = async (email, password) => {
     console.log('🔐 Tentando login com:', email);
     try {
-      const response = await api.get(`/users?email=${email}`);
-      const users = response.data;
+      const response = await api.post('/login', { email, password });
       
-      console.log('📦 Usuários encontrados:', users);
+      console.log('📦 Resposta do login:', response.data);
       
-      if (users.length === 0) {
-        return { success: false, error: 'Usuário não encontrado' };
+      if (response.data.token) {
+        const { token, user: userData } = response.data;
+        
+        // Salva token e dados do usuário no localStorage
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(userData)); 
+        setUser(userData);
+        
+        console.log('✅ Login bem sucedido! Usuário:', userData);
+        return { success: true };
       }
-      
-      const user = users[0];
-      
-      if (user.password !== password) {
-        return { success: false, error: 'Senha incorreta' };
-      }
-      
-      // Criar token simples
-      const token = btoa(JSON.stringify({ id: user.id, email: user.email, name: user.name }));
-      localStorage.setItem('token', token);
-      setUser({ id: user.id, email: user.email, name: user.name });
-      
-      console.log('✅ Login bem sucedido! Usuário:', { id: user.id, email: user.email });
-      
-      return { success: true };
+      return { success: false, error: 'Erro ao fazer login' };
     } catch (error) {
       console.error('❌ Erro no login:', error);
+      if (error.response?.status === 401) {
+        return { success: false, error: error.response?.data?.error || 'Usuário ou senha inválidos' };
+      }
       return { success: false, error: 'Erro ao fazer login' };
     }
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user'); // Limpa os dados do usuário
     setUser(null);
   };
 

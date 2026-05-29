@@ -5,6 +5,39 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   pt: {
     translation: {
+      forgotPassword: {
+        title: 'Esqueceu a senha?',
+        subtitle: 'Digite seu email para receber um link de recuperação',
+        email: 'E-mail',
+        button: 'Enviar link de recuperação',
+        sending: 'Enviando...',
+        success: 'Email de recuperação enviado! Verifique sua caixa de entrada.',
+        backToLogin: 'Voltar para o login'
+      },
+      
+      resetPassword: {
+        title: 'Nova senha',
+        subtitle: 'Digite sua nova senha abaixo',
+        password: 'Nova senha',
+        confirmPassword: 'Confirmar senha',
+        button: 'Alterar senha',
+        resetting: 'Alterando...',
+        success: 'Senha alterada com sucesso! Redirecionando...',
+        invalidToken: 'Link inválido ou expirado',
+        mismatch: 'As senhas não conferem',
+        minLength: 'A senha deve ter pelo menos 6 caracteres'
+      },
+      
+      // Mensagens de erro
+      errors: {
+        emailExists: 'E-mail já cadastrado',
+        userNotFound: 'Usuário não encontrado',
+        wrongPassword: 'Senha incorreta',
+        loginError: 'Erro ao fazer login',
+        registerError: 'Erro ao cadastrar',
+        networkError: 'Erro de conexão. Tente novamente.'
+      }, 
+
       // Navegação
       title: 'Rapadura Atômica',
       search: 'Buscar conteúdo...',
@@ -162,6 +195,38 @@ const resources = {
     }
   },
   en: {
+    forgotPassword: {
+      title: 'Forgot password?',
+      subtitle: 'Enter your email to receive a recovery link',
+      email: 'Email',
+      button: 'Send recovery link',
+      sending: 'Sending...',
+      success: 'Recovery email sent! Check your inbox.',
+      backToLogin: 'Back to login'
+    },
+    
+    resetPassword: {
+      title: 'New password',
+      subtitle: 'Enter your new password below',
+      password: 'New password',
+      confirmPassword: 'Confirm password',
+      button: 'Change password',
+      resetting: 'Changing...',
+      success: 'Password changed successfully! Redirecting...',
+      invalidToken: 'Invalid or expired link',
+      mismatch: 'Passwords do not match',
+      minLength: 'Password must be at least 6 characters'
+    },
+    
+    errors: {
+      emailExists: 'Email already registered',
+      userNotFound: 'User not found',
+      wrongPassword: 'Incorrect password',
+      loginError: 'Login error',
+      registerError: 'Registration error',
+      networkError: 'Connection error. Please try again.'
+    }, 
+
     translation: {
       title: 'Rapadura Atômica',
       search: 'Search content...',
@@ -292,6 +357,38 @@ const resources = {
     }
   },
   es: {
+          forgotPassword: {
+        title: '¿Olvidaste tu contraseña?',
+        subtitle: 'Ingresa tu email para recibir un enlace de recuperación',
+        email: 'Correo electrónico',
+        button: 'Enviar enlace de recuperación',
+        sending: 'Enviando...',
+        success: '¡Email de recuperación enviado! Revisa tu bandeja de entrada.',
+        backToLogin: 'Volver al inicio de sesión'
+      },
+      
+      resetPassword: {
+        title: 'Nueva contraseña',
+        subtitle: 'Ingresa tu nueva contraseña a continuación',
+        password: 'Nueva contraseña',
+        confirmPassword: 'Confirmar contraseña',
+        button: 'Cambiar contraseña',
+        resetting: 'Cambiando...',
+        success: '¡Contraseña cambiada con éxito! Redirigiendo...',
+        invalidToken: 'Enlace inválido o expirado',
+        mismatch: 'Las contraseñas no coinciden',
+        minLength: 'La contraseña debe tener al menos 6 caracteres'
+      },
+      
+      errors: {
+        emailExists: 'Correo electrónico ya registrado',
+        userNotFound: 'Usuario no encontrado',
+        wrongPassword: 'Contraseña incorrecta',
+        loginError: 'Error al iniciar sesión',
+        registerError: 'Error al registrarse',
+        networkError: 'Error de conexión. Intenta nuevamente.'
+      },
+      
     translation: {
       title: 'Rapadura Atómica',
       search: 'Buscar contenido...',

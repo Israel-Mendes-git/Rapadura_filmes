@@ -72,7 +72,7 @@ export default function Login() {
               onChange={(e) => setEmail(e.target.value)}
               required
               className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-900 dark:text-white"
-              placeholder="seu@email.com"
+              placeholder={t('login.email')}
             />
           </div>
 
@@ -86,7 +86,7 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               required
               className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-900 dark:text-white"
-              placeholder="••••••"
+              placeholder={t('login.password')}
             />
           </div>
 
@@ -106,6 +106,11 @@ export default function Login() {
               {t('login.register')}
             </Link>
           </p>
+          <div className="text-right mb-6">
+            <Link to="/forgot-password" className="text-sm text-purple-600 hover:text-purple-700">
+              {t('forgotPassword.title')}
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -22,6 +22,7 @@
         "express": "^4.22.2",
         "framer-motion": "^12.38.0",
         "i18next": "^26.0.8",
+        "jsonwebtoken": "^9.0.3",
         "lucide-react": "^1.14.0",
         "radix-ui": "^1.4.3",
         "react": "^19.2.5",

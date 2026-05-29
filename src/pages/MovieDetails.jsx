@@ -18,18 +18,20 @@ export default function MovieDetails() {
   const [showTrailer, setShowTrailer] = useState(false);
 
   useEffect(() => {
-    console.log('🔍 MovieDetails - ID recebido:', id);
     const movieId = Number(id);
     const foundMovie = customMovies.all.find(m => Number(m.id) === movieId);
-    
+
     if (foundMovie) {
-      console.log('✅ Filme encontrado:', foundMovie.title);
       setMovie(foundMovie);
-    } else {
-      console.log('❌ Filme NÃO encontrado para o ID:', movieId);
     }
     setLoading(false);
   }, [id]);
+
+  // Título da aba reflete o filme atual (SEO/UX)
+  useEffect(() => {
+    document.title = movie ? `${movie.title} — Rapadura Atômica` : 'Rapadura Atômica';
+    return () => { document.title = 'Rapadura Atômica'; };
+  }, [movie]);
 
   const inWatchlist = movie ? isInWatchlist(movie.id) : false;
 

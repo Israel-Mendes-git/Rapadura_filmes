@@ -1,55 +1,44 @@
 // src/App.jsx
+import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Home from './pages/Home';
-import MovieDetails from './pages/MovieDetails';
-import Search from './pages/Search';
-import Watchlist from './pages/Watchlist';
-import Discover from './pages/Discover';
-import Studio from './pages/Studio';
-import Login from './pages/Login';
-import Register from './pages/Register';
 import Navbar from './components/Navbar';
 import BackToTop from './components/BackToTop';
 import Footer from './components/Footer';
+import ErrorBoundary from './components/ErrorBoundary';
 import { useAuth } from './contexts/AuthContext';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
+
+// Code-splitting: cada página vira um chunk carregado sob demanda
+const Home = lazy(() => import('./pages/Home'));
+const MovieDetails = lazy(() => import('./pages/MovieDetails'));
+const Search = lazy(() => import('./pages/Search'));
+const Watchlist = lazy(() => import('./pages/Watchlist'));
+const Discover = lazy(() => import('./pages/Discover'));
+const Studio = lazy(() => import('./pages/Studio'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+
+function Spinner() {
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+    </div>
+  );
+}
 
 // Componente para rotas protegidas (exigem login)
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
+  if (loading) return <Spinner />;
+  if (!user) return <Navigate to="/login" replace />;
   return children;
 }
 
 // Componente para rotas públicas (não pode acessar se já logado)
 function PublicRoute({ children }) {
   const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-      </div>
-    );
-  }
-
-  if (user) {
-    return <Navigate to="/" replace />;
-  }
-
+  if (loading) return <Spinner />;
+  if (user) return <Navigate to="/" replace />;
   return children;
 }
 
@@ -58,39 +47,40 @@ function App() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <Navbar />
       <main className="flex-grow">
-        <Routes>
-          {/* Rotas públicas (login e registro) */}
-          <Route path="/login" element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          } />
-          <Route path="/register" element={
-            <PublicRoute>
-              <Register />
-            </PublicRoute>
-          } />
+        <ErrorBoundary>
+          <Suspense fallback={<Spinner />}>
+            <Routes>
+              {/* Rotas públicas (login e registro) */}
+              <Route path="/login" element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              } />
+              <Route path="/register" element={
+                <PublicRoute>
+                  <Register />
+                </PublicRoute>
+              } />
 
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          
-          {/* Rotas públicas de navegação (não exigem login) */}
-          <Route path="/" element={<Home />} />
-          <Route path="/movie/:id" element={<MovieDetails />} />
-          <Route path="/discover" element={<Discover />} />
-          <Route path="/studio" element={<Studio />} />
-          <Route path="/search" element={<Search />} />
+              {/* Rotas públicas de navegação (não exigem login) */}
+              <Route path="/" element={<Home />} />
+              <Route path="/movie/:id" element={<MovieDetails />} />
+              <Route path="/discover" element={<Discover />} />
+              <Route path="/studio" element={<Studio />} />
+              <Route path="/search" element={<Search />} />
 
-          {/* Rota protegida (lista pessoal exige login) */}
-          <Route path="/watchlist" element={
-            <ProtectedRoute>
-              <Watchlist />
-            </ProtectedRoute>
-          } />
+              {/* Rota protegida (lista pessoal exige login) */}
+              <Route path="/watchlist" element={
+                <ProtectedRoute>
+                  <Watchlist />
+                </ProtectedRoute>
+              } />
 
-          {/* Redireciona qualquer rota não encontrada para a home */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+              {/* Página 404 amigável para qualquer rota desconhecida */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
       </main>
       <Footer />
       <BackToTop />

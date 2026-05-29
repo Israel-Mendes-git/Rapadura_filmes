@@ -43,21 +43,17 @@ export function AuthProvider({ children }) {
   };
 
   const login = async (email, password) => {
-    console.log('🔐 Tentando login com:', email);
     try {
       const response = await api.post('/login', { email, password });
-      
-      console.log('📦 Resposta do login:', response.data);
-      
+
       if (response.data.token) {
         const { token, user: userData } = response.data;
-        
+
         // Salva token e dados do usuário no localStorage
         localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(userData)); 
+        localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
-        
-        console.log('✅ Login bem sucedido! Usuário:', userData);
+
         return { success: true };
       }
       return { success: false, error: 'Erro ao fazer login' };

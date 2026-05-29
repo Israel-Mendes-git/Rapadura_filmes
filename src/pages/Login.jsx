@@ -106,11 +106,8 @@ export default function Login() {
               {t('login.register')}
             </Link>
           </p>
-          <div className="text-right mb-6">
-            <Link to="/forgot-password" className="text-sm text-purple-600 hover:text-purple-700">
-              {t('forgotPassword.title')}
-            </Link>
-          </div>
+          {/* Link de recuperação de senha removido: o backend ainda não
+              implementa /api/forgot-password (requer configuração de e-mail/SMTP). */}
         </div>
       </div>
     </div>

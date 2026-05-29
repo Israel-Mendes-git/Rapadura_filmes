@@ -31,18 +31,15 @@ export default function MovieCard({ movie }) {
   const posterUrl = getImageUrl();
 
   const handleCardClick = (e) => {
-    // Previne qualquer propagação que possa estar bloqueando
     e.preventDefault();
     e.stopPropagation();
-    console.log('🎬 Card clicado:', movie.id, movie.title);
-    // Usa window.location como fallback
-    window.location.href = '/movie/' + movie.id;
+    // Navegação SPA (sem recarregar a página inteira)
+    navigate('/movie/' + movie.id);
   };
 
   const handleWatchlistClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('📝 Watchlist clicado:', movie.id);
     if (inWatchlist) {
       removeFromWatchlist(movie.id);
     } else {
@@ -62,9 +59,10 @@ export default function MovieCard({ movie }) {
         }
       }}
     >
-      <img 
-        src={posterUrl} 
+      <img
+        src={posterUrl}
         alt={movie.title}
+        loading="lazy"
         className="w-full aspect-[2/3] object-cover pointer-events-none"
         onError={() => setImgError(true)}
       />

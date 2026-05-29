@@ -178,6 +178,16 @@ const resources = {
         "defaultMessage": "Faça login para acessar este recurso",
         "loginBtn": "Fazer Login",
         "registerBtn": "Criar Conta"
+      },
+      "notFound": {
+        "title": "Página não encontrada",
+        "subtitle": "A página que você procura não existe ou foi movida.",
+        "backHome": "Voltar ao início"
+      },
+      "filter": {
+        "categories": "Categorias",
+        "types": "Tipos",
+        "active": "Filtros ativos:"
       }
     }
   },
@@ -356,6 +366,16 @@ const resources = {
         "defaultMessage": "Log in to access this feature",
         "loginBtn": "Log In",
         "registerBtn": "Create Account"
+      },
+      "notFound": {
+        "title": "Page not found",
+        "subtitle": "The page you are looking for does not exist or has been moved.",
+        "backHome": "Back to home"
+      },
+      "filter": {
+        "categories": "Categories",
+        "types": "Types",
+        "active": "Active filters:"
       }
     }
   },
@@ -534,6 +554,16 @@ const resources = {
         "defaultMessage": "Inicia sesión para acceder a este recurso",
         "loginBtn": "Iniciar Sesión",
         "registerBtn": "Crear Cuenta"
+      },
+      "notFound": {
+        "title": "Página no encontrada",
+        "subtitle": "La página que buscas no existe o ha sido movida.",
+        "backHome": "Volver al inicio"
+      },
+      "filter": {
+        "categories": "Categorías",
+        "types": "Tipos",
+        "active": "Filtros activos:"
       }
     }
   }
@@ -562,5 +592,14 @@ i18n
       escapeValue: false
     }
   });
+
+// Mantém o atributo lang do <html> em sincronia com o idioma (a11y/SEO)
+function syncHtmlLang(lng) {
+  if (typeof document !== 'undefined') {
+    document.documentElement.lang = lng;
+  }
+}
+syncHtmlLang(i18n.language);
+i18n.on('languageChanged', syncHtmlLang);
 
 export default i18n;

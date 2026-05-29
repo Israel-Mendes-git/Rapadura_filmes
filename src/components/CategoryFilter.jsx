@@ -1,20 +1,23 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
+// Os rótulos vêm do i18n via t(id); aqui ficam só id e ícone.
 const categories = [
-  { id: 'all', name: 'Todos', icon: '🎬', type: 'category' },
-  { id: 'autorais', name: 'Autorais', icon: '🎨', type: 'category' },
-  { id: 'jogos', name: 'Jogos', icon: '🎮', type: 'category' },
-  { id: 'parcerias', name: 'Parcerias', icon: '🤝', type: 'category' }
+  { id: 'all', icon: '🎬' },
+  { id: 'autorais', icon: '🎨' },
+  { id: 'jogos', icon: '🎮' },
+  { id: 'parcerias', icon: '🤝' }
 ];
 
 const types = [
-  { id: 'all', name: 'Todos', icon: '🎬', type: 'type' },
-  { id: 'series', name: 'Séries', icon: '📺', type: 'type' },
-  { id: 'curtas', name: 'Curtas', icon: '🎬', type: 'type' },
-  { id: 'longas', name: 'Longas', icon: '🍿', type: 'type' }
+  { id: 'all', icon: '🎬' },
+  { id: 'series', icon: '📺' },
+  { id: 'curtas', icon: '🎬' },
+  { id: 'longas', icon: '🍿' }
 ];
 
 export default function CategoryFilter({ selectedCategory, selectedType, onCategoryChange, onTypeChange }) {
+  const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState('category'); // 'category' ou 'type'
 
   return (
@@ -29,7 +32,7 @@ export default function CategoryFilter({ selectedCategory, selectedType, onCateg
               : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700'
           }`}
         >
-          📁 Categorias
+          📁 {t('filter.categories')}
         </button>
         <button
           onClick={() => setActiveFilter('type')}
@@ -39,13 +42,13 @@ export default function CategoryFilter({ selectedCategory, selectedType, onCateg
               : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700'
           }`}
         >
-          🎥 Tipos
+          🎥 {t('filter.types')}
         </button>
       </div>
 
       {/* Filtros ativos */}
       <div className="flex flex-wrap gap-3">
-        {activeFilter === 'category' 
+        {activeFilter === 'category'
           ? categories.map((cat) => (
               <button
                 key={cat.id}
@@ -57,7 +60,7 @@ export default function CategoryFilter({ selectedCategory, selectedType, onCateg
                 }`}
               >
                 <span>{cat.icon}</span>
-                {cat.name}
+                {t(cat.id)}
               </button>
             ))
           : types.map((type) => (
@@ -71,7 +74,7 @@ export default function CategoryFilter({ selectedCategory, selectedType, onCateg
                 }`}
               >
                 <span>{type.icon}</span>
-                {type.name}
+                {t(type.id)}
               </button>
             ))}
       </div>
@@ -79,17 +82,17 @@ export default function CategoryFilter({ selectedCategory, selectedType, onCateg
       {/* Indicador de filtros ativos */}
       {(selectedCategory !== 'all' || selectedType !== 'all') && (
         <div className="mt-3 text-sm text-gray-600 dark:text-gray-400">
-          Filtros ativos: 
+          {t('filter.active')}
           {selectedCategory !== 'all' && (
             <span className="inline-flex items-center gap-1 ml-2 px-2 py-1 bg-purple-100 dark:bg-purple-900/30 rounded-full">
               {categories.find(c => c.id === selectedCategory)?.icon}
-              {categories.find(c => c.id === selectedCategory)?.name}
+              {t(selectedCategory)}
             </span>
           )}
           {selectedType !== 'all' && (
             <span className="inline-flex items-center gap-1 ml-2 px-2 py-1 bg-green-100 dark:bg-green-900/30 rounded-full">
-              {types.find(t => t.id === selectedType)?.icon}
-              {types.find(t => t.id === selectedType)?.name}
+              {types.find(tp => tp.id === selectedType)?.icon}
+              {t(selectedType)}
             </span>
           )}
         </div>

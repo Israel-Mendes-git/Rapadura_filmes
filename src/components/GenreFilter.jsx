@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getGenres } from '../services/tmdb';
 
 export default function GenreFilter({ selectedGenre, onGenreChange }) {
+  const { t } = useTranslation();
   const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,7 +25,7 @@ export default function GenreFilter({ selectedGenre, onGenreChange }) {
   if (loading) {
     return (
       <div className="flex justify-center py-4">
-        <div className="animate-pulse text-zinc-400">Carregando gêneros...</div>
+        <div className="animate-pulse text-zinc-400">{t('common.loadingGenres')}</div>
       </div>
     );
   }

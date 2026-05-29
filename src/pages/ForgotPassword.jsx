@@ -20,7 +20,7 @@ export default function ForgotPassword() {
       const response = await api.post('/forgot-password', { email });
       setMessage(response.data.message);
     } catch (err) {
-      setError('Erro ao enviar email de recuperação');
+      setError(t('forgotPassword.sendError'));
     } finally {
       setLoading(false);
     }

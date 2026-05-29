@@ -1,7 +1,9 @@
 
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function TrailerModal({ trailerUrl, title, onClose }) {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
 
   if (!trailerUrl) return null;
@@ -13,7 +15,7 @@ export default function TrailerModal({ trailerUrl, title, onClose }) {
           onClick={onClose}
           className="absolute -top-12 right-0 text-white hover:text-purple-400 transition-colors text-2xl"
         >
-          ✕ Fechar
+          ✕ {t('common.close')}
         </button>
         
         {isLoading && (
@@ -29,7 +31,7 @@ export default function TrailerModal({ trailerUrl, title, onClose }) {
           onLoadedData={() => setIsLoading(false)}
         >
           <source src={trailerUrl} type="video/mp4" />
-          Seu navegador não suporta vídeos HTML5.
+          {t('common.videoError')}
         </video>
       </div>
     </div>

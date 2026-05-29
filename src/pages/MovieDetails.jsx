@@ -1,6 +1,7 @@
 ﻿import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useWatchlist } from '../contexts/WatchlistContext';
+import { useAuth } from '../contexts/AuthContext';
 import { customMovies } from '../data/customMovies';
 import { useTranslation } from 'react-i18next';
 import TrailerModal from '../components/TrailerModal';
@@ -9,6 +10,7 @@ export default function MovieDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToWatchlist, removeFromWatchlist, isInWatchlist } = useWatchlist();
+  const { user } = useAuth();
   const { t } = useTranslation();
   
   const [movie, setMovie] = useState(null);
@@ -30,6 +32,15 @@ export default function MovieDetails() {
   }, [id]);
 
   const inWatchlist = movie ? isInWatchlist(movie.id) : false;
+
+  // Login só é exigido aqui: ao tentar assistir o filme
+  const handleWatchClick = () => {
+    if (!user) {
+      navigate('/login', { state: { from: { pathname: `/movie/${id}` } } });
+      return;
+    }
+    setShowTrailer(true);
+  };
 
   const handleWatchlistClick = () => {
     if (inWatchlist) {
@@ -58,7 +69,7 @@ export default function MovieDetails() {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-500 text-xl mb-4">Filme não encontrado (ID: {id})</p>
+          <p className="text-red-500 text-xl mb-4">{t('details.notFound')} (ID: {id})</p>
           <button 
             onClick={() => navigate('/')}
             className="mb-8 text-gray-600 dark:text-gray-400 hover:text-purple-600 transition-colors"
@@ -114,7 +125,7 @@ export default function MovieDetails() {
               {/* Botão Assistir Trailer - Verde */}
               {movie.trailerUrl && (
                 <button
-                  onClick={() => setShowTrailer(true)}
+                  onClick={handleWatchClick}
                   className="flex-1 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
                 >
                   ▶ {t('details.watchTrailer')}

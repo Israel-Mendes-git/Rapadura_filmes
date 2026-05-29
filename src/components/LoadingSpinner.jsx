@@ -1,4 +1,7 @@
+import { useTranslation } from 'react-i18next';
+
 export default function LoadingSpinner() {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px]">
       <div className="relative">
@@ -7,7 +10,7 @@ export default function LoadingSpinner() {
           <div className="h-8 w-8 bg-purple-500/20 rounded-full"></div>
         </div>
       </div>
-      <p className="mt-4 text-zinc-400 animate-pulse">Carregando...</p>
+      <p className="mt-4 text-zinc-400 animate-pulse">{t('common.loading')}</p>
     </div>
   );
 }

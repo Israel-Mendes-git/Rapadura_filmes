@@ -74,38 +74,22 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           
-          {/* Rotas protegidas (exigem login) */}
-          <Route path="/" element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          } />
-          <Route path="/movie/:id" element={
-            <ProtectedRoute>
-              <MovieDetails />
-            </ProtectedRoute>
-          } />
-          <Route path="/discover" element={
-            <ProtectedRoute>
-              <Discover />
-            </ProtectedRoute>
-          } />
-          <Route path="/studio" element={
-              <Studio />
-          } />
+          {/* Rotas públicas de navegação (não exigem login) */}
+          <Route path="/" element={<Home />} />
+          <Route path="/movie/:id" element={<MovieDetails />} />
+          <Route path="/discover" element={<Discover />} />
+          <Route path="/studio" element={<Studio />} />
+          <Route path="/search" element={<Search />} />
+
+          {/* Rota protegida (lista pessoal exige login) */}
           <Route path="/watchlist" element={
             <ProtectedRoute>
               <Watchlist />
             </ProtectedRoute>
           } />
-          <Route path="/search" element={
-            <ProtectedRoute>
-              <Search />
-            </ProtectedRoute>
-          } />
-          
-          {/* Redireciona qualquer rota não encontrada para login */}
-          <Route path="*" element={<Navigate to="/login" replace />} />
+
+          {/* Redireciona qualquer rota não encontrada para a home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
       <Footer />

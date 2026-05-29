@@ -1,9 +1,11 @@
 ﻿import { useWatchlist } from '../contexts/WatchlistContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function MovieCard({ movie }) {
   const { addToWatchlist, removeFromWatchlist, isInWatchlist } = useWatchlist();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const inWatchlist = isInWatchlist(movie.id);
   const [imgError, setImgError] = useState(false);
@@ -88,7 +90,7 @@ export default function MovieCard({ movie }) {
       <button
         className="watchlist-btn absolute top-2 right-2 p-2 rounded-full transition-all bg-black/60 hover:bg-purple-600 opacity-0 group-hover:opacity-100 transition-opacity z-10"
         onClick={handleWatchlistClick}
-        title={inWatchlist ? 'Remover da lista' : 'Adicionar à lista'}
+        title={inWatchlist ? t('details.removeFromList') : t('details.addToList')}
       >
         {inWatchlist ? '✓' : '+'}
       </button>

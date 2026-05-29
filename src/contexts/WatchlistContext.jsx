@@ -1,5 +1,6 @@
 // src/contexts/WatchlistContext.jsx
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { useAuth } from './AuthContext';
 
@@ -7,6 +8,7 @@ const WatchlistContext = createContext();
 
 export function WatchlistProvider({ children }) {
   const { user, loading: authLoading } = useAuth();
+  const { t } = useTranslation();
   const [watchlist, setWatchlist] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,7 +38,7 @@ export function WatchlistProvider({ children }) {
 
   const addToWatchlist = async (movie) => {
     if (!user || !user.id) {
-      alert('Faça login para adicionar à lista');
+      alert(t('watchlistMsg.loginRequired'));
       return false;
     }
     
@@ -47,7 +49,7 @@ export function WatchlistProvider({ children }) {
       return true;
     } catch (error) {
       console.error('Erro ao adicionar:', error);
-      alert('Erro ao adicionar à watchlist');
+      alert(t('watchlistMsg.addError'));
       return false;
     }
   };

@@ -26,6 +26,7 @@ export default function Navbar() {
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
+    try { localStorage.setItem('lang', lng); } catch (e) { /* localStorage indisponível */ }
     setShowLangMenu(false);
   };
 

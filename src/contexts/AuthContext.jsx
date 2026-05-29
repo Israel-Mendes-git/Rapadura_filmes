@@ -9,16 +9,14 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Ao carregar a página, tenta recuperar os dados do localStorage
-    const token = localStorage.getItem('token');
+    // A sessão é mantida por cookie httpOnly; aqui só restauramos os dados
+    // de exibição do usuário (não-sensíveis). Se o cookie estiver expirado,
+    // a primeira chamada à API retorna 401 e o interceptor faz logout.
     const savedUser = localStorage.getItem('user');
-    
-    if (token && savedUser) {
+    if (savedUser) {
       try {
         setUser(JSON.parse(savedUser));
       } catch (e) {
-        console.error('Erro ao restaurar usuário:', e);
-        localStorage.removeItem('token');
         localStorage.removeItem('user');
       }
     }
@@ -46,19 +44,15 @@ export function AuthProvider({ children }) {
     try {
       const response = await api.post('/login', { email, password });
 
-      if (response.data.token) {
-        const { token, user: userData } = response.data;
-
-        // Salva token e dados do usuário no localStorage
-        localStorage.setItem('token', token);
+      const userData = response.data.user;
+      if (userData && userData.id) {
+        // O token vem em cookie httpOnly; no localStorage só ficam dados de UI
         localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
-
         return { success: true };
       }
       return { success: false, error: 'Erro ao fazer login' };
     } catch (error) {
-      console.error('❌ Erro no login:', error);
       if (error.response?.status === 401) {
         return { success: false, error: error.response?.data?.error || 'Usuário ou senha inválidos' };
       }
@@ -66,9 +60,14 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user'); // Limpa os dados do usuário
+  const logout = async () => {
+    try {
+      // Encerra a sessão no servidor (apaga a sessão e limpa o cookie)
+      await api.post('/logout');
+    } catch (e) {
+      // segue o logout local mesmo se a chamada falhar
+    }
+    localStorage.removeItem('user');
     setUser(null);
   };
 

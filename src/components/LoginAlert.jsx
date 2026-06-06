@@ -7,7 +7,12 @@ export default function LoginAlert({ message }) {
   return (
     <div className="min-h-[60vh] flex items-center justify-center">
       <div className="text-center max-w-md p-8 bg-white dark:bg-gray-900 rounded-xl shadow-lg">
-        <div className="text-6xl mb-4">🔒</div>
+        <img
+          src="/icon-192.png"
+          alt="Filmerama"
+          className="h-14 w-auto mx-auto mb-2 dark:invert"
+        />
+        <div className="text-5xl mb-4">🔒</div>
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
           {t('loginAlert.title')}
         </h2>

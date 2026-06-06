@@ -31,7 +31,7 @@ export default function ForgotPassword() {
       <div className="max-w-md w-full bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <img src="/logo_verde_transparente.png" alt="Filmerama" className="h-16 w-auto" />
+            <img src="/logo_filmerama_Final.png" alt="Filmerama" className="h-16 w-auto max-w-full object-contain" />
           </div>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t('forgotPassword.title')}</h2>
           <p className="text-gray-600 dark:text-gray-400 mt-2">

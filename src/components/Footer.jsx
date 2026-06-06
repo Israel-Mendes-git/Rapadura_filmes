@@ -79,6 +79,11 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/20 mt-8 pt-8 text-center text-sm text-gray-200">
+          <img
+            src="/logo_icon_filmerama_white.png"
+            alt="Filmerama"
+            className="h-10 w-auto mx-auto mb-4 opacity-90"
+          />
           <p>© Rapadura Atômica Estúdio de Animação e Jogos Digitais Ltda.</p>
           <p className="text-sm text-gray-400 mt-2">CNPJ: 24.800.280/0001-80</p>
         </div>

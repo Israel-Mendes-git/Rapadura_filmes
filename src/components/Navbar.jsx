@@ -42,8 +42,8 @@ export default function Navbar() {
           {/* Logo - sempre visível */}
           <Link to="/" className="flex items-center">
             <img 
-              src="/logo_verde_transparente.png" 
-              alt="Rapadura Filmes" 
+              src="/logo_filmerama_Final.png"
+              alt="Filmerama"
               className="h-10 w-auto object-contain"
             />
           </Link>

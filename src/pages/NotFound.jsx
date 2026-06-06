@@ -6,6 +6,11 @@ export default function NotFound() {
   return (
     <div className="min-h-[70vh] flex items-center justify-center p-4">
       <div className="text-center max-w-md">
+        <img
+          src="/icon-192.png"
+          alt="Filmerama"
+          className="h-14 w-auto mx-auto mb-4 dark:invert"
+        />
         <div className="text-7xl font-bold text-purple-600 mb-2">404</div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
           {t('notFound.title')}

@@ -51,9 +51,9 @@ export default function Register() {
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
             <img 
-              src="/logo_verde_transparente.png" 
-              alt="Rapadura Filmes" 
-              className="h-16 w-auto object-contain"
+              src="/logo_filmerama_Final.png"
+              alt="Filmerama"
+              className="h-16 w-auto max-w-full object-contain"
             />
           </div>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">

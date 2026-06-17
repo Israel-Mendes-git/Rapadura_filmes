@@ -8,12 +8,11 @@ export default function HeroCarousel({ movies }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  if (!movies || movies.length === 0) return null;
 
-  const currentMovie = movies[currentIndex];
+  const currentMovie = movies[currentIndex] || movies[0];
 
   useEffect(() => {
-    if (!isPlaying) return;
+    if (!isPlaying || !movies || movies.length === 0) return;
     
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % movies.length);
@@ -21,6 +20,8 @@ export default function HeroCarousel({ movies }) {
 
     return () => clearInterval(interval);
   }, [isPlaying, movies.length]);
+
+  if (!movies || movies.length === 0) return null;
 
   const goToPrevious = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + movies.length) % movies.length);

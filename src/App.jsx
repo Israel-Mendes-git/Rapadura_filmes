@@ -14,6 +14,8 @@ const MovieDetails = lazy(() => import('./pages/MovieDetails'));
 const Search = lazy(() => import('./pages/Search'));
 const Watchlist = lazy(() => import('./pages/Watchlist'));
 const Discover = lazy(() => import('./pages/Discover'));
+const Games = lazy(() => import('./pages/Games'));
+const GameDetails = lazy(() => import('./pages/GameDetails'));
 const Studio = lazy(() => import('./pages/Studio'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
@@ -71,6 +73,8 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/movie/:id" element={<MovieDetails />} />
               <Route path="/discover" element={<Discover />} />
+              <Route path="/games" element={<Games />} />
+              <Route path="/game/:id" element={<GameDetails />} />
               <Route path="/studio" element={<Studio />} />
               <Route path="/search" element={<Search />} />
 

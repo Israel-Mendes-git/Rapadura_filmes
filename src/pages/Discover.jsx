@@ -2,6 +2,7 @@
 import MovieCard from '../components/MovieCard';
 import { useNavigate } from 'react-router-dom';
 import { customMovies } from '../data/customMovies';
+import api from '../services/api';
 import CategoryFilter from '../components/CategoryFilter';
 import { useTranslation } from 'react-i18next';
 
@@ -14,8 +15,19 @@ export default function Discover() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    setMovies(customMovies.all);
-    setLoading(false);
+    let alive = true;
+    // Mescla os filmes proprios do admin (/api/catalog/movies) com o catalogo
+    // estatico, deduplicando por id. Em caso de erro, cai no estatico.
+    api.get('/catalog/movies')
+      .then((r) => {
+        if (!alive) return;
+        const adminMovies = Array.isArray(r.data) ? r.data : [];
+        const adminIds = new Set(adminMovies.map((m) => m.id));
+        setMovies([...adminMovies, ...customMovies.all.filter((m) => !adminIds.has(m.id))]);
+      })
+      .catch(() => { if (alive) setMovies(customMovies.all); })
+      .finally(() => { if (alive) setLoading(false); });
+    return () => { alive = false; };
   }, []);
 
   const handleMovieClick = (id) => {

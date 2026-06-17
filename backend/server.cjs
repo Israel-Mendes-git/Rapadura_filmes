@@ -411,6 +411,40 @@ app.get('/api/catalog/movies/:id', (req, res) => {
   }
 });
 
+function gameRowToCatalog(g) {
+  let generos = [];
+  try { generos = JSON.parse(g.generos || '[]'); } catch { generos = []; }
+  return { id: g.id, title: g.titulo, overview: g.descricao, poster_path: g.capa, genres: generos, status: g.status, isGame: true };
+}
+
+app.get('/api/catalog/games/:id', (req, res) => {
+  try {
+    const row = db.prepare("SELECT * FROM games WHERE id = ? AND status = 'publicado'").get(req.params.id);
+    if (!row) return res.status(404).json({ error: 'Jogo nao encontrado' });
+    const out = gameRowToCatalog(row);
+    out.builds = db.prepare('SELECT id, plataforma, versao, tamanho, obrigatorio FROM game_builds WHERE game_id = ? ORDER BY created_at DESC').all(row.id);
+    out.platforms = [...new Set(out.builds.map((b) => b.plataforma))];
+    res.json(out);
+  } catch (error) {
+    console.error('Erro no /api/catalog/games/:id:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+app.get('/api/catalog/games', (req, res) => {
+  try {
+    const rows = db.prepare("SELECT * FROM games WHERE status = 'publicado' ORDER BY created_at DESC").all();
+    res.json(rows.map((g) => {
+      const item = gameRowToCatalog(g);
+      item.platforms = db.prepare('SELECT DISTINCT plataforma FROM game_builds WHERE game_id = ?').all(g.id).map((r) => r.plataforma);
+      return item;
+    }));
+  } catch (error) {
+    console.error('Erro no /api/catalog/games:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
 app.get('/api/catalog/movies', (req, res) => {
   try {
     const rows = db.prepare("SELECT * FROM movies WHERE fonte = 'proprio' ORDER BY created_at DESC").all();

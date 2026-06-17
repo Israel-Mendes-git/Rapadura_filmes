@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useWatchlist } from '../contexts/WatchlistContext';
 import { useAuth } from '../contexts/AuthContext';
 import { customMovies } from '../data/customMovies';
+import api from '../services/api';
 import { useTranslation } from 'react-i18next';
 import TrailerModal from '../components/TrailerModal';
 
@@ -23,8 +24,17 @@ export default function MovieDetails() {
 
     if (foundMovie) {
       setMovie(foundMovie);
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+    // Nao esta no catalogo estatico -> busca um filme proprio no backend.
+    let alive = true;
+    setLoading(true);
+    api.get(`/catalog/movies/${movieId}`)
+      .then((r) => { if (alive) setMovie(r.data); })
+      .catch(() => { if (alive) setMovie(null); })
+      .finally(() => { if (alive) setLoading(false); });
+    return () => { alive = false; };
   }, [id]);
 
   // Título da aba reflete o filme atual (SEO/UX)

@@ -80,3 +80,18 @@ export async function uploadBuildBinary(buildId, file, { chunkSize = DEFAULT_CHU
   }
   return last; // { ok, done, checksum, tamanho, nome_arquivo }
 }
+
+
+// -------------------------------------------------------------------------
+// UPLOAD de imagem (capa/backdrop). Single-shot; devolve { url }.
+// -------------------------------------------------------------------------
+export async function uploadMedia(file) {
+  const res = await api.post('/admin/uploads/media', file, {
+    headers: { 'Content-Type': file.type || 'application/octet-stream' },
+    maxContentLength: Infinity,
+    maxBodyLength: Infinity,
+  });
+  return res.data;
+}
+// compat: imagens usam o mesmo endpoint generico
+export const uploadImage = uploadMedia;

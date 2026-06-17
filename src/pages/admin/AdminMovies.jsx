@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { moviesApi } from '../../services/adminApi';
+import ImageInput from '../../components/ImageInput';
 import { useToast } from '../../contexts/ToastContext';
 
 const EMPTY = {
@@ -101,14 +102,14 @@ export default function AdminMovies() {
           <textarea value={form.sinopse} onChange={set('sinopse')} rows={3}
             className="w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30" />
         </Field>
-        <Field label="Capa (URL/caminho)"><Input value={form.capa} onChange={set('capa')} placeholder="/images/..." /></Field>
-        <Field label="Backdrop (URL/caminho)"><Input value={form.backdrop} onChange={set('backdrop')} placeholder="/images/..." /></Field>
+        <ImageInput label="Capa" value={form.capa} onChange={(v) => setForm((f) => ({ ...f, capa: v }))} />
+        <ImageInput label="Backdrop" value={form.backdrop} onChange={(v) => setForm((f) => ({ ...f, backdrop: v }))} />
         <div className="grid grid-cols-2 gap-3">
           <Field label="Ano"><Input type="number" value={form.ano} onChange={set('ano')} placeholder="2025" /></Field>
           <Field label="Nota (0-10)"><Input type="number" step="0.1" value={form.vote_average} onChange={set('vote_average')} placeholder="8.5" /></Field>
         </div>
         <Field label="Gêneros (separados por vírgula)"><Input value={form.generos} onChange={set('generos')} placeholder="Aventura, Comédia" /></Field>
-        <Field label="Trailer (URL)"><Input value={form.trailer_url} onChange={set('trailer_url')} placeholder="/images/.../trailer.mp4" /></Field>
+        <ImageInput label="Trailer (video)" kind="video" value={form.trailer_url} onChange={(v) => setForm((f) => ({ ...f, trailer_url: v }))} />
 
         <div className="grid grid-cols-2 gap-3">
           <Field label="Categoria"><Select value={form.categoria} onChange={set('categoria')} options={CATEGORIAS} /></Field>

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { gamesApi, buildsApi, uploadBuildBinary } from '../../services/adminApi';
+import ImageInput from '../../components/ImageInput';
 import { useToast } from '../../contexts/ToastContext';
 
 const EMPTY = { titulo: '', descricao: '', capa: '', generos: '', status: 'rascunho' };
@@ -93,7 +94,7 @@ export default function AdminGames() {
             <textarea value={form.descricao} onChange={set('descricao')} rows={3}
               className="w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30" />
           </Field>
-          <Field label="Capa (URL/caminho)"><Input value={form.capa} onChange={set('capa')} placeholder="/images/..." /></Field>
+          <ImageInput label="Capa" value={form.capa} onChange={(v) => setForm((f) => ({ ...f, capa: v }))} />
           <Field label="Gêneros (separados por vírgula)"><Input value={form.generos} onChange={set('generos')} placeholder="Plataforma, Aventura" /></Field>
           <Field label="Status"><Select value={form.status} onChange={set('status')} options={STATUS} /></Field>
           <div className="flex gap-2 pt-2">

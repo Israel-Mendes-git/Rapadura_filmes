@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# backend (monorepo) - dados de runtime
+backend/filmerama.db
+backend/filmerama.db-*
+backend/filmerama.db.bak_*
+backend/uploads/
+backend/.env

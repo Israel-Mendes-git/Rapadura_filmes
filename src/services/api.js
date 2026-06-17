@@ -3,8 +3,13 @@ import axios from 'axios';
 // Detecta se está em produção ou desenvolvimento
 const isProduction = import.meta.env.PROD;
 
-// Em produção, usa o domínio; em desenvolvimento, usa localhost
-const API_URL = isProduction ? '/api' : 'http://localhost:3001/api';
+// Em produção, usa o domínio; em desenvolvimento, usa localhost.
+// O backend de dev pode rodar numa porta alternativa: defina VITE_API_URL
+// no .env (ex.: http://localhost:3010/api). O comportamento de PRODUÇÃO
+// não muda — continua usando '/api'.
+const API_URL = isProduction
+  ? '/api'
+  : (import.meta.env.VITE_API_URL || 'http://localhost:3001/api');
 const api = axios.create({
   baseURL: API_URL,
   timeout: 10000,

@@ -1,17 +1,34 @@
-﻿import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeroCarousel from '../components/HeroCarousel';
 import MovieCarousel from '../components/MovieCarousel';
 import { customMovies } from '../data/customMovies';
+import api from '../services/api';
 import { useTranslation } from 'react-i18next';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('all');
+  // Filmes próprios cadastrados no painel de admin (fonte='proprio').
+  // São buscados do backend e mesclados ao catálogo estático sem quebrar
+  // o fluxo atual: se a chamada falhar, fica só com os filmes estáticos.
+  const [adminMovies, setAdminMovies] = useState([]);
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const allMovies = customMovies.all;
-  
+  useEffect(() => {
+    let alive = true;
+    api.get('/catalog/movies')
+      .then((r) => { if (alive && Array.isArray(r.data)) setAdminMovies(r.data); })
+      .catch(() => { /* sem catálogo dinâmico: segue com os estáticos */ });
+    return () => { alive = false; };
+  }, []);
+
+  // Mescla catálogo estático + filmes do admin, deduplicando por id
+  // (filmes do admin têm precedência e aparecem primeiro).
+  const staticMovies = customMovies.all;
+  const adminIds = new Set(adminMovies.map((m) => m.id));
+  const allMovies = [...adminMovies, ...staticMovies.filter((m) => !adminIds.has(m.id))];
+
   const getMoviesByCategory = (category) => {
     if (category === 'all') return allMovies;
     return allMovies.filter(movie => movie.category === category);
@@ -27,7 +44,7 @@ export default function Home() {
   const autoralMovies = allMovies.filter(m => m.category === 'autorais');
   const jogosMovies = allMovies.filter(m => m.category === 'jogos');
   const parceriasMovies = allMovies.filter(m => m.category === 'parcerias');
-  
+
   const seriesMovies = getMoviesByType('series');
   const curtasMovies = getMoviesByType('curtas');
   const longasMovies = getMoviesByType('longas');
@@ -89,9 +106,9 @@ export default function Home() {
               <MovieCarousel title={t('longas')} movies={longasMovies} onMovieClick={handleMovieClick} />
             )}
 
-            <MovieCarousel 
-              title={t('mostRated')} 
-              movies={[...allMovies].sort((a,b) => b.vote_average - a.vote_average)} 
+            <MovieCarousel
+              title={t('mostRated')}
+              movies={[...allMovies].sort((a,b) => b.vote_average - a.vote_average)}
               onMovieClick={handleMovieClick}
             />
           </>

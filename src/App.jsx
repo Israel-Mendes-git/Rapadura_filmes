@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import BackToTop from './components/BackToTop';
 import Footer from './components/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
+import AdminRoute from './components/AdminRoute';
 import { useAuth } from './contexts/AuthContext';
 
 // Code-splitting: cada página vira um chunk carregado sob demanda
@@ -17,6 +18,10 @@ const Studio = lazy(() => import('./pages/Studio'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+// Painel de administração (filmes próprios + games)
+const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'));
+const AdminMovies = lazy(() => import('./pages/admin/AdminMovies'));
+const AdminGames = lazy(() => import('./pages/admin/AdminGames'));
 
 function Spinner() {
   return (
@@ -75,6 +80,17 @@ function App() {
                   <Watchlist />
                 </ProtectedRoute>
               } />
+
+              {/* Painel de admin (exige login + is_admin) */}
+              <Route path="/admin" element={
+                <AdminRoute>
+                  <AdminLayout />
+                </AdminRoute>
+              }>
+                <Route index element={<Navigate to="movies" replace />} />
+                <Route path="movies" element={<AdminMovies />} />
+                <Route path="games" element={<AdminGames />} />
+              </Route>
 
               {/* Página 404 amigável para qualquer rota desconhecida */}
               <Route path="*" element={<NotFound />} />

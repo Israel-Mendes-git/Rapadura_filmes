@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
-import { FaSearch, FaList, FaCompass, FaSun, FaMoon, FaLanguage, FaBuilding, FaUser, FaSignOutAlt, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
+import { FaSearch, FaList, FaCompass, FaSun, FaMoon, FaLanguage, FaBuilding, FaUser, FaSignOutAlt, FaSignInAlt, FaUserPlus, FaUserShield } from 'react-icons/fa';
 
 export default function Navbar() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -42,8 +42,8 @@ export default function Navbar() {
           {/* Logo - sempre visível */}
           <Link to="/" className="flex items-center">
             <img 
-              src="/logo_filmerama_Final.png"
-              alt="Filmerama"
+              src="/logo_icon_filmerama_white.png" 
+              alt="Rapadura Filmes" 
               className="h-10 w-auto object-contain"
             />
           </Link>
@@ -119,6 +119,16 @@ export default function Navbar() {
             {/* Área do usuário */}
             {user ? (
               <div className="flex items-center gap-2">
+                {/* Link do painel de admin: só aparece para administradores */}
+                {user.is_admin && (
+                  <Link
+                    to="/admin"
+                    className="px-3 py-2 rounded-lg bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/70 transition-colors flex items-center gap-2 text-sm"
+                    title="Painel de Administração"
+                  >
+                    <FaUserShield /> Admin
+                  </Link>
+                )}
                 <span className="text-gray-700 dark:text-gray-200 flex items-center gap-2 text-sm">
                   <FaUser /> {user.name}
                 </span>

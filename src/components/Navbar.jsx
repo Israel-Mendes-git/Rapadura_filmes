@@ -112,6 +112,7 @@ export default function Navbar() {
                   <button onClick={() => changeLanguage('pt')} className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700">Português</button>
                   <button onClick={() => changeLanguage('en')} className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700">English</button>
                   <button onClick={() => changeLanguage('es')} className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700">Español</button>
+                  <button onClick={() => changeLanguage('zh')} className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700">中文 (简体)</button>
                 </div>
               )}
             </div>

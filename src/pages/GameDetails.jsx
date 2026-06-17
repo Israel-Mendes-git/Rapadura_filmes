@@ -1,10 +1,15 @@
 // Detalhe de um jogo. Busca /api/catalog/games/:id e usa o LauncherBridge.
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { ArrowLeft, Download, Play, RefreshCw, ExternalLink, Loader2, Gamepad2, Package } from 'lucide-react';
 import api from '../services/api';
 import { isLauncher, getGameState, gameAction } from '../services/launcher';
+import { platformMeta } from '../components/PlatformBadge';
+import { useTranslation } from 'react-i18next';
 
 export default function GameDetails() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const [game, setGame] = useState(null);
@@ -31,17 +36,25 @@ export default function GameDetails() {
   const imageUrl = !p ? null : (p.startsWith('http') || p.startsWith('/') ? p : '/' + p);
   const busy = state === 'installing' || state === 'downloading' || state === 'updating';
 
-  const actionLabel = !isLauncher() ? 'Abrir no launcher'
-    : state === 'installed' ? 'Jogar'
-    : state === 'installing' ? 'Instalando...'
-    : state === 'downloading' ? 'Baixando...'
-    : state === 'updating' ? 'Atualizando...'
-    : state === 'running' ? 'Em execucao'
-    : 'Instalar';
+  const actionLabel = !isLauncher() ? t('games.actionOpenLauncher')
+    : state === 'installed' ? t('games.actionPlay')
+    : state === 'installing' ? t('games.actionInstalling')
+    : state === 'downloading' ? t('games.actionDownloading')
+    : state === 'updating' ? t('games.actionUpdate')
+    : state === 'running' ? t('games.actionRunning')
+    : t('games.actionInstall');
+
+  // Icone do botao conforme o estado (apenas visual; nao altera a logica).
+  const ActionIcon = !isLauncher() ? ExternalLink
+    : busy ? Loader2
+    : state === 'installed' ? Play
+    : state === 'running' ? Play
+    : state === 'updating' ? RefreshCw
+    : Download;
 
   const onAction = async () => {
     if (!isLauncher()) {
-      alert('Abra este jogo pelo launcher da Filmerama para instalar e jogar.');
+      alert(t('games.launcherAlert'));
       return;
     }
     const act = state === 'installed' ? 'play' : (state === 'updating' ? 'update' : 'install');
@@ -50,39 +63,135 @@ export default function GameDetails() {
   };
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600" />
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-950">
+      <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-purple-600" />
     </div>
   );
   if (!game) return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-950">
       <div className="text-center">
-        <p className="text-red-500 text-xl mb-4">Jogo nao encontrado (ID: {id})</p>
-        <button onClick={() => navigate('/games')} className="px-4 py-2 rounded bg-purple-600 text-white">Voltar aos jogos</button>
+        <div className="mx-auto mb-4 w-fit rounded-full bg-red-100 p-4 dark:bg-red-900/30">
+          <Gamepad2 className="h-9 w-9 text-red-500" />
+        </div>
+        <p className="mb-4 text-xl text-red-500">{t('games.notFound', { id })}</p>
+        <button onClick={() => navigate('/games')} className="rounded-lg bg-purple-600 px-5 py-2 font-semibold text-white hover:bg-purple-700">{t('games.backToGames')}</button>
       </div>
     </div>
   );
 
+  const genres = Array.isArray(game.genres) ? game.genres : [];
+  const builds = Array.isArray(game.builds) ? game.builds : [];
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <div className="max-w-5xl mx-auto px-4 py-8 grid md:grid-cols-3 gap-8">
+      {/* Banner de fundo com a capa esmaecida */}
+      <div className="relative h-52 w-full overflow-hidden sm:h-64 md:h-72">
+        {imageUrl ? (
+          <img src={imageUrl} alt="" className="h-full w-full scale-110 object-cover blur-xl" />
+        ) : (
+          <div className="h-full w-full bg-gradient-to-br from-purple-700 via-purple-900 to-gray-950" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-50 via-gray-50/60 to-black/30
+                        dark:from-gray-950 dark:via-gray-950/70" />
+        <button
+          onClick={() => navigate('/games')}
+          className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-black/50 px-3 py-1.5
+                     text-sm font-medium text-white ring-1 ring-white/20 backdrop-blur-sm hover:bg-black/70"
+        >
+          <ArrowLeft className="h-4 w-4" /> {t('games.back')}
+        </button>
+      </div>
+
+      <div className="mx-auto -mt-24 grid max-w-5xl gap-8 px-4 pb-12 md:grid-cols-3">
+        {/* Coluna do poster + acao */}
         <div className="md:col-span-1">
-          {imageUrl ? <img src={imageUrl} alt={game.title} className="w-full rounded-lg shadow" /> : <div className="w-full h-72 rounded-lg bg-gray-200 dark:bg-gray-800" />}
-          <button onClick={onAction} disabled={busy} className="mt-4 w-full px-4 py-3 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold disabled:opacity-60">{actionLabel}</button>
-          {!isLauncher() ? <p className="text-xs text-gray-400 mt-2 text-center">Instalar/jogar requer o launcher da Filmerama.</p> : null}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            {imageUrl ? (
+              <img src={imageUrl} alt={game.title}
+                   className="aspect-[2/3] w-full rounded-2xl object-cover shadow-2xl ring-1 ring-black/10 dark:ring-white/10" />
+            ) : (
+              <div className="flex aspect-[2/3] w-full flex-col items-center justify-center gap-3 rounded-2xl
+                              bg-gradient-to-br from-purple-700 via-purple-900 to-zinc-900 shadow-2xl">
+                <Gamepad2 className="h-14 w-14 text-white/80" />
+                <span className="px-4 text-center text-sm font-semibold text-white/90">{game.title}</span>
+              </div>
+            )}
+
+            <button
+              onClick={onAction}
+              disabled={busy}
+              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-purple-600 px-4 py-3.5
+                         text-base font-semibold text-white shadow-lg shadow-purple-600/25 transition-all
+                         hover:bg-purple-700 hover:shadow-purple-600/40 disabled:opacity-60"
+            >
+              <ActionIcon className={'h-5 w-5' + (busy ? ' animate-spin' : '')} />
+              {actionLabel}
+            </button>
+            {!isLauncher() && (
+              <p className="mt-2 text-center text-xs text-gray-400">{t('games.launcherHint')}</p>
+            )}
+          </motion.div>
         </div>
-        <div className="md:col-span-2">
-          <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">{game.title}</h1>
-          {Array.isArray(game.genres) && game.genres.length > 0 ? <p className="text-sm text-purple-500 mb-4">{game.genres.join(' \u00b7 ')}</p> : null}
-          <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line mb-6">{game.overview || 'Sem descricao.'}</p>
-          {Array.isArray(game.builds) && game.builds.length > 0 ? (
-            <div>
-              <h2 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Versoes disponiveis</h2>
-              <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
-                {game.builds.map((b) => <li key={b.id}>{b.plataforma} \u2014 v{b.versao}{b.obrigatorio ? ' (obrigatoria)' : ''}</li>)}
-              </ul>
+
+        {/* Coluna de info */}
+        <div className="md:col-span-2 md:pt-24">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">{game.title}</h1>
+
+          {genres.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {genres.map((g, i) => (
+                <span key={i} className="rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold
+                                         text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
+                  {g}
+                </span>
+              ))}
             </div>
-          ) : null}
+          )}
+
+          <p className="mt-6 whitespace-pre-line leading-relaxed text-gray-700 dark:text-gray-300">
+            {game.overview || t('games.noDescription')}
+          </p>
+
+          {builds.length > 0 && (
+            <div className="mt-8">
+              <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white">
+                <Package className="h-5 w-5 text-purple-500" /> {t('games.availableVersions')}
+              </h2>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {builds.map((b) => {
+                  const { Icon } = platformMeta(b.plataforma);
+                  return (
+                    <div key={b.id}
+                         className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-3
+                                    dark:border-gray-800 dark:bg-gray-900">
+                      <div className="rounded-lg bg-purple-100 p-2 dark:bg-purple-900/40">
+                        <Icon className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
+                          {b.plataforma}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          v{b.versao}
+                          {b.tamanho ? ' · ' + b.tamanho : ''}
+                        </p>
+                      </div>
+                      {b.obrigatorio && (
+                        <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold
+                                         text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
+                          {t('games.required')}
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

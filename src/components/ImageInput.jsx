@@ -3,19 +3,21 @@
 // arquivo, com preview. Upload via POST /api/admin/uploads/media (admin), servido
 // em /api/media/<arquivo>. Use kind="video" para trailers.
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { uploadMedia } from '../services/adminApi';
 
-function uploadErrorMessage(e) {
+function uploadErrorMessage(e, t) {
   const r = e && e.response;
   if (r && r.data && r.data.error) return r.data.error;
-  if (r && r.status === 413) return 'Arquivo muito grande para o servidor.';
-  if (r && r.status === 401) return 'Sessao expirada - faca login novamente.';
-  if (r && r.status === 403) return 'Sem permissao (precisa ser administrador).';
-  if (!r) return 'Sem resposta do servidor (verifique a conexao).';
-  return 'Falha no upload (HTTP ' + r.status + ').';
+  if (r && r.status === 413) return t('upload.errTooLarge');
+  if (r && r.status === 401) return t('upload.errSession');
+  if (r && r.status === 403) return t('upload.errPermission');
+  if (!r) return t('upload.errNoResponse');
+  return t('upload.errHttp', { status: r.status });
 }
 
 export default function ImageInput({ label, value, onChange, kind = 'image' }) {
+  const { t } = useTranslation();
   const isVideo = kind === 'video';
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
@@ -26,7 +28,7 @@ export default function ImageInput({ label, value, onChange, kind = 'image' }) {
     if (!file) return;
     const wanted = isVideo ? 'video/' : 'image/';
     if (!file.type.startsWith(wanted)) {
-      setErr('Selecione um arquivo de ' + (isVideo ? 'video' : 'imagem') + '.');
+      setErr(isVideo ? t('upload.selectVideoFile') : t('upload.selectImageFile'));
       return;
     }
     setErr('');
@@ -35,7 +37,7 @@ export default function ImageInput({ label, value, onChange, kind = 'image' }) {
       const data = await uploadMedia(file);
       onChange(data.url);
     } catch (e2) {
-      setErr(uploadErrorMessage(e2));
+      setErr(uploadErrorMessage(e2, t));
     } finally {
       setBusy(false);
       if (fileRef.current) fileRef.current.value = '';
@@ -54,7 +56,7 @@ export default function ImageInput({ label, value, onChange, kind = 'image' }) {
           )
         ) : (
           <div className={(isVideo ? 'w-28 h-16' : 'w-16 h-24') + ' rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center text-[10px] text-gray-400 text-center px-1'}>
-            {isVideo ? 'sem video' : 'sem imagem'}
+            {isVideo ? t('upload.noVideo') : t('upload.noImage')}
           </div>
         )}
         <div className="flex-1 space-y-2">
@@ -62,17 +64,17 @@ export default function ImageInput({ label, value, onChange, kind = 'image' }) {
             type="text"
             value={value || ''}
             onChange={(ev) => onChange(ev.target.value)}
-            placeholder={isVideo ? '/api/media/... , URL ou link do YouTube' : '/api/media/... ou URL externa'}
+            placeholder={isVideo ? t('upload.videoPlaceholder') : t('upload.imagePlaceholder')}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded bg-transparent text-sm"
           />
           <div className="flex items-center gap-2 flex-wrap">
             <button type="button" onClick={() => fileRef.current && fileRef.current.click()} disabled={busy} className="px-3 py-1.5 text-sm rounded border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50">
-              {busy ? 'Enviando...' : (isVideo ? 'Enviar video' : 'Enviar imagem')}
+              {busy ? t('upload.sending') : (isVideo ? t('upload.sendVideo') : t('upload.sendImage'))}
             </button>
             {value ? (
-              <button type="button" onClick={() => onChange('')} className="px-3 py-1.5 text-sm rounded border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">Remover</button>
+              <button type="button" onClick={() => onChange('')} className="px-3 py-1.5 text-sm rounded border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">{t('upload.remove')}</button>
             ) : null}
-            <span className="text-[11px] text-gray-400">max {isVideo ? '600MB' : '30MB'}</span>
+            <span className="text-[11px] text-gray-400">{t('upload.max', { size: isVideo ? '600MB' : '30MB' })}</span>
             <input ref={fileRef} type="file" accept={isVideo ? 'video/*' : 'image/*'} className="hidden" onChange={pick} />
           </div>
           {err ? <p className="text-xs text-red-500">{err}</p> : null}

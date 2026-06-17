@@ -144,6 +144,16 @@ if (!userCols.some(c => c.name === 'is_admin')) {
   console.log('🔧 Coluna is_admin adicionada à tabela users');
 }
 
+// --- Migração leve: adiciona tagline/runtime/vote_count na tabela movies ---
+// Envolvidas em try/catch (como a de is_admin) para serem idempotentes: se a
+// coluna já existe, o ALTER TABLE lança e a ignoramos silenciosamente.
+for (const [col, def] of [['tagline', 'TEXT'], ['runtime', 'INTEGER'], ['vote_count', 'INTEGER']]) {
+  try {
+    db.exec(`ALTER TABLE movies ADD COLUMN ${col} ${def}`);
+    console.log(`🔧 Coluna ${col} adicionada à tabela movies`);
+  } catch (e) { /* coluna já existe */ }
+}
+
 console.log('✅ Banco de dados inicializado');
 
 // --- Limpeza de sessões expiradas (na inicialização e a cada hora) ---
@@ -389,7 +399,9 @@ function movieRowToCatalog(m) {
     backdrop_path: m.backdrop || m.capa,
     release_date: m.ano ? `${m.ano}-01-01` : '',
     vote_average: m.vote_average || 0,
-    vote_count: 0,
+    vote_count: m.vote_count || 0,
+    runtime: m.runtime || 0,
+    tagline: m.tagline || '',
     trailerUrl: m.trailer_url || '',
     genres: generos,
     category: m.categoria || 'autorais',
@@ -487,8 +499,8 @@ app.post('/api/admin/movies', authenticateToken, requireAdmin, (req, res) => {
   const fonte = b.fonte === 'tmdb' ? 'tmdb' : 'proprio';
   try {
     const result = db.prepare(`
-      INSERT INTO movies (titulo, sinopse, capa, backdrop, ano, generos, fonte, tmdb_id, trailer_url, vote_average, categoria, tipo)
-      VALUES (@titulo, @sinopse, @capa, @backdrop, @ano, @generos, @fonte, @tmdb_id, @trailer_url, @vote_average, @categoria, @tipo)
+      INSERT INTO movies (titulo, sinopse, capa, backdrop, ano, generos, fonte, tmdb_id, trailer_url, vote_average, vote_count, runtime, tagline, categoria, tipo)
+      VALUES (@titulo, @sinopse, @capa, @backdrop, @ano, @generos, @fonte, @tmdb_id, @trailer_url, @vote_average, @vote_count, @runtime, @tagline, @categoria, @tipo)
     `).run({
       titulo: b.titulo.trim(),
       sinopse: b.sinopse || '',
@@ -500,6 +512,9 @@ app.post('/api/admin/movies', authenticateToken, requireAdmin, (req, res) => {
       tmdb_id: fonte === 'tmdb' && b.tmdb_id ? parseInt(b.tmdb_id, 10) : null,
       trailer_url: b.trailer_url || '',
       vote_average: b.vote_average != null ? Number(b.vote_average) : 0,
+      vote_count: b.vote_count != null && b.vote_count !== '' ? parseInt(b.vote_count, 10) : 0,
+      runtime: b.runtime != null && b.runtime !== '' ? parseInt(b.runtime, 10) : null,
+      tagline: b.tagline || '',
       categoria: b.categoria || 'autorais',
       tipo: b.tipo || 'longas',
     });
@@ -524,7 +539,8 @@ app.put('/api/admin/movies/:id', authenticateToken, requireAdmin, (req, res) => 
       UPDATE movies SET
         titulo=@titulo, sinopse=@sinopse, capa=@capa, backdrop=@backdrop, ano=@ano,
         generos=@generos, fonte=@fonte, tmdb_id=@tmdb_id, trailer_url=@trailer_url,
-        vote_average=@vote_average, categoria=@categoria, tipo=@tipo,
+        vote_average=@vote_average, vote_count=@vote_count, runtime=@runtime, tagline=@tagline,
+        categoria=@categoria, tipo=@tipo,
         updated_at=CURRENT_TIMESTAMP
       WHERE id=@id
     `).run({
@@ -539,6 +555,9 @@ app.put('/api/admin/movies/:id', authenticateToken, requireAdmin, (req, res) => 
       tmdb_id: b.tmdb_id !== undefined ? (b.tmdb_id ? parseInt(b.tmdb_id, 10) : null) : existing.tmdb_id,
       trailer_url: b.trailer_url !== undefined ? b.trailer_url : existing.trailer_url,
       vote_average: b.vote_average !== undefined ? Number(b.vote_average) : existing.vote_average,
+      vote_count: b.vote_count !== undefined ? (b.vote_count === '' || b.vote_count == null ? 0 : parseInt(b.vote_count, 10)) : existing.vote_count,
+      runtime: b.runtime !== undefined ? (b.runtime === '' || b.runtime == null ? null : parseInt(b.runtime, 10)) : existing.runtime,
+      tagline: b.tagline !== undefined ? b.tagline : existing.tagline,
       categoria: b.categoria !== undefined ? b.categoria : existing.categoria,
       tipo: b.tipo !== undefined ? b.tipo : existing.tipo,
     });

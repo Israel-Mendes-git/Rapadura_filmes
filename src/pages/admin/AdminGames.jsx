@@ -7,13 +7,15 @@ import { Input } from '../../components/ui/input';
 import { gamesApi, buildsApi, uploadBuildBinary } from '../../services/adminApi';
 import ImageInput from '../../components/ImageInput';
 import { useToast } from '../../contexts/ToastContext';
+import { useTranslation } from 'react-i18next';
 
 const EMPTY = { titulo: '', descricao: '', capa: '', generos: '', status: 'rascunho' };
 const STATUS = ['rascunho', 'publicado', 'arquivado'];
 
 export default function AdminGames() {
+  const { t } = useTranslation();
   const { addToast } = useToast();
-  const toast = (m, t = 'success') => addToast(m, t);
+  const toast = (m, type = 'success') => addToast(m, type);
 
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +28,7 @@ export default function AdminGames() {
     setLoading(true);
     gamesApi.list()
       .then(setGames)
-      .catch(() => toast('Erro ao carregar games', 'error'))
+      .catch(() => toast(t('admin.game.loadError'), 'error'))
       .finally(() => setLoading(false));
   };
   useEffect(load, []);
@@ -51,35 +53,35 @@ export default function AdminGames() {
 
   const submit = async (e) => {
     e.preventDefault();
-    if (!form.titulo.trim()) { toast('O título é obrigatório', 'error'); return; }
+    if (!form.titulo.trim()) { toast(t('admin.game.titleRequired'), 'error'); return; }
     setSaving(true);
     try {
       if (editingId) {
         await gamesApi.update(editingId, form);
-        toast('Game atualizado', 'success');
+        toast(t('admin.game.updated'), 'success');
         load();
       } else {
         const created = await gamesApi.create(form);
-        toast('Game criado', 'success');
+        toast(t('admin.game.created'), 'success');
         load();
         startEdit(created); // já entra em modo edição p/ adicionar builds
       }
     } catch (err) {
-      toast(err?.response?.data?.error || 'Erro ao salvar game', 'error');
+      toast(err?.response?.data?.error || t('admin.game.saveError'), 'error');
     } finally {
       setSaving(false);
     }
   };
 
   const remove = async (g) => {
-    if (!window.confirm(`Excluir o game "${g.titulo}" e todas as builds?`)) return;
+    if (!window.confirm(t('admin.game.confirmDelete', { title: g.titulo }))) return;
     try {
       await gamesApi.remove(g.id);
-      toast('Game excluído', 'success');
+      toast(t('admin.game.deleted'), 'success');
       if (editingId === g.id) resetForm();
       load();
     } catch {
-      toast('Erro ao excluir game', 'error');
+      toast(t('admin.game.deleteError'), 'error');
     }
   };
 
@@ -88,33 +90,33 @@ export default function AdminGames() {
       {/* Formulário do game */}
       <div className="h-fit space-y-6">
         <form onSubmit={submit} className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 space-y-3 ring-1 ring-foreground/10">
-          <h2 className="text-xl font-bold mb-2">{editingId ? 'Editar game' : 'Novo game'}</h2>
-          <Field label="Título *"><Input value={form.titulo} onChange={set('titulo')} placeholder="Nome do game" /></Field>
-          <Field label="Descrição">
+          <h2 className="text-xl font-bold mb-2">{editingId ? t('admin.game.editTitle') : t('admin.game.newTitle')}</h2>
+          <Field label={t('admin.game.title')}><Input value={form.titulo} onChange={set('titulo')} placeholder={t('admin.game.titlePlaceholder')} /></Field>
+          <Field label={t('admin.game.description')}>
             <textarea value={form.descricao} onChange={set('descricao')} rows={3}
               className="w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30" />
           </Field>
-          <ImageInput label="Capa" value={form.capa} onChange={(v) => setForm((f) => ({ ...f, capa: v }))} />
-          <Field label="Gêneros (separados por vírgula)"><Input value={form.generos} onChange={set('generos')} placeholder="Plataforma, Aventura" /></Field>
-          <Field label="Status"><Select value={form.status} onChange={set('status')} options={STATUS} /></Field>
+          <ImageInput label={t('admin.cover')} value={form.capa} onChange={(v) => setForm((f) => ({ ...f, capa: v }))} />
+          <Field label={t('admin.genresComma')}><Input value={form.generos} onChange={set('generos')} placeholder={t('admin.game.genresPlaceholder')} /></Field>
+          <Field label={t('admin.game.status')}><Select value={form.status} onChange={set('status')} options={STATUS} /></Field>
           <div className="flex gap-2 pt-2">
-            <Button type="submit" disabled={saving}>{saving ? 'Salvando...' : (editingId ? 'Salvar alterações' : 'Criar game')}</Button>
-            {editingId && <Button type="button" variant="outline" onClick={resetForm}>Cancelar</Button>}
+            <Button type="submit" disabled={saving}>{saving ? t('admin.saving') : (editingId ? t('admin.game.save') : t('admin.game.create'))}</Button>
+            {editingId && <Button type="button" variant="outline" onClick={resetForm}>{t('admin.cancel')}</Button>}
           </div>
         </form>
 
         {editingId && (
-          <BuildsPanel gameId={editingId} builds={builds} reload={() => loadBuilds(editingId)} toast={toast} />
+          <BuildsPanel gameId={editingId} builds={builds} reload={() => loadBuilds(editingId)} toast={toast} t={t} />
         )}
       </div>
 
       {/* Lista de games */}
       <div>
-        <h2 className="text-xl font-bold mb-4">Games cadastrados ({games.length})</h2>
+        <h2 className="text-xl font-bold mb-4">{t('admin.game.listTitle', { count: games.length })}</h2>
         {loading ? (
-          <p className="text-gray-500">Carregando...</p>
+          <p className="text-gray-500">{t('admin.loading')}</p>
         ) : games.length === 0 ? (
-          <p className="text-gray-500">Nenhum game cadastrado ainda.</p>
+          <p className="text-gray-500">{t('admin.game.empty')}</p>
         ) : (
           <div className="space-y-3">
             {games.map((g) => (
@@ -122,17 +124,17 @@ export default function AdminGames() {
                 {g.capa ? (
                   <img src={g.capa} alt={g.titulo} className="w-12 h-16 object-cover rounded" onError={(e) => { e.target.style.visibility = 'hidden'; }} />
                 ) : (
-                  <div className="w-12 h-16 bg-gray-200 dark:bg-gray-800 rounded flex items-center justify-center text-xs text-gray-400">sem capa</div>
+                  <div className="w-12 h-16 bg-gray-200 dark:bg-gray-800 rounded flex items-center justify-center text-xs text-gray-400">{t('admin.noCover')}</div>
                 )}
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold truncate">{g.titulo}</p>
                   <p className="text-sm text-gray-500">
-                    <span className="capitalize">{g.status}</span> · {g.builds_count ?? 0} build(s)
+                    <span className="capitalize">{g.status}</span> · {t('admin.game.buildCount', { count: g.builds_count ?? 0 })}
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <Button size="sm" variant="outline" onClick={() => startEdit(g)}>Editar</Button>
-                  <Button size="sm" variant="destructive" onClick={() => remove(g)}>Excluir</Button>
+                  <Button size="sm" variant="outline" onClick={() => startEdit(g)}>{t('admin.edit')}</Button>
+                  <Button size="sm" variant="destructive" onClick={() => remove(g)}>{t('admin.delete')}</Button>
                 </div>
               </div>
             ))}
@@ -148,7 +150,7 @@ export default function AdminGames() {
 // ---------------------------------------------------------------------------
 const PLATAFORMAS = ['win', 'mac', 'linux', 'android'];
 
-function BuildsPanel({ gameId, builds, reload, toast }) {
+function BuildsPanel({ gameId, builds, reload, toast, t }) {
   const [plataforma, setPlataforma] = useState('win');
   const [versao, setVersao] = useState('');
   const [changelog, setChangelog] = useState('');
@@ -160,15 +162,15 @@ function BuildsPanel({ gameId, builds, reload, toast }) {
 
   const createBuild = async (e) => {
     e.preventDefault();
-    if (!SEMVER.test(versao.trim())) { toast('Versão deve ser semver (ex.: 1.0.0)', 'error'); return; }
+    if (!SEMVER.test(versao.trim())) { toast(t('admin.builds.semverError'), 'error'); return; }
     setCreating(true);
     try {
       await buildsApi.create(gameId, { plataforma, versao: versao.trim(), changelog, obrigatorio });
-      toast('Build criada', 'success');
+      toast(t('admin.builds.created'), 'success');
       setVersao(''); setChangelog(''); setObrigatorio(false);
       reload();
     } catch (err) {
-      toast(err?.response?.data?.error || 'Erro ao criar build', 'error');
+      toast(err?.response?.data?.error || t('admin.builds.createError'), 'error');
     } finally {
       setCreating(false);
     }
@@ -181,65 +183,65 @@ function BuildsPanel({ gameId, builds, reload, toast }) {
       const res = await uploadBuildBinary(build.id, file, {
         onProgress: (f) => setProgress((p) => ({ ...p, [build.id]: f })),
       });
-      toast(`Upload concluído (${(res.tamanho / 1e6).toFixed(1)} MB)`, 'success');
+      toast(t('admin.builds.uploadDone', { size: (res.tamanho / 1e6).toFixed(1) }), 'success');
       reload();
     } catch (err) {
-      toast(err?.response?.data?.error || 'Erro no upload', 'error');
+      toast(err?.response?.data?.error || t('admin.builds.uploadError'), 'error');
     } finally {
       setProgress((p) => { const n = { ...p }; delete n[build.id]; return n; });
     }
   };
 
   const removeBuild = async (build) => {
-    if (!window.confirm(`Excluir a build ${build.plataforma} ${build.versao}?`)) return;
+    if (!window.confirm(t('admin.builds.confirmDelete', { platform: build.plataforma, version: build.versao }))) return;
     try {
       await buildsApi.remove(build.id);
-      toast('Build excluída', 'success');
+      toast(t('admin.builds.deleted'), 'success');
       reload();
     } catch {
-      toast('Erro ao excluir build', 'error');
+      toast(t('admin.builds.deleteError'), 'error');
     }
   };
 
   return (
     <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 ring-1 ring-foreground/10">
-      <h3 className="text-lg font-bold mb-3">Builds</h3>
+      <h3 className="text-lg font-bold mb-3">{t('admin.builds.title')}</h3>
 
       <form onSubmit={createBuild} className="space-y-3 mb-4">
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Plataforma"><Select value={plataforma} onChange={(e) => setPlataforma(e.target.value)} options={PLATAFORMAS} /></Field>
-          <Field label="Versão (semver)"><Input value={versao} onChange={(e) => setVersao(e.target.value)} placeholder="1.0.0" /></Field>
+          <Field label={t('admin.builds.platform')}><Select value={plataforma} onChange={(e) => setPlataforma(e.target.value)} options={PLATAFORMAS} /></Field>
+          <Field label={t('admin.builds.version')}><Input value={versao} onChange={(e) => setVersao(e.target.value)} placeholder="1.0.0" /></Field>
         </div>
-        <Field label="Changelog">
+        <Field label={t('admin.builds.changelog')}>
           <textarea value={changelog} onChange={(e) => setChangelog(e.target.value)} rows={2}
             className="w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30" />
         </Field>
         <label className="flex items-center gap-2 text-sm">
           <input type="checkbox" checked={obrigatorio} onChange={(e) => setObrigatorio(e.target.checked)} />
-          Atualização obrigatória
+          {t('admin.builds.mandatoryUpdate')}
         </label>
-        <Button type="submit" size="sm" disabled={creating}>{creating ? 'Criando...' : 'Adicionar build'}</Button>
+        <Button type="submit" size="sm" disabled={creating}>{creating ? t('admin.builds.creating') : t('admin.builds.addBuild')}</Button>
       </form>
 
       {builds.length === 0 ? (
-        <p className="text-sm text-gray-500">Nenhuma build ainda.</p>
+        <p className="text-sm text-gray-500">{t('admin.builds.empty')}</p>
       ) : (
         <div className="space-y-2">
           {builds.map((b) => (
             <div key={b.id} className="border border-gray-200 dark:border-gray-800 rounded-lg p-3 text-sm">
               <div className="flex items-center justify-between gap-2">
                 <span className="font-medium">
-                  {b.plataforma} · v{b.versao} {b.obrigatorio ? '· obrigatória' : ''}
+                  {b.plataforma} · v{b.versao} {b.obrigatorio ? '· ' + t('admin.builds.mandatory') : ''}
                 </span>
-                <Button size="xs" variant="destructive" onClick={() => removeBuild(b)}>Excluir</Button>
+                <Button size="xs" variant="destructive" onClick={() => removeBuild(b)}>{t('admin.delete')}</Button>
               </div>
               {b.arquivo ? (
                 <p className="text-xs text-gray-500 mt-1 break-all">
                   {b.nome_arquivo} · {(b.tamanho / 1e6).toFixed(1)} MB · sha256 {String(b.checksum).slice(0, 12)}…{' '}
-                  <a className="text-purple-600 underline" href={buildsApi.downloadUrl(b.id)} target="_blank" rel="noreferrer">baixar</a>
+                  <a className="text-purple-600 underline" href={buildsApi.downloadUrl(b.id)} target="_blank" rel="noreferrer">{t('admin.builds.download')}</a>
                 </p>
               ) : (
-                <p className="text-xs text-amber-600 mt-1">Sem binário enviado.</p>
+                <p className="text-xs text-amber-600 mt-1">{t('admin.builds.noBinary')}</p>
               )}
               {progress[b.id] !== undefined ? (
                 <div className="mt-2 h-1.5 bg-gray-200 dark:bg-gray-800 rounded">

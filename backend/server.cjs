@@ -434,7 +434,20 @@ app.get('/api/catalog/games/:id', (req, res) => {
     const row = db.prepare("SELECT * FROM games WHERE id = ? AND status = 'publicado'").get(req.params.id);
     if (!row) return res.status(404).json({ error: 'Jogo nao encontrado' });
     const out = gameRowToCatalog(row);
-    out.builds = db.prepare('SELECT id, plataforma, versao, tamanho, obrigatorio FROM game_builds WHERE game_id = ? ORDER BY created_at DESC').all(row.id);
+    // Inclui checksum/nome_arquivo/download_url para o launcher (L2). download_url
+    // so e preenchido quando o binario ja foi enviado (arquivo presente). A rota de
+    // download e publica mas gated por status='publicado' (o jogo aqui ja e publicado).
+    const builds = db.prepare('SELECT id, plataforma, versao, tamanho, obrigatorio, checksum, nome_arquivo, arquivo FROM game_builds WHERE game_id = ? ORDER BY created_at DESC').all(row.id);
+    out.builds = builds.map((b) => ({
+      id: b.id,
+      plataforma: b.plataforma,
+      versao: b.versao,
+      tamanho: b.tamanho,
+      obrigatorio: b.obrigatorio,
+      checksum: b.checksum || null,
+      nome_arquivo: b.nome_arquivo || null,
+      download_url: b.arquivo ? `/api/catalog/builds/${b.id}/download` : null,
+    }));
     out.platforms = [...new Set(out.builds.map((b) => b.plataforma))];
     res.json(out);
   } catch (error) {
@@ -454,6 +467,55 @@ app.get('/api/catalog/games', (req, res) => {
   } catch (error) {
     console.error('Erro no /api/catalog/games:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// =====================================================================
+//  DOWNLOAD PUBLICO do binario da build (para o launcher Electron — L2).
+//  Espelha a rota admin (Range + sha256 em stream, nunca buffer inteiro), mas
+//  SEM autenticacao: gated por status='publicado' do jogo dono da build.
+//  Builds de jogos rascunho/arquivado retornam 404 (nao vazam).
+// =====================================================================
+app.get('/api/catalog/builds/:buildId/download', (req, res) => {
+  let build;
+  try {
+    build = db.prepare(`
+      SELECT b.* FROM game_builds b
+      JOIN games g ON g.id = b.game_id
+      WHERE b.id = ? AND g.status = 'publicado'
+    `).get(req.params.buildId);
+  } catch (error) {
+    console.error('Erro ao consultar build publica:', error);
+    return res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+  if (!build || !build.arquivo || !fs.existsSync(build.arquivo)) {
+    return res.status(404).json({ error: 'Binario da build nao encontrado' });
+  }
+  const stat = fs.statSync(build.arquivo);
+  const total = stat.size;
+  const downloadName = build.nome_arquivo || path.basename(build.arquivo);
+  res.setHeader('Content-Type', 'application/octet-stream');
+  res.setHeader('Accept-Ranges', 'bytes');
+  res.setHeader('Content-Disposition', `attachment; filename="${downloadName}"`);
+  if (build.checksum) res.setHeader('X-Checksum-Sha256', build.checksum);
+
+  const range = req.headers.range;
+  if (range) {
+    const m = /bytes=(\d*)-(\d*)/.exec(range);
+    let start = m && m[1] ? parseInt(m[1], 10) : 0;
+    let end = m && m[2] ? parseInt(m[2], 10) : total - 1;
+    if (Number.isNaN(start) || Number.isNaN(end) || start > end || start >= total) {
+      res.setHeader('Content-Range', `bytes */${total}`);
+      return res.status(416).end();
+    }
+    end = Math.min(end, total - 1);
+    res.status(206);
+    res.setHeader('Content-Range', `bytes ${start}-${end}/${total}`);
+    res.setHeader('Content-Length', end - start + 1);
+    fs.createReadStream(build.arquivo, { start, end }).pipe(res);
+  } else {
+    res.setHeader('Content-Length', total);
+    fs.createReadStream(build.arquivo).pipe(res);
   }
 });
 

@@ -114,7 +114,7 @@ export default function GameDetails() {
           >
             {imageUrl ? (
               <img src={imageUrl} alt={game.title}
-                   className="aspect-[2/3] w-full rounded-card-lg object-cover shadow-2xl ring-1 ring-black/10
+                   className="h-auto w-full rounded-card-lg shadow-2xl ring-1 ring-black/10
                               dark:shadow-poster dark:ring-white/10" />
             ) : (
               <div className="flex aspect-[2/3] w-full flex-col items-center justify-center gap-3 rounded-card-lg

@@ -54,13 +54,13 @@ export default function Navbar() {
               <>
                 <Link
                   to="/discover"
-                  className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-accent-amber transition-colors flex items-center gap-2"
+                  className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-accent-purple transition-colors flex items-center gap-2"
                 >
                   <FaCompass /> {t('discover')}
                 </Link>
                 <Link
                   to="/watchlist"
-                  className="text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-accent-amber transition-colors flex items-center gap-2"
+                  className="text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-accent-purple transition-colors flex items-center gap-2"
                 >
                   <FaList /> {t('watchlist')}
                 </Link>
@@ -70,7 +70,7 @@ export default function Navbar() {
             {/* Link Jogos - sempre visivel */}
             <Link
               to="/games"
-              className="text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-accent-amber transition-colors flex items-center gap-2"
+              className="text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-accent-purple transition-colors flex items-center gap-2"
             >
               <FaGamepad /> {t('jogos')}
             </Link>
@@ -78,7 +78,7 @@ export default function Navbar() {
             {/* Link Estúdio - sempre visível */}
             <Link
               to="/studio"
-              className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-accent-amber transition-colors flex items-center gap-2"
+              className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-accent-purple transition-colors flex items-center gap-2"
             >
               <FaBuilding /> {t('studio')}
             </Link>
@@ -92,7 +92,7 @@ export default function Navbar() {
                     placeholder={t('search')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-64 px-4 py-2 pl-10 bg-gray-100 dark:bg-cinema-surface border border-gray-300 dark:border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-accent-amber dark:focus:border-accent-amber focus:border-transparent text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-500 transition-colors"
+                    className="w-64 px-4 py-2 pl-10 bg-gray-100 dark:bg-cinema-surface border border-gray-300 dark:border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-accent-purple dark:focus:border-accent-purple focus:border-transparent text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-500 transition-colors"
                   />
                   <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
                 </div>
@@ -103,16 +103,16 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => setShowLangMenu(!showLangMenu)}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-cinema-surface hover:bg-gray-200 dark:hover:bg-cinema-elevated dark:hover:text-accent-amber transition-colors text-gray-700 dark:text-gray-200"
+                className="p-2 rounded-lg bg-gray-100 dark:bg-cinema-surface hover:bg-gray-200 dark:hover:bg-cinema-elevated dark:hover:text-accent-purple transition-colors text-gray-700 dark:text-gray-200"
               >
                 <FaLanguage />
               </button>
               {showLangMenu && (
                 <div className="absolute right-0 mt-2 w-36 bg-white dark:bg-cinema-elevated rounded-lg shadow-lg dark:shadow-glow border border-gray-200 dark:border-white/10 overflow-hidden z-50">
-                  <button onClick={() => changeLanguage('pt')} className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-cinema-surface dark:hover:text-accent-amber transition-colors">Português</button>
-                  <button onClick={() => changeLanguage('en')} className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-cinema-surface dark:hover:text-accent-amber transition-colors">English</button>
-                  <button onClick={() => changeLanguage('es')} className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-cinema-surface dark:hover:text-accent-amber transition-colors">Español</button>
-                  <button onClick={() => changeLanguage('zh')} className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-cinema-surface dark:hover:text-accent-amber transition-colors">中文 (简体)</button>
+                  <button onClick={() => changeLanguage('pt')} className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-cinema-surface dark:hover:text-accent-purple transition-colors">Português</button>
+                  <button onClick={() => changeLanguage('en')} className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-cinema-surface dark:hover:text-accent-purple transition-colors">English</button>
+                  <button onClick={() => changeLanguage('es')} className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-cinema-surface dark:hover:text-accent-purple transition-colors">Español</button>
+                  <button onClick={() => changeLanguage('zh')} className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-cinema-surface dark:hover:text-accent-purple transition-colors">中文 (简体)</button>
                 </div>
               )}
             </div>
@@ -122,7 +122,7 @@ export default function Navbar() {
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-gray-100 dark:bg-cinema-surface hover:bg-gray-200 dark:hover:bg-cinema-elevated transition-colors text-gray-700 dark:text-gray-200"
             >
-              {isDark ? <FaSun className="text-accent-amber" /> : <FaMoon />}
+              {isDark ? <FaSun className="text-accent-purple" /> : <FaMoon />}
             </button>
 
             {/* Área do usuário */}
@@ -132,7 +132,7 @@ export default function Navbar() {
                 {user.is_admin && (
                   <Link
                     to="/admin"
-                    className="px-3 py-2 rounded-lg bg-purple-100 dark:bg-accent-amber/15 text-purple-700 dark:text-accent-amber hover:bg-purple-200 dark:hover:bg-accent-amber/25 transition-colors flex items-center gap-2 text-sm"
+                    className="px-3 py-2 rounded-lg bg-purple-100 dark:bg-accent-purple/15 text-purple-700 dark:text-accent-purple hover:bg-purple-200 dark:hover:bg-accent-purple/25 transition-colors flex items-center gap-2 text-sm"
                     title="Painel de Administração"
                   >
                     <FaUserShield /> Admin
@@ -153,7 +153,7 @@ export default function Navbar() {
               <div className="flex gap-2">
                 <Link
                   to="/login"
-                  className="px-3 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 dark:bg-accent-amber dark:hover:bg-accent-amber/90 dark:text-cinema-bg dark:font-semibold dark:shadow-glow text-white transition-colors flex items-center gap-2 text-sm"
+                  className="px-3 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 dark:bg-accent-purple dark:hover:bg-accent-purple/90 dark:text-cinema-bg dark:font-semibold dark:shadow-glow text-white transition-colors flex items-center gap-2 text-sm"
                 >
                   <FaSignInAlt /> Entrar
                 </Link>

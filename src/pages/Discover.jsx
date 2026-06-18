@@ -44,7 +44,7 @@ export default function Discover() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-cinema-bg flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-amber"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-purple"></div>
       </div>
     );
   }
@@ -53,7 +53,7 @@ export default function Discover() {
     <div className="min-h-screen bg-gray-50 dark:bg-cinema-bg py-10">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center gap-3 mb-8">
-          <span className="inline-flex items-center justify-center w-11 h-11 rounded-card bg-gray-200 dark:bg-cinema-surface dark:border dark:border-white/5 text-accent-amber shadow-glow">
+          <span className="inline-flex items-center justify-center w-11 h-11 rounded-card bg-gray-200 dark:bg-cinema-surface dark:border dark:border-white/5 text-accent-purple shadow-glow">
             <Compass className="w-6 h-6" />
           </span>
           <h1 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-gray-900 dark:text-white">
@@ -80,7 +80,7 @@ export default function Discover() {
         ) : (
           <>
             <div className="mb-6 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-              <span className="font-display font-semibold text-accent-amber">
+              <span className="font-display font-semibold text-accent-purple">
                 {filteredMovies.length}
               </span>
               {filteredMovies.length === 1 ? t('contentFound') : t('contentsFound')}

@@ -83,7 +83,7 @@ export default function Register() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-cinema-elevated border border-gray-300 dark:border-white/10 rounded-card focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-accent-amber dark:focus:border-accent-amber transition-colors text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                className="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-cinema-elevated border border-gray-300 dark:border-white/10 rounded-card focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-accent-purple dark:focus:border-accent-purple transition-colors text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                 placeholder={t('register.name')}
               />
             </div>
@@ -100,7 +100,7 @@ export default function Register() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-cinema-elevated border border-gray-300 dark:border-white/10 rounded-card focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-accent-amber dark:focus:border-accent-amber transition-colors text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                className="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-cinema-elevated border border-gray-300 dark:border-white/10 rounded-card focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-accent-purple dark:focus:border-accent-purple transition-colors text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                 placeholder="seu@email.com"
               />
             </div>
@@ -117,7 +117,7 @@ export default function Register() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-cinema-elevated border border-gray-300 dark:border-white/10 rounded-card focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-accent-amber dark:focus:border-accent-amber transition-colors text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                className="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-cinema-elevated border border-gray-300 dark:border-white/10 rounded-card focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-accent-purple dark:focus:border-accent-purple transition-colors text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                 placeholder="••••••"
               />
             </div>
@@ -134,7 +134,7 @@ export default function Register() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-cinema-elevated border border-gray-300 dark:border-white/10 rounded-card focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-accent-amber dark:focus:border-accent-amber transition-colors text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                className="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-cinema-elevated border border-gray-300 dark:border-white/10 rounded-card focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-accent-purple dark:focus:border-accent-purple transition-colors text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                 placeholder="••••••"
               />
             </div>
@@ -143,7 +143,7 @@ export default function Register() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-purple-600 hover:bg-purple-700 dark:bg-accent-amber dark:hover:bg-amber-500 dark:text-cinema-bg dark:shadow-glow text-white rounded-card font-semibold transition-colors disabled:opacity-50"
+            className="w-full py-3 bg-purple-600 hover:bg-purple-700 dark:bg-accent-purple dark:hover:bg-amber-500 dark:text-cinema-bg dark:shadow-glow text-white rounded-card font-semibold transition-colors disabled:opacity-50"
           >
             {loading ? t('register.loading') : t('register.button')}
           </button>
@@ -152,7 +152,7 @@ export default function Register() {
         <div className="mt-6 text-center">
           <p className="text-gray-600 dark:text-gray-400">
             {t('register.hasAccount')}{' '}
-            <Link to="/login" className="text-purple-600 hover:text-purple-700 dark:text-accent-amber dark:hover:text-amber-400 font-semibold">
+            <Link to="/login" className="text-purple-600 hover:text-purple-700 dark:text-accent-purple dark:hover:text-amber-400 font-semibold">
               {t('register.login')}
             </Link>
           </p>

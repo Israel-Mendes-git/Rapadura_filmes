@@ -106,7 +106,7 @@ export default function AdminMovies() {
         <Field label={t('admin.movie.title')}><Input value={form.titulo} onChange={set('titulo')} placeholder={t('admin.movie.titlePlaceholder')} /></Field>
         <Field label={t('admin.movie.synopsis')}>
           <textarea value={form.sinopse} onChange={set('sinopse')} rows={3}
-            className="w-full rounded-card border border-input dark:border-white/10 bg-transparent dark:bg-cinema-elevated px-2.5 py-1 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:focus-visible:ring-accent-amber/40 dark:focus-visible:border-accent-amber" />
+            className="w-full rounded-card border border-input dark:border-white/10 bg-transparent dark:bg-cinema-elevated px-2.5 py-1 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:focus-visible:ring-accent-purple/40 dark:focus-visible:border-accent-purple" />
         </Field>
         <ImageInput label={t('admin.cover')} value={form.capa} onChange={(v) => setForm((f) => ({ ...f, capa: v }))} />
         <ImageInput label={t('admin.backdrop')} value={form.backdrop} onChange={(v) => setForm((f) => ({ ...f, backdrop: v }))} />
@@ -134,7 +134,7 @@ export default function AdminMovies() {
         </div>
 
         <div className="flex gap-2 pt-2">
-          <Button type="submit" disabled={saving} className="dark:bg-accent-amber dark:text-black dark:hover:bg-accent-amber/90 dark:shadow-glow">{saving ? t('admin.saving') : (editingId ? t('admin.movie.save') : t('admin.movie.create'))}</Button>
+          <Button type="submit" disabled={saving} className="dark:bg-accent-purple dark:text-black dark:hover:bg-accent-purple/90 dark:shadow-glow">{saving ? t('admin.saving') : (editingId ? t('admin.movie.save') : t('admin.movie.create'))}</Button>
           {editingId && <Button type="button" variant="outline" onClick={resetForm}>{t('admin.cancel')}</Button>}
         </div>
       </form>
@@ -149,7 +149,7 @@ export default function AdminMovies() {
         ) : (
           <div className="space-y-3">
             {movies.map((m) => (
-              <div key={m.id} className="bg-white dark:bg-cinema-elevated rounded-card p-4 ring-1 ring-foreground/10 dark:ring-white/10 dark:hover:ring-accent-amber/30 transition-colors flex items-center gap-4">
+              <div key={m.id} className="bg-white dark:bg-cinema-elevated rounded-card p-4 ring-1 ring-foreground/10 dark:ring-white/10 dark:hover:ring-accent-purple/30 transition-colors flex items-center gap-4">
                 {m.capa ? (
                   <img src={m.capa} alt={m.titulo} className="w-12 h-16 object-cover rounded-card dark:shadow-poster" onError={(e) => { e.target.style.visibility = 'hidden'; }} />
                 ) : (
@@ -159,7 +159,7 @@ export default function AdminMovies() {
                   <p className="font-semibold truncate dark:text-gray-100">{m.titulo}</p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     {m.ano || t('admin.movie.noYear')} · {m.categoria}/{m.tipo} ·{' '}
-                    <span className={m.fonte === 'tmdb' ? 'text-blue-500' : 'text-green-600 dark:text-accent-amber'}>{m.fonte}</span>
+                    <span className={m.fonte === 'tmdb' ? 'text-blue-500' : 'text-green-600 dark:text-accent-purple'}>{m.fonte}</span>
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -187,7 +187,7 @@ function Field({ label, children }) {
 function Select({ value, onChange, options }) {
   return (
     <select value={value} onChange={onChange}
-      className="h-8 w-full rounded-card border border-input dark:border-white/10 bg-transparent dark:bg-cinema-elevated px-2.5 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:focus-visible:ring-accent-amber/40 dark:focus-visible:border-accent-amber">
+      className="h-8 w-full rounded-card border border-input dark:border-white/10 bg-transparent dark:bg-cinema-elevated px-2.5 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:focus-visible:ring-accent-purple/40 dark:focus-visible:border-accent-purple">
       {options.map((o) => <option key={o} value={o}>{o}</option>)}
     </select>
   );

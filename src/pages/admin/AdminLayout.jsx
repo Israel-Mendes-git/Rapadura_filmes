@@ -10,8 +10,8 @@ export default function AdminLayout() {
   const tabClass = ({ isActive }) =>
     `pb-3 px-4 font-semibold transition-colors flex items-center gap-2 ${
       isActive
-        ? 'border-b-2 border-purple-600 text-purple-600 dark:border-accent-amber dark:text-accent-amber'
-        : 'text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-accent-amber'
+        ? 'border-b-2 border-purple-600 text-purple-600 dark:border-accent-purple dark:text-accent-purple'
+        : 'text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-accent-purple'
     }`;
 
   return (

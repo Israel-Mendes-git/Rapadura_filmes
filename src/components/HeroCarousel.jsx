@@ -98,7 +98,7 @@ export default function HeroCarousel({ movies }) {
 
             <div className="flex flex-wrap items-center gap-4 mb-5 text-sm text-white/70">
               <span className="inline-flex items-center gap-1.5">
-                <Star className="w-4 h-4 fill-accent-amber text-accent-amber" />
+                <Star className="w-4 h-4 fill-accent-purple text-accent-purple" />
                 <span className="font-semibold text-white">{currentMovie.vote_average?.toFixed(1)}</span>
               </span>
               {currentMovie.release_date && (
@@ -121,7 +121,7 @@ export default function HeroCarousel({ movies }) {
             <div className="flex flex-wrap gap-4">
               <button
                 onClick={() => navigate(`/movie/${currentMovie.id}`)}
-                className="inline-flex items-center gap-2 px-8 py-3 bg-accent-amber hover:bg-amber-400 text-cinema-bg rounded-lg font-bold transition-all transform hover:scale-105 shadow-glow"
+                className="inline-flex items-center gap-2 px-8 py-3 bg-accent-purple hover:bg-amber-400 text-cinema-bg rounded-lg font-bold transition-all transform hover:scale-105 shadow-glow"
               >
                 <Play className="w-5 h-5 fill-current" />
                 {t('details.watchTrailer')}
@@ -147,7 +147,7 @@ export default function HeroCarousel({ movies }) {
             aria-label={`Slide ${index + 1}`}
             className={`transition-all rounded-full ${
               index === currentIndex
-                ? 'w-8 h-2 bg-accent-amber'
+                ? 'w-8 h-2 bg-accent-purple'
                 : 'w-2 h-2 bg-white/40 hover:bg-white/70'
             }`}
           />
@@ -172,7 +172,7 @@ export default function HeroCarousel({ movies }) {
       {/* Progress bar com acento âmbar */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10">
         <div
-          className="h-full bg-accent-amber transition-all duration-[5000ms] linear"
+          className="h-full bg-accent-purple transition-all duration-[5000ms] linear"
           style={{ width: isPlaying ? '100%' : '0%' }}
           key={currentIndex}
         />

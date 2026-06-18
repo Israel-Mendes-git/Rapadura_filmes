@@ -74,7 +74,7 @@ export default function Home() {
               onClick={() => setActiveTab(cat.id)}
               className={`px-6 py-2 rounded-full font-semibold transition-all flex items-center gap-2 border ${
                 activeTab === cat.id
-                  ? 'bg-accent-amber text-cinema-bg border-accent-amber shadow-glow'
+                  ? 'bg-accent-purple text-cinema-bg border-accent-purple shadow-glow'
                   : 'bg-gray-200 dark:bg-cinema-surface text-gray-700 dark:text-gray-300 border-transparent dark:border-white/5 hover:bg-gray-300 dark:hover:bg-cinema-elevated'
               }`}
             >

@@ -28,7 +28,7 @@ export default function CategoryFilter({ selectedCategory, selectedType, onCateg
           onClick={() => setActiveFilter('category')}
           className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
             activeFilter === 'category'
-              ? 'bg-purple-600 text-white dark:bg-accent-amber dark:text-cinema-bg dark:shadow-glow'
+              ? 'bg-purple-600 text-white dark:bg-accent-purple dark:text-cinema-bg dark:shadow-glow'
               : 'bg-gray-200 dark:bg-cinema-surface text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-cinema-elevated'
           }`}
         >
@@ -38,7 +38,7 @@ export default function CategoryFilter({ selectedCategory, selectedType, onCateg
           onClick={() => setActiveFilter('type')}
           className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
             activeFilter === 'type'
-              ? 'bg-purple-600 text-white dark:bg-accent-amber dark:text-cinema-bg dark:shadow-glow'
+              ? 'bg-purple-600 text-white dark:bg-accent-purple dark:text-cinema-bg dark:shadow-glow'
               : 'bg-gray-200 dark:bg-cinema-surface text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-cinema-elevated'
           }`}
         >
@@ -55,8 +55,8 @@ export default function CategoryFilter({ selectedCategory, selectedType, onCateg
                 onClick={() => onCategoryChange(cat.id)}
                 className={`px-6 py-2 rounded-full font-semibold transition-all flex items-center gap-2 ${
                   selectedCategory === cat.id
-                    ? 'bg-purple-600 text-white shadow-lg scale-105 dark:bg-accent-amber dark:text-cinema-bg dark:shadow-glow'
-                    : 'bg-gray-200 dark:bg-cinema-surface text-gray-700 dark:text-gray-300 hover:bg-purple-100 dark:hover:bg-cinema-elevated dark:hover:text-accent-amber'
+                    ? 'bg-purple-600 text-white shadow-lg scale-105 dark:bg-accent-purple dark:text-cinema-bg dark:shadow-glow'
+                    : 'bg-gray-200 dark:bg-cinema-surface text-gray-700 dark:text-gray-300 hover:bg-purple-100 dark:hover:bg-cinema-elevated dark:hover:text-accent-purple'
                 }`}
               >
                 <span>{cat.icon}</span>
@@ -69,8 +69,8 @@ export default function CategoryFilter({ selectedCategory, selectedType, onCateg
                 onClick={() => onTypeChange(type.id)}
                 className={`px-6 py-2 rounded-full font-semibold transition-all flex items-center gap-2 ${
                   selectedType === type.id
-                    ? 'bg-green-600 text-white shadow-lg scale-105 dark:bg-accent-amber dark:text-cinema-bg dark:shadow-glow'
-                    : 'bg-gray-200 dark:bg-cinema-surface text-gray-700 dark:text-gray-300 hover:bg-green-100 dark:hover:bg-cinema-elevated dark:hover:text-accent-amber'
+                    ? 'bg-green-600 text-white shadow-lg scale-105 dark:bg-accent-purple dark:text-cinema-bg dark:shadow-glow'
+                    : 'bg-gray-200 dark:bg-cinema-surface text-gray-700 dark:text-gray-300 hover:bg-green-100 dark:hover:bg-cinema-elevated dark:hover:text-accent-purple'
                 }`}
               >
                 <span>{type.icon}</span>
@@ -84,13 +84,13 @@ export default function CategoryFilter({ selectedCategory, selectedType, onCateg
         <div className="mt-3 text-sm text-gray-600 dark:text-gray-400">
           {t('filter.active')}
           {selectedCategory !== 'all' && (
-            <span className="inline-flex items-center gap-1 ml-2 px-2 py-1 bg-purple-100 dark:bg-accent-amber/15 dark:text-accent-amber rounded-full">
+            <span className="inline-flex items-center gap-1 ml-2 px-2 py-1 bg-purple-100 dark:bg-accent-purple/15 dark:text-accent-purple rounded-full">
               {categories.find(c => c.id === selectedCategory)?.icon}
               {t(selectedCategory)}
             </span>
           )}
           {selectedType !== 'all' && (
-            <span className="inline-flex items-center gap-1 ml-2 px-2 py-1 bg-green-100 dark:bg-accent-amber/15 dark:text-accent-amber rounded-full">
+            <span className="inline-flex items-center gap-1 ml-2 px-2 py-1 bg-green-100 dark:bg-accent-purple/15 dark:text-accent-purple rounded-full">
               {types.find(tp => tp.id === selectedType)?.icon}
               {t(selectedType)}
             </span>

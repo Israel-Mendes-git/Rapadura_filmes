@@ -94,13 +94,13 @@ export default function AdminGames() {
           <Field label={t('admin.game.title')}><Input value={form.titulo} onChange={set('titulo')} placeholder={t('admin.game.titlePlaceholder')} /></Field>
           <Field label={t('admin.game.description')}>
             <textarea value={form.descricao} onChange={set('descricao')} rows={3}
-              className="w-full rounded-card border border-input dark:border-white/10 bg-transparent dark:bg-cinema-elevated px-2.5 py-1 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:focus-visible:ring-accent-amber/40 dark:focus-visible:border-accent-amber" />
+              className="w-full rounded-card border border-input dark:border-white/10 bg-transparent dark:bg-cinema-elevated px-2.5 py-1 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:focus-visible:ring-accent-purple/40 dark:focus-visible:border-accent-purple" />
           </Field>
           <ImageInput label={t('admin.cover')} value={form.capa} onChange={(v) => setForm((f) => ({ ...f, capa: v }))} />
           <Field label={t('admin.genresComma')}><Input value={form.generos} onChange={set('generos')} placeholder={t('admin.game.genresPlaceholder')} /></Field>
           <Field label={t('admin.game.status')}><Select value={form.status} onChange={set('status')} options={STATUS} /></Field>
           <div className="flex gap-2 pt-2">
-            <Button type="submit" disabled={saving} className="dark:bg-accent-amber dark:text-black dark:hover:bg-accent-amber/90 dark:shadow-glow">{saving ? t('admin.saving') : (editingId ? t('admin.game.save') : t('admin.game.create'))}</Button>
+            <Button type="submit" disabled={saving} className="dark:bg-accent-purple dark:text-black dark:hover:bg-accent-purple/90 dark:shadow-glow">{saving ? t('admin.saving') : (editingId ? t('admin.game.save') : t('admin.game.create'))}</Button>
             {editingId && <Button type="button" variant="outline" onClick={resetForm}>{t('admin.cancel')}</Button>}
           </div>
         </form>
@@ -120,7 +120,7 @@ export default function AdminGames() {
         ) : (
           <div className="space-y-3">
             {games.map((g) => (
-              <div key={g.id} className="bg-white dark:bg-cinema-elevated rounded-card p-4 ring-1 ring-foreground/10 dark:ring-white/10 dark:hover:ring-accent-amber/30 transition-colors flex items-center gap-4">
+              <div key={g.id} className="bg-white dark:bg-cinema-elevated rounded-card p-4 ring-1 ring-foreground/10 dark:ring-white/10 dark:hover:ring-accent-purple/30 transition-colors flex items-center gap-4">
                 {g.capa ? (
                   <img src={g.capa} alt={g.titulo} className="w-12 h-16 object-cover rounded-card dark:shadow-poster" onError={(e) => { e.target.style.visibility = 'hidden'; }} />
                 ) : (
@@ -217,10 +217,10 @@ function BuildsPanel({ gameId, builds, reload, toast, t }) {
             className="w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30" />
         </Field>
         <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={obrigatorio} onChange={(e) => setObrigatorio(e.target.checked)} className="dark:accent-accent-amber" />
+          <input type="checkbox" checked={obrigatorio} onChange={(e) => setObrigatorio(e.target.checked)} className="dark:accent-accent-purple" />
           {t('admin.builds.mandatoryUpdate')}
         </label>
-        <Button type="submit" size="sm" disabled={creating} className="dark:bg-accent-amber dark:text-black dark:hover:bg-accent-amber/90">{creating ? t('admin.builds.creating') : t('admin.builds.addBuild')}</Button>
+        <Button type="submit" size="sm" disabled={creating} className="dark:bg-accent-purple dark:text-black dark:hover:bg-accent-purple/90">{creating ? t('admin.builds.creating') : t('admin.builds.addBuild')}</Button>
       </form>
 
       {builds.length === 0 ? (
@@ -238,14 +238,14 @@ function BuildsPanel({ gameId, builds, reload, toast, t }) {
               {b.arquivo ? (
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 break-all">
                   {b.nome_arquivo} · {(b.tamanho / 1e6).toFixed(1)} MB · sha256 {String(b.checksum).slice(0, 12)}…{' '}
-                  <a className="text-purple-600 dark:text-accent-amber underline" href={buildsApi.downloadUrl(b.id)} target="_blank" rel="noreferrer">{t('admin.builds.download')}</a>
+                  <a className="text-purple-600 dark:text-accent-purple underline" href={buildsApi.downloadUrl(b.id)} target="_blank" rel="noreferrer">{t('admin.builds.download')}</a>
                 </p>
               ) : (
-                <p className="text-xs text-amber-600 dark:text-accent-amber mt-1">{t('admin.builds.noBinary')}</p>
+                <p className="text-xs text-amber-600 dark:text-accent-purple mt-1">{t('admin.builds.noBinary')}</p>
               )}
               {progress[b.id] !== undefined ? (
                 <div className="mt-2 h-1.5 bg-gray-200 dark:bg-white/10 rounded">
-                  <div className="h-1.5 bg-purple-600 dark:bg-accent-amber rounded transition-all" style={{ width: `${Math.round(progress[b.id] * 100)}%` }} />
+                  <div className="h-1.5 bg-purple-600 dark:bg-accent-purple rounded transition-all" style={{ width: `${Math.round(progress[b.id] * 100)}%` }} />
                 </div>
               ) : (
                 <input type="file" className="mt-2 text-xs dark:text-gray-400"
@@ -271,7 +271,7 @@ function Field({ label, children }) {
 function Select({ value, onChange, options }) {
   return (
     <select value={value} onChange={onChange}
-      className="h-8 w-full rounded-card border border-input dark:border-white/10 bg-transparent dark:bg-cinema-elevated px-2.5 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:focus-visible:ring-accent-amber/40 dark:focus-visible:border-accent-amber">
+      className="h-8 w-full rounded-card border border-input dark:border-white/10 bg-transparent dark:bg-cinema-elevated px-2.5 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:focus-visible:ring-accent-purple/40 dark:focus-visible:border-accent-purple">
       {options.map((o) => <option key={o} value={o}>{o}</option>)}
     </select>
   );

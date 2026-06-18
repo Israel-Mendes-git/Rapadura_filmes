@@ -37,8 +37,8 @@ export default function GenreFilter({ selectedGenre, onGenreChange }) {
           onClick={() => onGenreChange(null)}
           className={`px-4 py-2 rounded-lg transition-colors ${
             !selectedGenre
-              ? 'bg-purple-600 text-white dark:bg-accent-amber dark:text-cinema-bg dark:font-semibold dark:shadow-glow'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-cinema-surface dark:text-zinc-400 dark:hover:bg-cinema-elevated dark:hover:text-accent-amber'
+              ? 'bg-purple-600 text-white dark:bg-accent-purple dark:text-cinema-bg dark:font-semibold dark:shadow-glow'
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-cinema-surface dark:text-zinc-400 dark:hover:bg-cinema-elevated dark:hover:text-accent-purple'
           }`}
         >
           Todos
@@ -49,8 +49,8 @@ export default function GenreFilter({ selectedGenre, onGenreChange }) {
             onClick={() => onGenreChange(genre.id)}
             className={`px-4 py-2 rounded-lg transition-colors ${
               selectedGenre === genre.id
-                ? 'bg-purple-600 text-white dark:bg-accent-amber dark:text-cinema-bg dark:font-semibold dark:shadow-glow'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-cinema-surface dark:text-zinc-400 dark:hover:bg-cinema-elevated dark:hover:text-accent-amber'
+                ? 'bg-purple-600 text-white dark:bg-accent-purple dark:text-cinema-bg dark:font-semibold dark:shadow-glow'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-cinema-surface dark:text-zinc-400 dark:hover:bg-cinema-elevated dark:hover:text-accent-purple'
             }`}
           >
             {genre.name}

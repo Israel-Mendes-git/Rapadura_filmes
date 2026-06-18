@@ -64,7 +64,7 @@ export default function GameDetails() {
 
   if (loading) return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-cinema-bg">
-      <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-purple-600 dark:border-accent-amber" />
+      <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-purple-600 dark:border-accent-purple" />
     </div>
   );
   if (!game) return (
@@ -74,7 +74,7 @@ export default function GameDetails() {
           <Gamepad2 className="h-9 w-9 text-red-500 dark:text-accent-red" />
         </div>
         <p className="mb-4 font-display text-xl text-red-500 dark:text-accent-red">{t('games.notFound', { id })}</p>
-        <button onClick={() => navigate('/games')} className="rounded-lg bg-purple-600 px-5 py-2 font-semibold text-white hover:bg-purple-700 dark:bg-accent-amber dark:text-cinema-bg dark:shadow-glow dark:hover:bg-amber-400">{t('games.backToGames')}</button>
+        <button onClick={() => navigate('/games')} className="rounded-lg bg-purple-600 px-5 py-2 font-semibold text-white hover:bg-purple-700 dark:bg-accent-purple dark:text-cinema-bg dark:shadow-glow dark:hover:bg-accent-purple">{t('games.backToGames')}</button>
       </div>
     </div>
   );
@@ -98,7 +98,7 @@ export default function GameDetails() {
           onClick={() => navigate('/games')}
           className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-black/50 px-3 py-1.5
                      text-sm font-medium text-white ring-1 ring-white/20 backdrop-blur-md hover:bg-black/70
-                     dark:hover:ring-accent-amber/40"
+                     dark:hover:ring-accent-purple/40"
         >
           <ArrowLeft className="h-4 w-4" /> {t('games.back')}
         </button>
@@ -131,8 +131,8 @@ export default function GameDetails() {
               className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-purple-600 px-4 py-3.5
                          text-base font-semibold text-white shadow-lg shadow-purple-600/25 transition-all
                          hover:bg-purple-700 hover:shadow-purple-600/40 disabled:opacity-60
-                         dark:bg-accent-amber dark:text-cinema-bg dark:shadow-glow
-                         dark:hover:bg-amber-400 dark:hover:shadow-glow-strong"
+                         dark:bg-accent-purple dark:text-cinema-bg dark:shadow-glow
+                         dark:hover:bg-accent-purple dark:hover:shadow-glow-strong"
             >
               <ActionIcon className={'h-5 w-5' + (busy ? ' animate-spin' : '')} />
               {actionLabel}
@@ -151,8 +151,8 @@ export default function GameDetails() {
             <div className="mt-3 flex flex-wrap gap-2">
               {genres.map((g, i) => (
                 <span key={i} className="rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold
-                                         text-purple-700 dark:bg-accent-amber/10 dark:text-accent-amber
-                                         dark:ring-1 dark:ring-accent-amber/20">
+                                         text-purple-700 dark:bg-accent-purple/10 dark:text-accent-purple
+                                         dark:ring-1 dark:ring-accent-purple/20">
                   {g}
                 </span>
               ))}
@@ -166,7 +166,7 @@ export default function GameDetails() {
           {builds.length > 0 && (
             <div className="mt-8">
               <h2 className="mb-3 flex items-center gap-2 font-display text-lg font-semibold text-gray-900 dark:text-white">
-                <Package className="h-5 w-5 text-purple-500 dark:text-accent-amber" /> {t('games.availableVersions')}
+                <Package className="h-5 w-5 text-purple-500 dark:text-accent-purple" /> {t('games.availableVersions')}
               </h2>
               <div className="grid gap-3 sm:grid-cols-2">
                 {builds.map((b) => {
@@ -175,9 +175,9 @@ export default function GameDetails() {
                     <div key={b.id}
                          className="flex items-center gap-3 rounded-card border border-gray-200 bg-white p-3
                                     transition-colors dark:border-white/5 dark:bg-cinema-surface
-                                    dark:shadow-poster dark:hover:border-accent-amber/30">
-                      <div className="rounded-lg bg-purple-100 p-2 dark:bg-accent-amber/10">
-                        <Icon className="h-5 w-5 text-purple-600 dark:text-accent-amber" />
+                                    dark:shadow-poster dark:hover:border-accent-purple/30">
+                      <div className="rounded-lg bg-purple-100 p-2 dark:bg-accent-purple/10">
+                        <Icon className="h-5 w-5 text-purple-600 dark:text-accent-purple" />
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
@@ -189,8 +189,8 @@ export default function GameDetails() {
                         </p>
                       </div>
                       {b.obrigatorio && (
-                        <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold
-                                         text-amber-700 dark:bg-accent-amber/15 dark:text-accent-amber">
+                        <span className="shrink-0 rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-semibold
+                                         text-purple-700 dark:bg-accent-purple/15 dark:text-accent-purple">
                           {t('games.required')}
                         </span>
                       )}

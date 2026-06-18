@@ -29,7 +29,7 @@ export default function GameCard({ game }) {
       className="group relative cursor-pointer overflow-hidden rounded-card bg-zinc-100 shadow-md
                  ring-1 ring-black/5 hover:shadow-2xl hover:ring-purple-500/40
                  dark:bg-cinema-surface dark:shadow-poster dark:ring-white/5
-                 dark:hover:shadow-poster-hover dark:hover:ring-accent-amber/50"
+                 dark:hover:shadow-poster-hover dark:hover:ring-accent-purple/50"
     >
       <div className="relative aspect-[2/3] w-full overflow-hidden">
         {showFallback ? (
@@ -68,7 +68,7 @@ export default function GameCard({ game }) {
           </h3>
           {Array.isArray(game.genres) && game.genres.length > 0 && (
             <p className="mt-0.5 line-clamp-1 text-[11px] font-medium text-purple-200/90
-                          dark:text-accent-amber/90">
+                          dark:text-accent-purple/90">
               {game.genres.slice(0, 3).join(' · ')}
             </p>
           )}

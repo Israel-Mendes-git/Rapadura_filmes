@@ -58,7 +58,7 @@ export default function ResetPassword() {
   if (!validToken && !error) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-cinema-bg flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 dark:border-accent-amber"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 dark:border-accent-purple"></div>
       </div>
     );
   }
@@ -98,7 +98,7 @@ export default function ResetPassword() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-cinema-elevated border border-gray-300 dark:border-white/10 rounded-card focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-accent-amber dark:focus:border-accent-amber transition-colors text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                  className="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-cinema-elevated border border-gray-300 dark:border-white/10 rounded-card focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-accent-purple dark:focus:border-accent-purple transition-colors text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                   placeholder="••••••"
                 />
               </div>
@@ -115,7 +115,7 @@ export default function ResetPassword() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
-                  className="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-cinema-elevated border border-gray-300 dark:border-white/10 rounded-card focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-accent-amber dark:focus:border-accent-amber transition-colors text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                  className="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-cinema-elevated border border-gray-300 dark:border-white/10 rounded-card focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-accent-purple dark:focus:border-accent-purple transition-colors text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                   placeholder="••••••"
                 />
               </div>
@@ -124,7 +124,7 @@ export default function ResetPassword() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-purple-600 hover:bg-purple-700 dark:bg-accent-amber dark:hover:bg-amber-500 dark:text-cinema-bg dark:shadow-glow text-white rounded-card font-semibold transition-colors disabled:opacity-50"
+              className="w-full py-3 bg-purple-600 hover:bg-purple-700 dark:bg-accent-purple dark:hover:bg-amber-500 dark:text-cinema-bg dark:shadow-glow text-white rounded-card font-semibold transition-colors disabled:opacity-50"
             >
               {loading ? t('resetPassword.resetting') : t('resetPassword.button')}
             </button>

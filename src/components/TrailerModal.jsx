@@ -13,14 +13,14 @@ export default function TrailerModal({ trailerUrl, title, onClose }) {
       <div className="relative w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
         <button
           onClick={onClose}
-          className="absolute -top-12 right-0 text-white hover:text-accent-amber transition-colors text-2xl"
+          className="absolute -top-12 right-0 text-white hover:text-accent-purple transition-colors text-2xl"
         >
           ✕ {t('common.close')}
         </button>
         
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-amber"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-purple"></div>
           </div>
         )}
         

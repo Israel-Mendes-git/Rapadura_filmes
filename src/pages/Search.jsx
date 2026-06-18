@@ -45,18 +45,18 @@ export default function Search() {
     <div className="min-h-screen bg-gray-50 dark:bg-cinema-bg pt-10 pb-12">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center gap-3 mb-8">
-          <span className="inline-flex items-center justify-center w-11 h-11 rounded-card bg-gray-200 dark:bg-cinema-surface dark:border dark:border-white/5 text-accent-amber shadow-glow">
+          <span className="inline-flex items-center justify-center w-11 h-11 rounded-card bg-gray-200 dark:bg-cinema-surface dark:border dark:border-white/5 text-accent-purple shadow-glow">
             <SearchIcon className="w-6 h-6" />
           </span>
           <h1 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-gray-900 dark:text-white">
             {t('searchPage.title')}:{' '}
-            <span className="text-accent-amber">"{query}"</span>
+            <span className="text-accent-purple">"{query}"</span>
           </h1>
         </div>
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-amber"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-purple"></div>
           </div>
         ) : movies.length === 0 ? (
           <div className="flex flex-col items-center text-center py-20">
@@ -68,7 +68,7 @@ export default function Search() {
             </p>
             <button
               onClick={() => navigate('/')}
-              className="mt-6 px-6 py-2.5 rounded-card bg-accent-amber text-cinema-bg font-display font-semibold shadow-glow hover:shadow-glow-strong transition-all"
+              className="mt-6 px-6 py-2.5 rounded-card bg-accent-purple text-cinema-bg font-display font-semibold shadow-glow hover:shadow-glow-strong transition-all"
             >
               {t('searchPage.backToHome')}
             </button>
@@ -76,7 +76,7 @@ export default function Search() {
         ) : (
           <>
             <p className="mb-6 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-              <span className="font-display font-semibold text-accent-amber">
+              <span className="font-display font-semibold text-accent-purple">
                 {movies.length}
               </span>
               {movies.length === 1 ? t('contentFound') : t('contentsFound')}

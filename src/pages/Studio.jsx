@@ -8,9 +8,9 @@ export default function Studio() {
   const { t } = useTranslation();
 
   const specialties = [
-    { icon: <MdAnimation className="text-4xl text-purple-600 dark:text-accent-amber" />, title: t('studioPage.animation'), desc: t('studioPage.animationDesc') },
-    { icon: <MdGames className="text-4xl text-green-600 dark:text-accent-red" />, title: t('studioPage.games'), desc: t('studioPage.gamesDesc') },
-    { icon: <MdRecordVoiceOver className="text-4xl text-purple-600 dark:text-accent-amber" />, title: t('studioPage.voiceOver'), desc: t('studioPage.voiceOverDesc') }
+    { icon: <MdAnimation className="text-4xl text-purple-600 dark:text-accent-purple" />, title: t('studioPage.animation'), desc: t('studioPage.animationDesc') },
+    { icon: <MdGames className="text-4xl text-green-600 dark:text-accent-purple" />, title: t('studioPage.games'), desc: t('studioPage.gamesDesc') },
+    { icon: <MdRecordVoiceOver className="text-4xl text-purple-600 dark:text-accent-purple" />, title: t('studioPage.voiceOver'), desc: t('studioPage.voiceOverDesc') }
   ];
 
   const studioImages = [
@@ -40,13 +40,13 @@ export default function Studio() {
           <div className="flex gap-4 mb-8 border-b border-gray-200 dark:border-white/10">
             <button
               onClick={() => setActiveTab('about')}
-              className={`pb-3 px-4 font-semibold transition-colors ${activeTab === 'about' ? 'border-b-2 border-purple-600 text-purple-600 dark:border-accent-amber dark:text-accent-amber' : 'text-gray-600 dark:text-gray-400 dark:hover:text-gray-200'}`}
+              className={`pb-3 px-4 font-semibold transition-colors ${activeTab === 'about' ? 'border-b-2 border-purple-600 text-purple-600 dark:border-accent-purple dark:text-accent-purple' : 'text-gray-600 dark:text-gray-400 dark:hover:text-gray-200'}`}
             >
               {t('studioPage.about')}
             </button>
             <button
               onClick={() => setActiveTab('clients_contact')}
-              className={`pb-3 px-4 font-semibold transition-colors ${activeTab === 'clients_contact' ? 'border-b-2 border-purple-600 text-purple-600 dark:border-accent-amber dark:text-accent-amber' : 'text-gray-600 dark:text-gray-400 dark:hover:text-gray-200'}`}
+              className={`pb-3 px-4 font-semibold transition-colors ${activeTab === 'clients_contact' ? 'border-b-2 border-purple-600 text-purple-600 dark:border-accent-purple dark:text-accent-purple' : 'text-gray-600 dark:text-gray-400 dark:hover:text-gray-200'}`}
             >
               {t('studioPage.clients')} & {t('studioPage.contact')}
             </button>
@@ -69,7 +69,7 @@ export default function Studio() {
               </section>
 
               {/* Histórico */}
-              <section className="bg-purple-50/90 dark:bg-cinema-surface/90 dark:border dark:border-accent-amber/20 backdrop-blur-sm rounded-card-lg p-8">
+              <section className="bg-purple-50/90 dark:bg-cinema-surface/90 dark:border dark:border-accent-purple/20 backdrop-blur-sm rounded-card-lg p-8">
                 <h2 className="text-3xl font-display font-bold mb-4 tracking-tight dark:text-white">{t('studioPage.history')}</h2>
                 <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
                   {t('studioPage.historyDesc1')}
@@ -84,17 +84,17 @@ export default function Studio() {
                 <h2 className="text-3xl font-display font-bold mb-8 text-center tracking-tight">{t('studioPage.structure')}</h2>
                 <div className="grid md:grid-cols-3 gap-6">
                   <div className="bg-white/90 dark:bg-cinema-surface/90 dark:border dark:border-white/5 backdrop-blur-sm p-6 rounded-card-lg shadow-lg">
-                    <FaRobot className="text-3xl text-purple-600 dark:text-accent-amber mb-3" />
+                    <FaRobot className="text-3xl text-purple-600 dark:text-accent-purple mb-3" />
                     <h3 className="text-xl font-semibold mb-2 dark:text-white">{t('studioPage.agile')}</h3>
                     <p className="text-gray-600 dark:text-gray-400">{t('studioPage.agileDesc')}</p>
                   </div>
                   <div className="bg-white/90 dark:bg-cinema-surface/90 dark:border dark:border-white/5 backdrop-blur-sm p-6 rounded-card-lg shadow-lg">
-                    <FaSolarPanel className="text-3xl text-green-600 dark:text-accent-red mb-3" />
+                    <FaSolarPanel className="text-3xl text-green-600 dark:text-accent-purple mb-3" />
                     <h3 className="text-xl font-semibold mb-2 dark:text-white">{t('studioPage.sustainability')}</h3>
                     <p className="text-gray-600 dark:text-gray-400">{t('studioPage.sustainabilityDesc')}</p>
                   </div>
                   <div className="bg-white/90 dark:bg-cinema-surface/90 dark:border dark:border-white/5 backdrop-blur-sm p-6 rounded-card-lg shadow-lg">
-                    <FaServer className="text-3xl text-purple-600 dark:text-accent-amber mb-3" />
+                    <FaServer className="text-3xl text-purple-600 dark:text-accent-purple mb-3" />
                     <h3 className="text-xl font-semibold mb-2 dark:text-white">{t('studioPage.infrastructure')}</h3>
                     <p className="text-gray-600 dark:text-gray-400">{t('studioPage.infrastructureDesc')}</p>
                   </div>
@@ -139,19 +139,19 @@ export default function Studio() {
           {activeTab === 'clients_contact' && (
             <div className="space-y-12">
               {/* Clientes & Parceiros */}
-              <section className="bg-green-50/90 dark:bg-cinema-surface/90 dark:border dark:border-accent-amber/20 backdrop-blur-sm rounded-card-lg p-8">
+              <section className="bg-green-50/90 dark:bg-cinema-surface/90 dark:border dark:border-accent-purple/20 backdrop-blur-sm rounded-card-lg p-8">
                 <h2 className="text-3xl font-display font-bold mb-4 tracking-tight dark:text-white">{t('studioPage.outsourcing')}</h2>
                 <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
                   {t('studioPage.outsourcingDesc')}
                 </p>
-                <FaHandshake className="text-6xl text-purple-600 dark:text-accent-amber mx-auto" />
+                <FaHandshake className="text-6xl text-purple-600 dark:text-accent-purple mx-auto" />
               </section>
 
               <section>
                 <h2 className="text-3xl font-display font-bold mb-6 text-center tracking-tight">{t('studioPage.schoolProject')}</h2>
                 <div className="bg-white/90 dark:bg-cinema-surface/90 dark:border dark:border-white/5 backdrop-blur-sm rounded-card-lg p-8">
                   <div className="flex items-center gap-4 mb-4">
-                    <FaGraduationCap className="text-4xl text-green-600 dark:text-accent-red" />
+                    <FaGraduationCap className="text-4xl text-green-600 dark:text-accent-purple" />
                     <h3 className="text-2xl font-semibold dark:text-white">{t('studioPage.labteca')}</h3>
                   </div>
                   <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
@@ -165,14 +165,14 @@ export default function Studio() {
                 <div className="bg-white/90 dark:bg-cinema-surface/90 dark:border dark:border-white/5 backdrop-blur-sm rounded-card-lg p-8">
                   <h2 className="text-2xl font-display font-bold mb-6 tracking-tight dark:text-white">{t('studioPage.contact')}</h2>
                   <div className="space-y-4">
-                    <a href="https://wa.me/5585920028491" className="flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-accent-amber transition-colors">
-                      <FaWhatsapp className="text-2xl text-green-600 dark:text-accent-amber" />
+                    <a href="https://wa.me/5585920028491" className="flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-accent-purple transition-colors">
+                      <FaWhatsapp className="text-2xl text-green-600 dark:text-accent-purple" />
                       <span>(85) 92002-8491</span>
                     </a>
                     <div className="flex gap-4 pt-4">
-                      <a href="#" className="text-purple-600 hover:text-purple-700 dark:text-accent-amber dark:hover:text-amber-400"><FaInstagram size={24} /></a>
-                      <a href="#" className="text-purple-600 hover:text-purple-700 dark:text-accent-amber dark:hover:text-amber-400"><FaYoutube size={24} /></a>
-                      <a href="#" className="text-purple-600 hover:text-purple-700 dark:text-accent-amber dark:hover:text-amber-400"><FaFacebook size={24} /></a>
+                      <a href="#" className="text-purple-600 hover:text-purple-700 dark:text-accent-purple dark:hover:text-amber-400"><FaInstagram size={24} /></a>
+                      <a href="#" className="text-purple-600 hover:text-purple-700 dark:text-accent-purple dark:hover:text-amber-400"><FaYoutube size={24} /></a>
+                      <a href="#" className="text-purple-600 hover:text-purple-700 dark:text-accent-purple dark:hover:text-amber-400"><FaFacebook size={24} /></a>
                     </div>
                   </div>
                 </div>

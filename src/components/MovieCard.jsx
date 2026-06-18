@@ -71,7 +71,7 @@ export default function MovieCard({ movie }) {
         onError={() => setImgError(true)}
       />
 
-      <div className="absolute inset-0 ring-1 ring-inset ring-white/0 group-hover:ring-accent-amber/40 rounded-card-lg transition-all duration-300 pointer-events-none" />
+      <div className="absolute inset-0 ring-1 ring-inset ring-white/0 group-hover:ring-accent-purple/40 rounded-card-lg transition-all duration-300 pointer-events-none" />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
@@ -81,7 +81,7 @@ export default function MovieCard({ movie }) {
         </h3>
 
         <div className="flex items-center gap-2">
-          <Star className="w-3.5 h-3.5 fill-accent-amber text-accent-amber" />
+          <Star className="w-3.5 h-3.5 fill-accent-purple text-accent-purple" />
           <span className="text-zinc-200 text-sm font-medium">
             {movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'}
           </span>
@@ -92,7 +92,7 @@ export default function MovieCard({ movie }) {
       </div>
 
       <button
-        className="watchlist-btn absolute top-2 right-2 p-2 rounded-full transition-all bg-black/60 hover:bg-accent-amber hover:text-cinema-bg text-white opacity-0 group-hover:opacity-100 z-10"
+        className="watchlist-btn absolute top-2 right-2 p-2 rounded-full transition-all bg-black/60 hover:bg-accent-purple hover:text-cinema-bg text-white opacity-0 group-hover:opacity-100 z-10"
         onClick={handleWatchlistClick}
         title={inWatchlist ? t('details.removeFromList') : t('details.addToList')}
       >

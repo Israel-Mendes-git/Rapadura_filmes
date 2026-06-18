@@ -73,7 +73,7 @@ export default function MovieDetails() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-cinema-bg flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 dark:border-accent-amber"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 dark:border-accent-purple"></div>
       </div>
     );
   }
@@ -85,7 +85,7 @@ export default function MovieDetails() {
           <p className="text-red-500 dark:text-accent-red text-xl font-display mb-6">{t('details.notFound')} (ID: {id})</p>
           <button
             onClick={() => navigate('/')}
-            className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-accent-amber transition-colors"
+            className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-accent-purple transition-colors"
           >
             <ArrowLeft className="w-4 h-4" /> {t('details.back')}
           </button>
@@ -124,7 +124,7 @@ export default function MovieDetails() {
       <div className={`relative max-w-7xl mx-auto px-4 sm:px-6 ${backdropUrl ? 'pt-[34vh] sm:pt-[38vh]' : 'pt-10'} pb-16`}>
         <button
           onClick={() => navigate('/')}
-          className="mb-8 inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-accent-amber transition-colors"
+          className="mb-8 inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-accent-purple transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> {t('details.back')}
         </button>
@@ -143,7 +143,7 @@ export default function MovieDetails() {
               {movie.trailerUrl && (
                 <button
                   onClick={handleWatchClick}
-                  className="flex-1 py-3 px-5 bg-green-600 hover:bg-green-700 dark:bg-accent-amber dark:hover:bg-accent-amber/90 text-white dark:text-cinema-bg rounded-card font-semibold dark:font-display transition-all dark:shadow-glow dark:hover:shadow-glow-strong flex items-center justify-center gap-2"
+                  className="flex-1 py-3 px-5 bg-green-600 hover:bg-green-700 dark:bg-accent-purple dark:hover:bg-accent-purple/90 text-white dark:text-cinema-bg rounded-card font-semibold dark:font-display transition-all dark:shadow-glow dark:hover:shadow-glow-strong flex items-center justify-center gap-2"
                 >
                   <Play className="w-5 h-5 fill-current" /> {t('details.watchTrailer')}
                 </button>
@@ -171,12 +171,12 @@ export default function MovieDetails() {
             </h1>
 
             {movie.tagline && movie.tagline !== '...' && (
-              <p className="text-lg sm:text-xl text-purple-600 dark:text-accent-amber/90 italic mb-6">{movie.tagline}</p>
+              <p className="text-lg sm:text-xl text-purple-600 dark:text-accent-purple/90 italic mb-6">{movie.tagline}</p>
             )}
 
             <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-8">
               <div className="flex items-center gap-2">
-                <Star className="w-6 h-6 text-green-500 dark:text-accent-amber fill-current" />
+                <Star className="w-6 h-6 text-green-500 dark:text-accent-purple fill-current" />
                 <span className="text-2xl font-display font-semibold text-gray-900 dark:text-gray-50">{movie.vote_average?.toFixed(1)}</span>
                 {movie.vote_count > 0 && (
                   <span className="text-gray-500 dark:text-gray-400 text-sm">({movie.vote_count} {t('details.votes')})</span>

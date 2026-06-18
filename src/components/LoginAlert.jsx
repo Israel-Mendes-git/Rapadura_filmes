@@ -22,7 +22,7 @@ export default function LoginAlert({ message }) {
         <div className="flex gap-4 justify-center">
           <Link
             to="/login"
-            className="px-6 py-2 bg-purple-600 hover:bg-purple-700 dark:bg-accent-amber dark:hover:bg-accent-amber/90 dark:text-cinema-bg dark:font-semibold dark:shadow-glow text-white rounded-lg transition-colors"
+            className="px-6 py-2 bg-purple-600 hover:bg-purple-700 dark:bg-accent-purple dark:hover:bg-accent-purple/90 dark:text-cinema-bg dark:font-semibold dark:shadow-glow text-white rounded-lg transition-colors"
           >
             {t('loginAlert.loginBtn')}
           </Link>

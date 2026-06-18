@@ -45,11 +45,11 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-purple-500 dark:bg-accent-amber/70 rounded-full;
+  @apply bg-purple-500 dark:bg-accent-purple/70 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-purple-600 dark:bg-accent-amber;
+  @apply bg-purple-600 dark:bg-accent-purple;
 }
 
 /* Animações */

@@ -16,7 +16,7 @@ export default function MovieCarousel({ movies, title, onMovieClick }) {
   return (
     <div className="mb-12">
       <h2 className="font-display text-2xl lg:text-3xl font-extrabold tracking-tight mb-6 text-zinc-900 dark:text-white">
-        <span className="inline-block w-1 h-6 lg:h-7 align-middle mr-3 rounded-full bg-accent-amber" />
+        <span className="inline-block w-1 h-6 lg:h-7 align-middle mr-3 rounded-full bg-accent-purple" />
         {title}
       </h2>
       <Swiper

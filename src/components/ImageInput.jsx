@@ -65,7 +65,7 @@ export default function ImageInput({ label, value, onChange, kind = 'image' }) {
             value={value || ''}
             onChange={(ev) => onChange(ev.target.value)}
             placeholder={isVideo ? t('upload.videoPlaceholder') : t('upload.imagePlaceholder')}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-white/10 rounded-card bg-transparent dark:bg-cinema-elevated text-sm outline-none transition-colors focus:border-accent-amber focus:ring-1 focus:ring-accent-amber/40"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-white/10 rounded-card bg-transparent dark:bg-cinema-elevated text-sm outline-none transition-colors focus:border-accent-purple focus:ring-1 focus:ring-accent-purple/40"
           />
           <div className="flex items-center gap-2 flex-wrap">
             <button type="button" onClick={() => fileRef.current && fileRef.current.click()} disabled={busy} className="px-3 py-1.5 text-sm rounded-card border border-gray-300 dark:border-white/10 hover:bg-gray-100 dark:bg-cinema-elevated dark:hover:bg-white/5 transition-colors disabled:opacity-50">

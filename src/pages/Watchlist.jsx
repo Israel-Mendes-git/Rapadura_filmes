@@ -24,14 +24,14 @@ export default function Watchlist() {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-cinema-bg flex items-center justify-center px-4">
         <div className="flex flex-col items-center text-center">
-          <span className="inline-flex items-center justify-center w-16 h-16 rounded-card-lg bg-gray-200 dark:bg-cinema-surface dark:border dark:border-white/5 text-accent-amber shadow-glow mb-6">
+          <span className="inline-flex items-center justify-center w-16 h-16 rounded-card-lg bg-gray-200 dark:bg-cinema-surface dark:border dark:border-white/5 text-accent-purple shadow-glow mb-6">
             <Bookmark className="w-8 h-8" />
           </span>
           <h2 className="text-2xl font-display font-bold text-gray-900 dark:text-white mb-2">{t('watchlistPage.empty')}</h2>
           <p className="text-gray-600 dark:text-zinc-400 mb-6">{t('watchlistPage.emptyMessage')}</p>
           <button
             onClick={() => navigate('/')}
-            className="px-6 py-3 rounded-card bg-accent-amber text-cinema-bg font-display font-semibold shadow-glow hover:shadow-glow-strong transition-all"
+            className="px-6 py-3 rounded-card bg-accent-purple text-cinema-bg font-display font-semibold shadow-glow hover:shadow-glow-strong transition-all"
           >
             {t('home')}
           </button>
@@ -45,7 +45,7 @@ export default function Watchlist() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <span className="inline-flex items-center justify-center w-11 h-11 rounded-card bg-gray-200 dark:bg-cinema-surface dark:border dark:border-white/5 text-accent-amber shadow-glow">
+            <span className="inline-flex items-center justify-center w-11 h-11 rounded-card bg-gray-200 dark:bg-cinema-surface dark:border dark:border-white/5 text-accent-purple shadow-glow">
               <Bookmark className="w-6 h-6" />
             </span>
             <h1 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-gray-900 dark:text-white">
@@ -53,7 +53,7 @@ export default function Watchlist() {
             </h1>
           </div>
           <p className="flex items-center gap-2 text-sm text-gray-600 dark:text-zinc-400">
-            <span className="font-display font-semibold text-accent-amber">
+            <span className="font-display font-semibold text-accent-purple">
               {watchlist.length}
             </span>
             {watchlist.length === 1 ? t('watchlistPage.items_one') : t('watchlistPage.items_other')}

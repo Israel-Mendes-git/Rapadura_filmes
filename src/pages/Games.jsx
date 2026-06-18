@@ -53,7 +53,7 @@ export default function Games() {
              style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, white 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
         {/* Glow âmbar cinematográfico (somente no escuro) */}
         <div className="pointer-events-none absolute -left-32 top-0 hidden h-96 w-96 rounded-full
-                        bg-accent-amber/10 blur-3xl dark:block" />
+                        bg-accent-purple/10 blur-3xl dark:block" />
         <div className="relative mx-auto max-w-7xl px-4 py-12 sm:py-16">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -62,7 +62,7 @@ export default function Games() {
           >
             <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1
                              text-xs font-semibold text-white ring-1 ring-white/20 backdrop-blur-sm
-                             dark:bg-accent-amber/10 dark:text-accent-amber dark:ring-accent-amber/30">
+                             dark:bg-accent-purple/10 dark:text-accent-purple dark:ring-accent-purple/30">
               <Gamepad2 className="h-4 w-4" /> {t('jogos')}
             </span>
             <h1 className="mt-4 font-display text-4xl font-bold tracking-tight text-white drop-shadow-sm sm:text-5xl">
@@ -83,8 +83,8 @@ export default function Games() {
         ) : games.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-card-lg border border-dashed
                           border-gray-300 py-24 text-center dark:border-white/10 dark:bg-cinema-surface/40">
-            <div className="mb-4 rounded-full bg-purple-100 p-5 dark:bg-accent-amber/10 dark:ring-1 dark:ring-accent-amber/20">
-              <Gamepad2 className="h-10 w-10 text-purple-600 dark:text-accent-amber" />
+            <div className="mb-4 rounded-full bg-purple-100 p-5 dark:bg-accent-purple/10 dark:ring-1 dark:ring-accent-purple/20">
+              <Gamepad2 className="h-10 w-10 text-purple-600 dark:text-accent-purple" />
             </div>
             <h2 className="font-display text-xl font-semibold text-gray-900 dark:text-white">
               {t('games.emptyTitle')}
@@ -104,7 +104,7 @@ export default function Games() {
                 className="mb-10"
               >
                 <h2 className="mb-3 flex items-center gap-2 font-display text-lg font-semibold text-gray-900 dark:text-white">
-                  <Sparkles className="h-5 w-5 text-purple-500 dark:text-accent-amber" /> {t('games.featured')}
+                  <Sparkles className="h-5 w-5 text-purple-500 dark:text-accent-purple" /> {t('games.featured')}
                 </h2>
                 <a
                   href={'/game/' + featured.id}
@@ -123,14 +123,14 @@ export default function Games() {
                   <div className="absolute inset-y-0 left-0 flex max-w-xl flex-col justify-center p-6 sm:p-10">
                     <h3 className="font-display text-2xl font-bold tracking-tight text-white drop-shadow sm:text-3xl">{featured.title}</h3>
                     {Array.isArray(featured.genres) && featured.genres.length > 0 && (
-                      <p className="mt-1 text-sm font-medium text-purple-200 dark:text-accent-amber/90">{featured.genres.slice(0, 3).join(' · ')}</p>
+                      <p className="mt-1 text-sm font-medium text-purple-200 dark:text-accent-purple/90">{featured.genres.slice(0, 3).join(' · ')}</p>
                     )}
                     {featured.overview && (
                       <p className="mt-3 line-clamp-2 max-w-md text-sm text-gray-200/90">{featured.overview}</p>
                     )}
                     <span className="mt-5 inline-flex w-fit items-center gap-2 rounded-lg bg-purple-600 px-5 py-2
                                      text-sm font-semibold text-white transition-colors group-hover:bg-purple-500
-                                     dark:bg-accent-amber dark:text-cinema-bg dark:shadow-glow dark:group-hover:bg-amber-400">
+                                     dark:bg-accent-purple dark:text-cinema-bg dark:shadow-glow dark:group-hover:bg-amber-400">
                       {t('games.viewDetails')}
                     </span>
                   </div>

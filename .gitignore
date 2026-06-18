@@ -34,3 +34,6 @@ backend/.env
 backend/*.bak_import
 backend/*.bak_*
 *.bak_*
+
+# build artifacts stray na raiz (nunca versionar bundles do vite na raiz)
+/index-*.js

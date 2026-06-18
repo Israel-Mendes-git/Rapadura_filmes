@@ -1,5 +1,5 @@
 // src/App.jsx
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import BackToTop from './components/BackToTop';
@@ -7,23 +7,25 @@ import Footer from './components/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
 import AdminRoute from './components/AdminRoute';
 import { useAuth } from './contexts/AuthContext';
+import { lazyWithRetry } from './lib/lazyWithRetry';
 
-// Code-splitting: cada página vira um chunk carregado sob demanda
-const Home = lazy(() => import('./pages/Home'));
-const MovieDetails = lazy(() => import('./pages/MovieDetails'));
-const Search = lazy(() => import('./pages/Search'));
-const Watchlist = lazy(() => import('./pages/Watchlist'));
-const Discover = lazy(() => import('./pages/Discover'));
-const Games = lazy(() => import('./pages/Games'));
-const GameDetails = lazy(() => import('./pages/GameDetails'));
-const Studio = lazy(() => import('./pages/Studio'));
-const Login = lazy(() => import('./pages/Login'));
-const Register = lazy(() => import('./pages/Register'));
-const NotFound = lazy(() => import('./pages/NotFound'));
+// Code-splitting: cada página vira um chunk carregado sob demanda.
+// lazyWithRetry recarrega a página uma única vez se o chunk sumir após deploy.
+const Home = lazyWithRetry(() => import('./pages/Home'));
+const MovieDetails = lazyWithRetry(() => import('./pages/MovieDetails'));
+const Search = lazyWithRetry(() => import('./pages/Search'));
+const Watchlist = lazyWithRetry(() => import('./pages/Watchlist'));
+const Discover = lazyWithRetry(() => import('./pages/Discover'));
+const Games = lazyWithRetry(() => import('./pages/Games'));
+const GameDetails = lazyWithRetry(() => import('./pages/GameDetails'));
+const Studio = lazyWithRetry(() => import('./pages/Studio'));
+const Login = lazyWithRetry(() => import('./pages/Login'));
+const Register = lazyWithRetry(() => import('./pages/Register'));
+const NotFound = lazyWithRetry(() => import('./pages/NotFound'));
 // Painel de administração (filmes próprios + games)
-const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'));
-const AdminMovies = lazy(() => import('./pages/admin/AdminMovies'));
-const AdminGames = lazy(() => import('./pages/admin/AdminGames'));
+const AdminLayout = lazyWithRetry(() => import('./pages/admin/AdminLayout'));
+const AdminMovies = lazyWithRetry(() => import('./pages/admin/AdminMovies'));
+const AdminGames = lazyWithRetry(() => import('./pages/admin/AdminGames'));
 
 function Spinner() {
   return (

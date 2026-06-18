@@ -63,18 +63,18 @@ export default function GameDetails() {
   };
 
   if (loading) return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-950">
-      <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-purple-600" />
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-cinema-bg">
+      <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-purple-600 dark:border-accent-amber" />
     </div>
   );
   if (!game) return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-950">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-cinema-bg">
       <div className="text-center">
-        <div className="mx-auto mb-4 w-fit rounded-full bg-red-100 p-4 dark:bg-red-900/30">
-          <Gamepad2 className="h-9 w-9 text-red-500" />
+        <div className="mx-auto mb-4 w-fit rounded-full bg-red-100 p-4 dark:bg-accent-red/10 dark:ring-1 dark:ring-accent-red/30">
+          <Gamepad2 className="h-9 w-9 text-red-500 dark:text-accent-red" />
         </div>
-        <p className="mb-4 text-xl text-red-500">{t('games.notFound', { id })}</p>
-        <button onClick={() => navigate('/games')} className="rounded-lg bg-purple-600 px-5 py-2 font-semibold text-white hover:bg-purple-700">{t('games.backToGames')}</button>
+        <p className="mb-4 font-display text-xl text-red-500 dark:text-accent-red">{t('games.notFound', { id })}</p>
+        <button onClick={() => navigate('/games')} className="rounded-lg bg-purple-600 px-5 py-2 font-semibold text-white hover:bg-purple-700 dark:bg-accent-amber dark:text-cinema-bg dark:shadow-glow dark:hover:bg-amber-400">{t('games.backToGames')}</button>
       </div>
     </div>
   );
@@ -83,20 +83,22 @@ export default function GameDetails() {
   const builds = Array.isArray(game.builds) ? game.builds : [];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      {/* Banner de fundo com a capa esmaecida */}
+    <div className="min-h-screen bg-gray-50 dark:bg-cinema-bg">
+      {/* Banner de fundo (backdrop) com a capa esmaecida + scrim */}
       <div className="relative h-52 w-full overflow-hidden sm:h-64 md:h-72">
         {imageUrl ? (
-          <img src={imageUrl} alt="" className="h-full w-full scale-110 object-cover blur-xl" />
+          <img src={imageUrl} alt="" className="h-full w-full scale-110 object-cover blur-xl dark:brightness-75" />
         ) : (
-          <div className="h-full w-full bg-gradient-to-br from-purple-700 via-purple-900 to-gray-950" />
+          <div className="h-full w-full bg-gradient-to-br from-purple-700 via-purple-900 to-gray-950
+                          dark:from-cinema-elevated dark:via-cinema-surface dark:to-cinema-bg" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-gray-50 via-gray-50/60 to-black/30
-                        dark:from-gray-950 dark:via-gray-950/70" />
+                        dark:from-cinema-bg dark:via-cinema-bg/80 dark:to-transparent" />
         <button
           onClick={() => navigate('/games')}
           className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-black/50 px-3 py-1.5
-                     text-sm font-medium text-white ring-1 ring-white/20 backdrop-blur-sm hover:bg-black/70"
+                     text-sm font-medium text-white ring-1 ring-white/20 backdrop-blur-md hover:bg-black/70
+                     dark:hover:ring-accent-amber/40"
         >
           <ArrowLeft className="h-4 w-4" /> {t('games.back')}
         </button>
@@ -112,12 +114,14 @@ export default function GameDetails() {
           >
             {imageUrl ? (
               <img src={imageUrl} alt={game.title}
-                   className="aspect-[2/3] w-full rounded-2xl object-cover shadow-2xl ring-1 ring-black/10 dark:ring-white/10" />
+                   className="aspect-[2/3] w-full rounded-card-lg object-cover shadow-2xl ring-1 ring-black/10
+                              dark:shadow-poster dark:ring-white/10" />
             ) : (
-              <div className="flex aspect-[2/3] w-full flex-col items-center justify-center gap-3 rounded-2xl
-                              bg-gradient-to-br from-purple-700 via-purple-900 to-zinc-900 shadow-2xl">
+              <div className="flex aspect-[2/3] w-full flex-col items-center justify-center gap-3 rounded-card-lg
+                              bg-gradient-to-br from-purple-700 via-purple-900 to-zinc-900 shadow-2xl
+                              dark:from-cinema-elevated dark:via-cinema-surface dark:to-cinema-bg dark:shadow-poster">
                 <Gamepad2 className="h-14 w-14 text-white/80" />
-                <span className="px-4 text-center text-sm font-semibold text-white/90">{game.title}</span>
+                <span className="px-4 text-center font-display text-sm font-semibold text-white/90">{game.title}</span>
               </div>
             )}
 
@@ -126,63 +130,67 @@ export default function GameDetails() {
               disabled={busy}
               className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-purple-600 px-4 py-3.5
                          text-base font-semibold text-white shadow-lg shadow-purple-600/25 transition-all
-                         hover:bg-purple-700 hover:shadow-purple-600/40 disabled:opacity-60"
+                         hover:bg-purple-700 hover:shadow-purple-600/40 disabled:opacity-60
+                         dark:bg-accent-amber dark:text-cinema-bg dark:shadow-glow
+                         dark:hover:bg-amber-400 dark:hover:shadow-glow-strong"
             >
               <ActionIcon className={'h-5 w-5' + (busy ? ' animate-spin' : '')} />
               {actionLabel}
             </button>
             {!isLauncher() && (
-              <p className="mt-2 text-center text-xs text-gray-400">{t('games.launcherHint')}</p>
+              <p className="mt-2 text-center text-xs text-gray-400 dark:text-zinc-500">{t('games.launcherHint')}</p>
             )}
           </motion.div>
         </div>
 
         {/* Coluna de info */}
         <div className="md:col-span-2 md:pt-24">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">{game.title}</h1>
+          <h1 className="font-display text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">{game.title}</h1>
 
           {genres.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-2">
               {genres.map((g, i) => (
                 <span key={i} className="rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold
-                                         text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
+                                         text-purple-700 dark:bg-accent-amber/10 dark:text-accent-amber
+                                         dark:ring-1 dark:ring-accent-amber/20">
                   {g}
                 </span>
               ))}
             </div>
           )}
 
-          <p className="mt-6 whitespace-pre-line leading-relaxed text-gray-700 dark:text-gray-300">
+          <p className="mt-6 whitespace-pre-line leading-relaxed text-gray-700 dark:text-zinc-300">
             {game.overview || t('games.noDescription')}
           </p>
 
           {builds.length > 0 && (
             <div className="mt-8">
-              <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white">
-                <Package className="h-5 w-5 text-purple-500" /> {t('games.availableVersions')}
+              <h2 className="mb-3 flex items-center gap-2 font-display text-lg font-semibold text-gray-900 dark:text-white">
+                <Package className="h-5 w-5 text-purple-500 dark:text-accent-amber" /> {t('games.availableVersions')}
               </h2>
               <div className="grid gap-3 sm:grid-cols-2">
                 {builds.map((b) => {
                   const { Icon } = platformMeta(b.plataforma);
                   return (
                     <div key={b.id}
-                         className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-3
-                                    dark:border-gray-800 dark:bg-gray-900">
-                      <div className="rounded-lg bg-purple-100 p-2 dark:bg-purple-900/40">
-                        <Icon className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                         className="flex items-center gap-3 rounded-card border border-gray-200 bg-white p-3
+                                    transition-colors dark:border-white/5 dark:bg-cinema-surface
+                                    dark:shadow-poster dark:hover:border-accent-amber/30">
+                      <div className="rounded-lg bg-purple-100 p-2 dark:bg-accent-amber/10">
+                        <Icon className="h-5 w-5 text-purple-600 dark:text-accent-amber" />
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
                           {b.plataforma}
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <p className="text-xs text-gray-500 dark:text-zinc-400">
                           v{b.versao}
                           {b.tamanho ? ' · ' + b.tamanho : ''}
                         </p>
                       </div>
                       {b.obrigatorio && (
                         <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold
-                                         text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
+                                         text-amber-700 dark:bg-accent-amber/15 dark:text-accent-amber">
                           {t('games.required')}
                         </span>
                       )}

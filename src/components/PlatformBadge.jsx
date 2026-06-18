@@ -21,8 +21,9 @@ export function PlatformBadge({ name, className = '' }) {
     <span
       title={label}
       className={
-        'inline-flex items-center gap-1 rounded-full bg-black/55 backdrop-blur-sm ' +
-        'px-2 py-0.5 text-[10px] font-medium text-white ring-1 ring-white/15 ' +
+        'inline-flex items-center gap-1 rounded-full bg-black/60 backdrop-blur-md ' +
+        'px-2 py-0.5 text-[10px] font-medium text-white/95 ring-1 ring-white/20 ' +
+        'shadow-sm shadow-black/40 ' +
         className
       }
     >

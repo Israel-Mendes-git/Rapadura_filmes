@@ -1,7 +1,7 @@
 // src/pages/admin/AdminGames.jsx
 // Lista + formulário de games e, ao editar um game, a gestão das suas builds
 // (criar build, fazer upload CHUNKED do binário e excluir).
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { gamesApi, buildsApi, uploadBuildBinary } from '../../services/adminApi';
@@ -15,7 +15,7 @@ const STATUS = ['rascunho', 'publicado', 'arquivado'];
 export default function AdminGames() {
   const { t } = useTranslation();
   const { addToast } = useToast();
-  const toast = (m, type = 'success') => addToast(m, type);
+  const toast = useCallback((m, type = 'success') => addToast(m, type), [addToast]);
 
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,14 +24,14 @@ export default function AdminGames() {
   const [saving, setSaving] = useState(false);
   const [builds, setBuilds] = useState([]); // builds do game em edição
 
-  const load = () => {
+  const load = useCallback(() => {
     setLoading(true);
     gamesApi.list()
       .then(setGames)
       .catch(() => toast(t('admin.game.loadError'), 'error'))
       .finally(() => setLoading(false));
-  };
-  useEffect(load, []);
+  }, [t, toast]);
+  useEffect(() => { load(); }, [load]);
 
   const loadBuilds = (gameId) => {
     buildsApi.listByGame(gameId).then(setBuilds).catch(() => setBuilds([]));
@@ -89,18 +89,18 @@ export default function AdminGames() {
     <div className="grid lg:grid-cols-[380px_1fr] gap-8">
       {/* Formulário do game */}
       <div className="h-fit space-y-6">
-        <form onSubmit={submit} className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 space-y-3 ring-1 ring-foreground/10">
-          <h2 className="text-xl font-bold mb-2">{editingId ? t('admin.game.editTitle') : t('admin.game.newTitle')}</h2>
+        <form onSubmit={submit} className="bg-white dark:bg-cinema-surface rounded-card-lg shadow-lg dark:shadow-poster p-6 space-y-3 ring-1 ring-foreground/10 dark:ring-white/10">
+          <h2 className="text-xl font-bold font-display tracking-tight mb-2 dark:text-white">{editingId ? t('admin.game.editTitle') : t('admin.game.newTitle')}</h2>
           <Field label={t('admin.game.title')}><Input value={form.titulo} onChange={set('titulo')} placeholder={t('admin.game.titlePlaceholder')} /></Field>
           <Field label={t('admin.game.description')}>
             <textarea value={form.descricao} onChange={set('descricao')} rows={3}
-              className="w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30" />
+              className="w-full rounded-card border border-input dark:border-white/10 bg-transparent dark:bg-cinema-elevated px-2.5 py-1 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:focus-visible:ring-accent-amber/40 dark:focus-visible:border-accent-amber" />
           </Field>
           <ImageInput label={t('admin.cover')} value={form.capa} onChange={(v) => setForm((f) => ({ ...f, capa: v }))} />
           <Field label={t('admin.genresComma')}><Input value={form.generos} onChange={set('generos')} placeholder={t('admin.game.genresPlaceholder')} /></Field>
           <Field label={t('admin.game.status')}><Select value={form.status} onChange={set('status')} options={STATUS} /></Field>
           <div className="flex gap-2 pt-2">
-            <Button type="submit" disabled={saving}>{saving ? t('admin.saving') : (editingId ? t('admin.game.save') : t('admin.game.create'))}</Button>
+            <Button type="submit" disabled={saving} className="dark:bg-accent-amber dark:text-black dark:hover:bg-accent-amber/90 dark:shadow-glow">{saving ? t('admin.saving') : (editingId ? t('admin.game.save') : t('admin.game.create'))}</Button>
             {editingId && <Button type="button" variant="outline" onClick={resetForm}>{t('admin.cancel')}</Button>}
           </div>
         </form>
@@ -112,23 +112,23 @@ export default function AdminGames() {
 
       {/* Lista de games */}
       <div>
-        <h2 className="text-xl font-bold mb-4">{t('admin.game.listTitle', { count: games.length })}</h2>
+        <h2 className="text-xl font-bold font-display tracking-tight mb-4 dark:text-white">{t('admin.game.listTitle', { count: games.length })}</h2>
         {loading ? (
-          <p className="text-gray-500">{t('admin.loading')}</p>
+          <p className="text-gray-500 dark:text-gray-400">{t('admin.loading')}</p>
         ) : games.length === 0 ? (
-          <p className="text-gray-500">{t('admin.game.empty')}</p>
+          <p className="text-gray-500 dark:text-gray-400">{t('admin.game.empty')}</p>
         ) : (
           <div className="space-y-3">
             {games.map((g) => (
-              <div key={g.id} className="bg-white dark:bg-gray-900 rounded-xl p-4 ring-1 ring-foreground/10 flex items-center gap-4">
+              <div key={g.id} className="bg-white dark:bg-cinema-elevated rounded-card p-4 ring-1 ring-foreground/10 dark:ring-white/10 dark:hover:ring-accent-amber/30 transition-colors flex items-center gap-4">
                 {g.capa ? (
-                  <img src={g.capa} alt={g.titulo} className="w-12 h-16 object-cover rounded" onError={(e) => { e.target.style.visibility = 'hidden'; }} />
+                  <img src={g.capa} alt={g.titulo} className="w-12 h-16 object-cover rounded-card dark:shadow-poster" onError={(e) => { e.target.style.visibility = 'hidden'; }} />
                 ) : (
-                  <div className="w-12 h-16 bg-gray-200 dark:bg-gray-800 rounded flex items-center justify-center text-xs text-gray-400">{t('admin.noCover')}</div>
+                  <div className="w-12 h-16 bg-gray-200 dark:bg-cinema-surface rounded-card flex items-center justify-center text-xs text-gray-400">{t('admin.noCover')}</div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold truncate">{g.titulo}</p>
-                  <p className="text-sm text-gray-500">
+                  <p className="font-semibold truncate dark:text-gray-100">{g.titulo}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     <span className="capitalize">{g.status}</span> · {t('admin.game.buildCount', { count: g.builds_count ?? 0 })}
                   </p>
                 </div>
@@ -204,8 +204,8 @@ function BuildsPanel({ gameId, builds, reload, toast, t }) {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 ring-1 ring-foreground/10">
-      <h3 className="text-lg font-bold mb-3">{t('admin.builds.title')}</h3>
+    <div className="bg-white dark:bg-cinema-surface rounded-card-lg shadow-lg dark:shadow-poster p-6 ring-1 ring-foreground/10 dark:ring-white/10">
+      <h3 className="text-lg font-bold font-display tracking-tight mb-3 dark:text-white">{t('admin.builds.title')}</h3>
 
       <form onSubmit={createBuild} className="space-y-3 mb-4">
         <div className="grid grid-cols-2 gap-3">
@@ -217,38 +217,38 @@ function BuildsPanel({ gameId, builds, reload, toast, t }) {
             className="w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30" />
         </Field>
         <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={obrigatorio} onChange={(e) => setObrigatorio(e.target.checked)} />
+          <input type="checkbox" checked={obrigatorio} onChange={(e) => setObrigatorio(e.target.checked)} className="dark:accent-accent-amber" />
           {t('admin.builds.mandatoryUpdate')}
         </label>
-        <Button type="submit" size="sm" disabled={creating}>{creating ? t('admin.builds.creating') : t('admin.builds.addBuild')}</Button>
+        <Button type="submit" size="sm" disabled={creating} className="dark:bg-accent-amber dark:text-black dark:hover:bg-accent-amber/90">{creating ? t('admin.builds.creating') : t('admin.builds.addBuild')}</Button>
       </form>
 
       {builds.length === 0 ? (
-        <p className="text-sm text-gray-500">{t('admin.builds.empty')}</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">{t('admin.builds.empty')}</p>
       ) : (
         <div className="space-y-2">
           {builds.map((b) => (
-            <div key={b.id} className="border border-gray-200 dark:border-gray-800 rounded-lg p-3 text-sm">
+            <div key={b.id} className="border border-gray-200 dark:border-white/10 dark:bg-cinema-elevated rounded-card p-3 text-sm">
               <div className="flex items-center justify-between gap-2">
-                <span className="font-medium">
+                <span className="font-medium dark:text-gray-100">
                   {b.plataforma} · v{b.versao} {b.obrigatorio ? '· ' + t('admin.builds.mandatory') : ''}
                 </span>
                 <Button size="xs" variant="destructive" onClick={() => removeBuild(b)}>{t('admin.delete')}</Button>
               </div>
               {b.arquivo ? (
-                <p className="text-xs text-gray-500 mt-1 break-all">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 break-all">
                   {b.nome_arquivo} · {(b.tamanho / 1e6).toFixed(1)} MB · sha256 {String(b.checksum).slice(0, 12)}…{' '}
-                  <a className="text-purple-600 underline" href={buildsApi.downloadUrl(b.id)} target="_blank" rel="noreferrer">{t('admin.builds.download')}</a>
+                  <a className="text-purple-600 dark:text-accent-amber underline" href={buildsApi.downloadUrl(b.id)} target="_blank" rel="noreferrer">{t('admin.builds.download')}</a>
                 </p>
               ) : (
-                <p className="text-xs text-amber-600 mt-1">{t('admin.builds.noBinary')}</p>
+                <p className="text-xs text-amber-600 dark:text-accent-amber mt-1">{t('admin.builds.noBinary')}</p>
               )}
               {progress[b.id] !== undefined ? (
-                <div className="mt-2 h-1.5 bg-gray-200 dark:bg-gray-800 rounded">
-                  <div className="h-1.5 bg-purple-600 rounded transition-all" style={{ width: `${Math.round(progress[b.id] * 100)}%` }} />
+                <div className="mt-2 h-1.5 bg-gray-200 dark:bg-white/10 rounded">
+                  <div className="h-1.5 bg-purple-600 dark:bg-accent-amber rounded transition-all" style={{ width: `${Math.round(progress[b.id] * 100)}%` }} />
                 </div>
               ) : (
-                <input type="file" className="mt-2 text-xs"
+                <input type="file" className="mt-2 text-xs dark:text-gray-400"
                   onChange={(e) => onUpload(b, e.target.files?.[0])} />
               )}
             </div>
@@ -271,7 +271,7 @@ function Field({ label, children }) {
 function Select({ value, onChange, options }) {
   return (
     <select value={value} onChange={onChange}
-      className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30">
+      className="h-8 w-full rounded-card border border-input dark:border-white/10 bg-transparent dark:bg-cinema-elevated px-2.5 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:focus-visible:ring-accent-amber/40 dark:focus-visible:border-accent-amber">
       {options.map((o) => <option key={o} value={o}>{o}</option>)}
     </select>
   );

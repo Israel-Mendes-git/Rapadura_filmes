@@ -5,6 +5,7 @@ import { customMovies } from '../data/customMovies';
 import api from '../services/api';
 import CategoryFilter from '../components/CategoryFilter';
 import { useTranslation } from 'react-i18next';
+import { Compass, Film } from 'lucide-react';
 
 export default function Discover() {
   const [movies, setMovies] = useState([]);
@@ -42,18 +43,23 @@ export default function Discover() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      <div className="min-h-screen bg-gray-50 dark:bg-cinema-bg flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-amber"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-cinema-bg py-10">
       <div className="max-w-7xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-          🔍 {t('discoverTitle')}
-        </h1>
+        <div className="flex items-center gap-3 mb-8">
+          <span className="inline-flex items-center justify-center w-11 h-11 rounded-card bg-gray-200 dark:bg-cinema-surface dark:border dark:border-white/5 text-accent-amber shadow-glow">
+            <Compass className="w-6 h-6" />
+          </span>
+          <h1 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-gray-900 dark:text-white">
+            {t('discoverTitle')}
+          </h1>
+        </div>
 
         <CategoryFilter
           selectedCategory={selectedCategory}
@@ -63,21 +69,27 @@ export default function Discover() {
         />
 
         {filteredMovies.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+          <div className="flex flex-col items-center text-center py-20">
+            <span className="inline-flex items-center justify-center w-16 h-16 rounded-card-lg bg-gray-200 dark:bg-cinema-surface dark:border dark:border-white/5 text-gray-400 dark:text-gray-600 mb-5">
+              <Film className="w-8 h-8" />
+            </span>
+            <p className="text-xl font-display text-gray-600 dark:text-gray-300">
               {t('noMoviesFound')}
             </p>
           </div>
         ) : (
           <>
-            <div className="mb-4 text-gray-600 dark:text-gray-400">
-              {filteredMovies.length} {filteredMovies.length === 1 ? t('contentFound') : t('contentsFound')}
+            <div className="mb-6 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <span className="font-display font-semibold text-accent-amber">
+                {filteredMovies.length}
+              </span>
+              {filteredMovies.length === 1 ? t('contentFound') : t('contentsFound')}
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-7">
               {filteredMovies.map(movie => (
-                <div 
-                  key={movie.id} 
-                  onClick={() => handleMovieClick(movie.id)} 
+                <div
+                  key={movie.id}
+                  onClick={() => handleMovieClick(movie.id)}
                   className="cursor-pointer"
                 >
                   <MovieCard movie={movie} />

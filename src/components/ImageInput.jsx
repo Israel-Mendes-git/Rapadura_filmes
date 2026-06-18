@@ -50,12 +50,12 @@ export default function ImageInput({ label, value, onChange, kind = 'image' }) {
       <div className="flex items-start gap-3">
         {value ? (
           isVideo ? (
-            <video src={value} className="w-28 h-16 object-cover rounded border border-gray-200 dark:border-gray-700 bg-black" muted />
+            <video src={value} className="w-28 h-16 object-cover rounded-card border border-gray-200 dark:border-white/10 bg-black dark:shadow-poster" muted />
           ) : (
-            <img src={value} alt="" className="w-16 h-24 object-cover rounded border border-gray-200 dark:border-gray-700" onError={(ev) => { ev.target.style.visibility = 'hidden'; }} />
+            <img src={value} alt="" className="w-16 h-24 object-cover rounded-card border border-gray-200 dark:border-white/10 dark:shadow-poster" onError={(ev) => { ev.target.style.visibility = 'hidden'; }} />
           )
         ) : (
-          <div className={(isVideo ? 'w-28 h-16' : 'w-16 h-24') + ' rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center text-[10px] text-gray-400 text-center px-1'}>
+          <div className={(isVideo ? 'w-28 h-16' : 'w-16 h-24') + ' rounded-card border border-dashed border-gray-300 dark:border-white/10 dark:bg-cinema-elevated flex items-center justify-center text-[10px] text-gray-400 text-center px-1'}>
             {isVideo ? t('upload.noVideo') : t('upload.noImage')}
           </div>
         )}
@@ -65,19 +65,19 @@ export default function ImageInput({ label, value, onChange, kind = 'image' }) {
             value={value || ''}
             onChange={(ev) => onChange(ev.target.value)}
             placeholder={isVideo ? t('upload.videoPlaceholder') : t('upload.imagePlaceholder')}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded bg-transparent text-sm"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-white/10 rounded-card bg-transparent dark:bg-cinema-elevated text-sm outline-none transition-colors focus:border-accent-amber focus:ring-1 focus:ring-accent-amber/40"
           />
           <div className="flex items-center gap-2 flex-wrap">
-            <button type="button" onClick={() => fileRef.current && fileRef.current.click()} disabled={busy} className="px-3 py-1.5 text-sm rounded border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50">
+            <button type="button" onClick={() => fileRef.current && fileRef.current.click()} disabled={busy} className="px-3 py-1.5 text-sm rounded-card border border-gray-300 dark:border-white/10 hover:bg-gray-100 dark:bg-cinema-elevated dark:hover:bg-white/5 transition-colors disabled:opacity-50">
               {busy ? t('upload.sending') : (isVideo ? t('upload.sendVideo') : t('upload.sendImage'))}
             </button>
             {value ? (
-              <button type="button" onClick={() => onChange('')} className="px-3 py-1.5 text-sm rounded border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">{t('upload.remove')}</button>
+              <button type="button" onClick={() => onChange('')} className="px-3 py-1.5 text-sm rounded-card border border-gray-300 dark:border-white/10 hover:bg-gray-100 dark:bg-cinema-elevated dark:hover:bg-white/5 transition-colors">{t('upload.remove')}</button>
             ) : null}
             <span className="text-[11px] text-gray-400">{t('upload.max', { size: isVideo ? '600MB' : '30MB' })}</span>
             <input ref={fileRef} type="file" accept={isVideo ? 'video/*' : 'image/*'} className="hidden" onChange={pick} />
           </div>
-          {err ? <p className="text-xs text-red-500">{err}</p> : null}
+          {err ? <p className="text-xs text-accent-red">{err}</p> : null}
         </div>
       </div>
     </div>

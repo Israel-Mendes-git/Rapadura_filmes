@@ -25,7 +25,7 @@ export default function GenreFilter({ selectedGenre, onGenreChange }) {
   if (loading) {
     return (
       <div className="flex justify-center py-4">
-        <div className="animate-pulse text-zinc-400">{t('common.loadingGenres')}</div>
+        <div className="animate-pulse text-gray-500 dark:text-zinc-400">{t('common.loadingGenres')}</div>
       </div>
     );
   }
@@ -36,9 +36,9 @@ export default function GenreFilter({ selectedGenre, onGenreChange }) {
         <button
           onClick={() => onGenreChange(null)}
           className={`px-4 py-2 rounded-lg transition-colors ${
-            !selectedGenre 
-              ? 'bg-purple-600 text-white' 
-              : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
+            !selectedGenre
+              ? 'bg-purple-600 text-white dark:bg-accent-amber dark:text-cinema-bg dark:font-semibold dark:shadow-glow'
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-cinema-surface dark:text-zinc-400 dark:hover:bg-cinema-elevated dark:hover:text-accent-amber'
           }`}
         >
           Todos
@@ -49,8 +49,8 @@ export default function GenreFilter({ selectedGenre, onGenreChange }) {
             onClick={() => onGenreChange(genre.id)}
             className={`px-4 py-2 rounded-lg transition-colors ${
               selectedGenre === genre.id
-                ? 'bg-purple-600 text-white'
-                : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
+                ? 'bg-purple-600 text-white dark:bg-accent-amber dark:text-cinema-bg dark:font-semibold dark:shadow-glow'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-cinema-surface dark:text-zinc-400 dark:hover:bg-cinema-elevated dark:hover:text-accent-amber'
             }`}
           >
             {genre.name}

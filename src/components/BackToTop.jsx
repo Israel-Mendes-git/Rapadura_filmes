@@ -28,7 +28,7 @@ export default function BackToTop() {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-8 right-8 bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 z-40"
+      className="fixed bottom-8 right-8 bg-purple-600 hover:bg-purple-700 dark:bg-accent-amber dark:hover:bg-accent-amber/90 dark:text-cinema-bg dark:shadow-glow text-white p-3 rounded-full shadow-lg transition-all duration-300 z-40"
       aria-label="Voltar ao topo"
     >
       ↑

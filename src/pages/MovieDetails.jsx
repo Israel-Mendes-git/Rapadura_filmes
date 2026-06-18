@@ -6,6 +6,7 @@ import { customMovies } from '../data/customMovies';
 import api from '../services/api';
 import { useTranslation } from 'react-i18next';
 import TrailerModal from '../components/TrailerModal';
+import { ArrowLeft, Play, Star, Clock, Calendar, Check, Plus } from 'lucide-react';
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -71,22 +72,22 @@ export default function MovieDetails() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      <div className="min-h-screen bg-gray-50 dark:bg-cinema-bg flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 dark:border-accent-amber"></div>
       </div>
     );
   }
-  
+
   if (!movie) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-cinema-bg flex items-center justify-center px-4">
         <div className="text-center">
-          <p className="text-red-500 text-xl mb-4">{t('details.notFound')} (ID: {id})</p>
-          <button 
+          <p className="text-red-500 dark:text-accent-red text-xl font-display mb-6">{t('details.notFound')} (ID: {id})</p>
+          <button
             onClick={() => navigate('/')}
-            className="mb-8 text-gray-600 dark:text-gray-400 hover:text-purple-600 transition-colors"
+            className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-accent-amber transition-colors"
           >
-            ← {t('details.back')}
+            <ArrowLeft className="w-4 h-4" /> {t('details.back')}
           </button>
         </div>
       </div>
@@ -97,98 +98,112 @@ export default function MovieDetails() {
   const backdropUrl = getImageUrl(movie.backdrop_path);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="min-h-screen bg-gray-50 dark:bg-cinema-bg">
       {/* Modal do Trailer */}
       {showTrailer && movie.trailerUrl && (
-        <TrailerModal 
-          trailerUrl={movie.trailerUrl} 
+        <TrailerModal
+          trailerUrl={movie.trailerUrl}
           title={movie.title}
-          onClose={() => setShowTrailer(false)} 
+          onClose={() => setShowTrailer(false)}
         />
       )}
 
+      {/* Backdrop cinematográfico full-bleed com scrim subindo do fundo */}
       {backdropUrl && (
-        <div 
-          className="h-[400px] w-full bg-cover bg-center relative"
+        <div
+          className="absolute inset-x-0 top-0 h-[60vh] min-h-[420px] bg-cover bg-center"
           style={{ backgroundImage: 'url(' + backdropUrl + ')' }}
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-50 dark:from-gray-950 to-transparent" />
+          {/* Scrim de baixo p/ cima — funde no fundo da página */}
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-50 dark:from-cinema-bg via-gray-50/40 dark:via-cinema-bg/60 to-transparent" />
+          {/* Vinheta lateral/superior p/ profundidade no dark */}
+          <div className="absolute inset-0 dark:bg-gradient-to-r dark:from-cinema-bg/80 dark:via-transparent dark:to-cinema-bg/40" />
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <button 
+      <div className={`relative max-w-7xl mx-auto px-4 sm:px-6 ${backdropUrl ? 'pt-[34vh] sm:pt-[38vh]' : 'pt-10'} pb-16`}>
+        <button
           onClick={() => navigate('/')}
-          className="mb-8 text-gray-600 dark:text-gray-400 hover:text-purple-600 transition-colors"
+          className="mb-8 inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-accent-amber transition-colors"
         >
-          ← {t('details.back')}
+          <ArrowLeft className="w-4 h-4" /> {t('details.back')}
         </button>
 
-        <div className="flex flex-col lg:flex-row gap-10">
-          <div className="lg:w-80">
-            <img 
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+          <div className="lg:w-80 shrink-0">
+            <img
               src={posterUrl || 'https://via.placeholder.com/500x750'}
               alt={movie.title}
-              className="rounded-xl shadow-2xl w-full"
+              className="rounded-card-lg shadow-2xl dark:shadow-poster ring-1 ring-black/5 dark:ring-white/10 w-full max-w-[18rem] mx-auto lg:mx-0"
             />
-            
+
             {/* Botões */}
-            <div className="flex gap-3 mt-4">
-              {/* Botão Assistir Trailer - Verde */}
+            <div className="flex flex-col sm:flex-row lg:flex-col gap-3 mt-6 max-w-[18rem] mx-auto lg:mx-0">
+              {/* CTA principal — Assistir Trailer (âmbar no dark) */}
               {movie.trailerUrl && (
                 <button
                   onClick={handleWatchClick}
-                  className="flex-1 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                  className="flex-1 py-3 px-5 bg-green-600 hover:bg-green-700 dark:bg-accent-amber dark:hover:bg-accent-amber/90 text-white dark:text-cinema-bg rounded-card font-semibold dark:font-display transition-all dark:shadow-glow dark:hover:shadow-glow-strong flex items-center justify-center gap-2"
                 >
-                  ▶ {t('details.watchTrailer')}
+                  <Play className="w-5 h-5 fill-current" /> {t('details.watchTrailer')}
                 </button>
               )}
-              
-              {/* Botão Watchlist - Roxo */}
+
+              {/* Watchlist — secundário escuro no dark */}
               <button
                 onClick={handleWatchlistClick}
-                className={`flex-1 py-3 rounded-lg font-semibold transition-colors ${
-                  inWatchlist 
-                    ? 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200' 
-                    : 'bg-purple-600 hover:bg-purple-700 text-white'
+                className={`flex-1 py-3 px-5 rounded-card font-semibold transition-colors flex items-center justify-center gap-2 ${
+                  inWatchlist
+                    ? 'bg-gray-200 dark:bg-cinema-elevated hover:bg-gray-300 dark:hover:bg-cinema-elevated/70 text-gray-800 dark:text-gray-200 dark:ring-1 dark:ring-white/10'
+                    : 'bg-purple-600 hover:bg-purple-700 dark:bg-cinema-surface dark:hover:bg-cinema-elevated text-white dark:ring-1 dark:ring-white/10'
                 }`}
               >
-                {inWatchlist ? t('details.inList') : t('details.addToList')}
+                {inWatchlist
+                  ? (<><Check className="w-5 h-5" /> {t('details.inList')}</>)
+                  : (<><Plus className="w-5 h-5" /> {t('details.addToList')}</>)}
               </button>
             </div>
           </div>
 
-          <div className="flex-1">
-            <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">{movie.title}</h1>
-            
-            {movie.tagline && movie.tagline !== '...' && (
-              <p className="text-xl text-purple-600 dark:text-purple-400 italic mb-6">{movie.tagline}</p>
-            )}           
+          <div className="flex-1 min-w-0">
+            <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-3 text-gray-900 dark:text-gray-50 drop-shadow-sm">
+              {movie.title}
+            </h1>
 
-            <div className="flex gap-6 mb-8">
+            {movie.tagline && movie.tagline !== '...' && (
+              <p className="text-lg sm:text-xl text-purple-600 dark:text-accent-amber/90 italic mb-6">{movie.tagline}</p>
+            )}
+
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-8">
               <div className="flex items-center gap-2">
-                <span className="text-green-500 text-2xl">★</span>
-                <span className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{movie.vote_average?.toFixed(1)}</span>
+                <Star className="w-6 h-6 text-green-500 dark:text-accent-amber fill-current" />
+                <span className="text-2xl font-display font-semibold text-gray-900 dark:text-gray-50">{movie.vote_average?.toFixed(1)}</span>
                 {movie.vote_count > 0 && (
-                  <span className="text-gray-500 dark:text-gray-400">({movie.vote_count} {t('details.votes')})</span>
+                  <span className="text-gray-500 dark:text-gray-400 text-sm">({movie.vote_count} {t('details.votes')})</span>
                 )}
               </div>
               {movie.release_date && movie.release_date !== '2000-0000' && (
-                <span className="text-gray-600 dark:text-gray-400">{movie.release_date.split('-')[0]}</span>
+                <span className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                  <Calendar className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                  {movie.release_date.split('-')[0]}
+                </span>
               )}
               {movie.runtime > 0 && (
-                <span className="text-gray-600 dark:text-gray-400">{movie.runtime} {t('details.minutes')}</span>
+                <span className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                  <Clock className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                  {movie.runtime} {t('details.minutes')}
+                </span>
               )}
             </div>
 
-            <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
+            <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-8 max-w-3xl">
               {movie.overview}
             </p>
 
             {movie.genres && movie.genres.length > 0 && movie.genres[0].name && (
               <div className="flex gap-2 flex-wrap">
                 {movie.genres.map((genre, idx) => (
-                  <span key={idx} className="px-3 py-1 bg-gray-200 dark:bg-gray-800 rounded-full text-sm text-gray-700 dark:text-gray-300">
+                  <span key={idx} className="px-3.5 py-1.5 bg-gray-200 dark:bg-cinema-elevated rounded-full text-sm text-gray-700 dark:text-gray-300 dark:ring-1 dark:ring-white/10">
                     {genre.name}
                   </span>
                 ))}

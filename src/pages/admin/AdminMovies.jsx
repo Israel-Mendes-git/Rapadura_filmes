@@ -1,7 +1,7 @@
 // src/pages/admin/AdminMovies.jsx
 // Lista + formulário (criar/editar/excluir) de filmes próprios.
 // Estilo clonado dos componentes shadcn/Tailwind já usados no projeto.
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { moviesApi } from '../../services/adminApi';
@@ -28,14 +28,14 @@ export default function AdminMovies() {
   const [saving, setSaving] = useState(false);
   const toast = useToastSafe();
 
-  const load = () => {
+  const load = useCallback(() => {
     setLoading(true);
     moviesApi.list()
       .then(setMovies)
       .catch(() => toast(t('admin.movie.loadError'), 'error'))
       .finally(() => setLoading(false));
-  };
-  useEffect(load, []);
+  }, [t, toast]);
+  useEffect(() => { load(); }, [load]);
 
   const startEdit = (m) => {
     setEditingId(m.id);
@@ -100,13 +100,13 @@ export default function AdminMovies() {
   return (
     <div className="grid lg:grid-cols-[380px_1fr] gap-8">
       {/* Formulário */}
-      <form onSubmit={submit} className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 h-fit space-y-3 ring-1 ring-foreground/10">
-        <h2 className="text-xl font-bold mb-2">{editingId ? t('admin.movie.editTitle') : t('admin.movie.newTitle')}</h2>
+      <form onSubmit={submit} className="bg-white dark:bg-cinema-surface rounded-card-lg shadow-lg dark:shadow-poster p-6 h-fit space-y-3 ring-1 ring-foreground/10 dark:ring-white/10">
+        <h2 className="text-xl font-bold font-display tracking-tight mb-2 dark:text-white">{editingId ? t('admin.movie.editTitle') : t('admin.movie.newTitle')}</h2>
 
         <Field label={t('admin.movie.title')}><Input value={form.titulo} onChange={set('titulo')} placeholder={t('admin.movie.titlePlaceholder')} /></Field>
         <Field label={t('admin.movie.synopsis')}>
           <textarea value={form.sinopse} onChange={set('sinopse')} rows={3}
-            className="w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30" />
+            className="w-full rounded-card border border-input dark:border-white/10 bg-transparent dark:bg-cinema-elevated px-2.5 py-1 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:focus-visible:ring-accent-amber/40 dark:focus-visible:border-accent-amber" />
         </Field>
         <ImageInput label={t('admin.cover')} value={form.capa} onChange={(v) => setForm((f) => ({ ...f, capa: v }))} />
         <ImageInput label={t('admin.backdrop')} value={form.backdrop} onChange={(v) => setForm((f) => ({ ...f, backdrop: v }))} />
@@ -134,32 +134,32 @@ export default function AdminMovies() {
         </div>
 
         <div className="flex gap-2 pt-2">
-          <Button type="submit" disabled={saving}>{saving ? t('admin.saving') : (editingId ? t('admin.movie.save') : t('admin.movie.create'))}</Button>
+          <Button type="submit" disabled={saving} className="dark:bg-accent-amber dark:text-black dark:hover:bg-accent-amber/90 dark:shadow-glow">{saving ? t('admin.saving') : (editingId ? t('admin.movie.save') : t('admin.movie.create'))}</Button>
           {editingId && <Button type="button" variant="outline" onClick={resetForm}>{t('admin.cancel')}</Button>}
         </div>
       </form>
 
       {/* Lista */}
       <div>
-        <h2 className="text-xl font-bold mb-4">{t('admin.movie.listTitle', { count: movies.length })}</h2>
+        <h2 className="text-xl font-bold font-display tracking-tight mb-4 dark:text-white">{t('admin.movie.listTitle', { count: movies.length })}</h2>
         {loading ? (
-          <p className="text-gray-500">{t('admin.loading')}</p>
+          <p className="text-gray-500 dark:text-gray-400">{t('admin.loading')}</p>
         ) : movies.length === 0 ? (
-          <p className="text-gray-500">{t('admin.movie.empty')}</p>
+          <p className="text-gray-500 dark:text-gray-400">{t('admin.movie.empty')}</p>
         ) : (
           <div className="space-y-3">
             {movies.map((m) => (
-              <div key={m.id} className="bg-white dark:bg-gray-900 rounded-xl p-4 ring-1 ring-foreground/10 flex items-center gap-4">
+              <div key={m.id} className="bg-white dark:bg-cinema-elevated rounded-card p-4 ring-1 ring-foreground/10 dark:ring-white/10 dark:hover:ring-accent-amber/30 transition-colors flex items-center gap-4">
                 {m.capa ? (
-                  <img src={m.capa} alt={m.titulo} className="w-12 h-16 object-cover rounded" onError={(e) => { e.target.style.visibility = 'hidden'; }} />
+                  <img src={m.capa} alt={m.titulo} className="w-12 h-16 object-cover rounded-card dark:shadow-poster" onError={(e) => { e.target.style.visibility = 'hidden'; }} />
                 ) : (
-                  <div className="w-12 h-16 bg-gray-200 dark:bg-gray-800 rounded flex items-center justify-center text-xs text-gray-400">{t('admin.noCover')}</div>
+                  <div className="w-12 h-16 bg-gray-200 dark:bg-cinema-surface rounded-card flex items-center justify-center text-xs text-gray-400">{t('admin.noCover')}</div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold truncate">{m.titulo}</p>
-                  <p className="text-sm text-gray-500">
+                  <p className="font-semibold truncate dark:text-gray-100">{m.titulo}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     {m.ano || t('admin.movie.noYear')} · {m.categoria}/{m.tipo} ·{' '}
-                    <span className={m.fonte === 'tmdb' ? 'text-blue-500' : 'text-green-600'}>{m.fonte}</span>
+                    <span className={m.fonte === 'tmdb' ? 'text-blue-500' : 'text-green-600 dark:text-accent-amber'}>{m.fonte}</span>
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -187,7 +187,7 @@ function Field({ label, children }) {
 function Select({ value, onChange, options }) {
   return (
     <select value={value} onChange={onChange}
-      className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30">
+      className="h-8 w-full rounded-card border border-input dark:border-white/10 bg-transparent dark:bg-cinema-elevated px-2.5 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:focus-visible:ring-accent-amber/40 dark:focus-visible:border-accent-amber">
       {options.map((o) => <option key={o} value={o}>{o}</option>)}
     </select>
   );
@@ -196,5 +196,5 @@ function Select({ value, onChange, options }) {
 // Adapta o ToastContext (addToast) para a assinatura (msg, type) usada aqui.
 function useToastSafe() {
   const { addToast } = useToast();
-  return (msg, type = 'success') => addToast(msg, type);
+  return useCallback((msg, type = 'success') => addToast(msg, type), [addToast]);
 }

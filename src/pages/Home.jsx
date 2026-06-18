@@ -56,29 +56,28 @@ export default function Home() {
   };
 
   const categories = [
-    { id: 'all', name: t('all'), color: 'purple' },
-    { id: 'autorais', name: t('autorais'), color: 'purple' },
-    { id: 'jogos', name: t('jogos'), color: 'green' },
-    { id: 'parcerias', name: t('parcerias'), color: 'blue' }
+    { id: 'all', name: t('all') },
+    { id: 'autorais', name: t('autorais') },
+    { id: 'jogos', name: t('jogos') },
+    { id: 'parcerias', name: t('parcerias') }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="min-h-screen bg-gray-50 dark:bg-cinema-bg">
       <HeroCarousel movies={featuredMovies} />
 
-      <div className="max-w-7xl mx-auto px-4 pb-12">
-        <div className="flex flex-wrap gap-3 mb-8">
+      <div className="max-w-7xl mx-auto px-4 pb-12 -mt-4 relative z-10">
+        <div className="flex flex-wrap gap-3 mb-10">
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveTab(cat.id)}
-              className={`px-6 py-2 rounded-full font-semibold transition-all flex items-center gap-2 ${
+              className={`px-6 py-2 rounded-full font-semibold transition-all flex items-center gap-2 border ${
                 activeTab === cat.id
-                  ? `bg-${cat.color}-600 text-white shadow-lg scale-105`
-                  : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700'
+                  ? 'bg-accent-amber text-cinema-bg border-accent-amber shadow-glow'
+                  : 'bg-gray-200 dark:bg-cinema-surface text-gray-700 dark:text-gray-300 border-transparent dark:border-white/5 hover:bg-gray-300 dark:hover:bg-cinema-elevated'
               }`}
             >
-              <span>{cat.icon}</span>
               {cat.name}
             </button>
           ))}

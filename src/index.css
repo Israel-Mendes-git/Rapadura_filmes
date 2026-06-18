@@ -1,10 +1,14 @@
-﻿@tailwind base;
+﻿/* Fonte Geist (variable) — carrega de fato a face usada nos tokens display/sans */
+@import '@fontsource-variable/geist';
+
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100;
+    @apply bg-gray-50 dark:bg-cinema-bg text-gray-900 dark:text-gray-100;
+    font-family: theme('fontFamily.sans');
   }
 }
 
@@ -37,15 +41,15 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-200 dark:bg-gray-800;
+  @apply bg-gray-200 dark:bg-cinema-surface;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-purple-500 dark:bg-purple-400 rounded-full;
+  @apply bg-purple-500 dark:bg-accent-amber/70 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-purple-600 dark:bg-purple-300;
+  @apply bg-purple-600 dark:bg-accent-amber;
 }
 
 /* Animações */

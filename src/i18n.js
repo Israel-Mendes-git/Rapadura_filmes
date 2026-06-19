@@ -163,6 +163,10 @@ const resources = {
         "notFound": "Filme não encontrado",
         "removeFromList": "Remover da lista"
       },
+      "descriptions": {
+        "sofia": "Uma aventura mágica onde Sofia descobre um mundo cheio de coisas perdidas e precisa encontrar o caminho de volta para casa.",
+        "brawlStars": "Ação e diversão no mundo dos Brawlers! Uma aventura cheia de batalhas emocionantes."
+      },
       "common": {
         "loading": "Carregando...",
         "loadingGenres": "Carregando gêneros...",
@@ -450,6 +454,10 @@ const resources = {
         "moreInfo": "More Information",
         "notFound": "Movie not found",
         "removeFromList": "Remove from list"
+      },
+      "descriptions": {
+        "sofia": "A magical adventure where Sofia discovers a world full of lost things and must find her way back home.",
+        "brawlStars": "Action and fun in the world of the Brawlers! An adventure full of thrilling battles."
       },
       "forgotPassword": {
         "title": "Forgot password?",
@@ -769,6 +777,10 @@ const resources = {
         "notFound": "Película no encontrada",
         "removeFromList": "Quitar de la lista"
       },
+      "descriptions": {
+        "sofia": "Una aventura mágica donde Sofía descubre un mundo lleno de cosas perdidas y debe encontrar el camino de regreso a casa.",
+        "brawlStars": "¡Acción y diversión en el mundo de los Brawlers! Una aventura llena de batallas emocionantes."
+      },
       "forgotPassword": {
         "title": "¿Olvidaste tu contraseña?",
         "subtitle": "Ingresa tu email para recibir un enlace de recuperación",
@@ -1086,6 +1098,10 @@ const resources = {
         "moreInfo": "更多信息",
         "notFound": "未找到影片",
         "removeFromList": "从列表中移除"
+      },
+      "descriptions": {
+        "sofia": "一场神奇的冒险，索菲娅发现了一个充满失物的世界，必须找到回家的路。",
+        "brawlStars": "在斗士的世界里充满动作与乐趣！一场充满激烈战斗的冒险。"
       },
       "forgotPassword": {
         "title": "忘记密码？",

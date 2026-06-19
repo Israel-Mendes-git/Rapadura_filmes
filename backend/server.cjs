@@ -156,6 +156,10 @@ for (const [col, def] of [['tagline', 'TEXT'], ['runtime', 'INTEGER'], ['vote_co
 
 console.log('✅ Banco de dados inicializado');
 
+// --- Serviço de tradução automática (cache na tabela `translations`) ---
+// Cria a tabela de cache e expõe helpers para traduzir/ler conteúdo dinâmico.
+const translator = require('./translate.cjs')(db);
+
 // --- Limpeza de sessões expiradas (na inicialização e a cada hora) ---
 function cleanupSessions() {
   try {
@@ -388,20 +392,23 @@ app.get('/api/me', authenticateToken, (req, res) => {
 //  CATÁLOGO PÚBLICO — filmes próprios (fonte='proprio') para a Home/Discover
 //  Formato compatível com o objeto de filme do frontend (poster_path etc.)
 // =====================================================================
-function movieRowToCatalog(m) {
+function movieRowToCatalog(m, lang) {
   let generos = [];
   try { generos = JSON.parse(m.generos || '[]'); } catch { generos = []; }
+  // Conteúdo dinâmico traduzido: usa o cache p/ lang != pt; fallback ao PT cru.
+  const overview = translator.getCached('movie', m.id, 'overview', lang, m.sinopse) || m.sinopse;
+  const tagline = translator.getCached('movie', m.id, 'tagline', lang, m.tagline) || (m.tagline || '');
   return {
     id: m.id,
     title: m.titulo,
-    overview: m.sinopse,
+    overview,
     poster_path: m.capa,
     backdrop_path: m.backdrop || m.capa,
     release_date: m.ano ? `${m.ano}-01-01` : '',
     vote_average: m.vote_average || 0,
     vote_count: m.vote_count || 0,
     runtime: m.runtime || 0,
-    tagline: m.tagline || '',
+    tagline,
     trailerUrl: m.trailer_url || '',
     genres: generos,
     category: m.categoria || 'autorais',
@@ -416,24 +423,25 @@ app.get('/api/catalog/movies/:id', (req, res) => {
   try {
     const row = db.prepare("SELECT * FROM movies WHERE id = ? AND fonte = 'proprio'").get(req.params.id);
     if (!row) return res.status(404).json({ error: 'Filme nao encontrado' });
-    res.json(movieRowToCatalog(row));
+    res.json(movieRowToCatalog(row, translator.resolveLang(req)));
   } catch (error) {
     console.error('Erro no /api/catalog/movies/:id:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
 
-function gameRowToCatalog(g) {
+function gameRowToCatalog(g, lang) {
   let generos = [];
   try { generos = JSON.parse(g.generos || '[]'); } catch { generos = []; }
-  return { id: g.id, title: g.titulo, overview: g.descricao, poster_path: g.capa, genres: generos, status: g.status, isGame: true };
+  const overview = translator.getCached('game', g.id, 'overview', lang, g.descricao) || g.descricao;
+  return { id: g.id, title: g.titulo, overview, poster_path: g.capa, genres: generos, status: g.status, isGame: true };
 }
 
 app.get('/api/catalog/games/:id', (req, res) => {
   try {
     const row = db.prepare("SELECT * FROM games WHERE id = ? AND status = 'publicado'").get(req.params.id);
     if (!row) return res.status(404).json({ error: 'Jogo nao encontrado' });
-    const out = gameRowToCatalog(row);
+    const out = gameRowToCatalog(row, translator.resolveLang(req));
     // Inclui checksum/nome_arquivo/download_url para o launcher (L2). download_url
     // so e preenchido quando o binario ja foi enviado (arquivo presente). A rota de
     // download e publica mas gated por status='publicado' (o jogo aqui ja e publicado).
@@ -459,8 +467,9 @@ app.get('/api/catalog/games/:id', (req, res) => {
 app.get('/api/catalog/games', (req, res) => {
   try {
     const rows = db.prepare("SELECT * FROM games WHERE status = 'publicado' ORDER BY created_at DESC").all();
+    const lang = translator.resolveLang(req);
     res.json(rows.map((g) => {
-      const item = gameRowToCatalog(g);
+      const item = gameRowToCatalog(g, lang);
       item.platforms = db.prepare('SELECT DISTINCT plataforma FROM game_builds WHERE game_id = ?').all(g.id).map((r) => r.plataforma);
       return item;
     }));
@@ -522,7 +531,8 @@ app.get('/api/catalog/builds/:buildId/download', (req, res) => {
 app.get('/api/catalog/movies', (req, res) => {
   try {
     const rows = db.prepare("SELECT * FROM movies WHERE fonte = 'proprio' ORDER BY created_at DESC").all();
-    res.json(rows.map(movieRowToCatalog));
+    const lang = translator.resolveLang(req);
+    res.json(rows.map((m) => movieRowToCatalog(m, lang)));
   } catch (error) {
     console.error('Erro no /api/catalog/movies:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
@@ -581,6 +591,10 @@ app.post('/api/admin/movies', authenticateToken, requireAdmin, (req, res) => {
       tipo: b.tipo || 'longas',
     });
     const row = db.prepare('SELECT * FROM movies WHERE id = ?').get(result.lastInsertRowid);
+    translator.translateEntityInBackground('movie', row.id, [
+      { field: 'overview', text: row.sinopse },
+      { field: 'tagline', text: row.tagline },
+    ]);
     res.status(201).json(parseGenres(row));
   } catch (error) {
     console.error('Erro ao criar filme:', error);
@@ -624,6 +638,10 @@ app.put('/api/admin/movies/:id', authenticateToken, requireAdmin, (req, res) => 
       tipo: b.tipo !== undefined ? b.tipo : existing.tipo,
     });
     const row = db.prepare('SELECT * FROM movies WHERE id = ?').get(req.params.id);
+    translator.translateEntityInBackground('movie', row.id, [
+      { field: 'overview', text: row.sinopse },
+      { field: 'tagline', text: row.tagline },
+    ]);
     res.json(parseGenres(row));
   } catch (error) {
     console.error('Erro ao atualizar filme:', error);
@@ -689,6 +707,7 @@ app.post('/api/admin/games', authenticateToken, requireAdmin, (req, res) => {
       status: b.status || 'rascunho',
     });
     const row = db.prepare('SELECT * FROM games WHERE id = ?').get(result.lastInsertRowid);
+    translator.translateEntityInBackground('game', row.id, [{ field: 'overview', text: row.descricao }]);
     res.status(201).json(parseGenres(row));
   } catch (error) {
     console.error('Erro ao criar game:', error);
@@ -718,6 +737,7 @@ app.put('/api/admin/games/:id', authenticateToken, requireAdmin, (req, res) => {
       status: b.status !== undefined ? b.status : existing.status,
     });
     const row = db.prepare('SELECT * FROM games WHERE id = ?').get(req.params.id);
+    translator.translateEntityInBackground('game', row.id, [{ field: 'overview', text: row.descricao }]);
     res.json(parseGenres(row));
   } catch (error) {
     console.error('Erro ao atualizar game:', error);
@@ -1031,4 +1051,7 @@ app.post('/api/admin/uploads/media', authenticateToken, requireAdmin, (req, res)
 
 app.listen(PORT, () => {
   console.log(`✅ Servidor rodando na porta ${PORT}`);
+  // Backfill de traduções do catálogo existente, em background (não bloqueia o
+  // boot). Idempotente: só traduz o que ainda não está em cache.
+  translator.backfillAll();
 });

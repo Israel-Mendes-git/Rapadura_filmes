@@ -13,7 +13,7 @@ export default function Discover() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     let alive = true;
@@ -29,7 +29,7 @@ export default function Discover() {
       .catch(() => { if (alive) setMovies(customMovies.all); })
       .finally(() => { if (alive) setLoading(false); });
     return () => { alive = false; };
-  }, []);
+  }, [i18n.language]);
 
   const handleMovieClick = (id) => {
     navigate(`/movie/${id}`);

@@ -13,7 +13,7 @@ export default function Home() {
   // o fluxo atual: se a chamada falhar, fica só com os filmes estáticos.
   const [adminMovies, setAdminMovies] = useState([]);
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     let alive = true;
@@ -21,7 +21,7 @@ export default function Home() {
       .then((r) => { if (alive && Array.isArray(r.data)) setAdminMovies(r.data); })
       .catch(() => { /* sem catálogo dinâmico: segue com os estáticos */ });
     return () => { alive = false; };
-  }, []);
+  }, [i18n.language]);
 
   // Mescla catálogo estático + filmes do admin, deduplicando por id
   // (filmes do admin têm precedência e aparecem primeiro).

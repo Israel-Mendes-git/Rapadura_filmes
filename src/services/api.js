@@ -1,4 +1,5 @@
 import axios from 'axios';
+import i18n from '../i18n';
 
 // Detecta se está em produção ou desenvolvimento
 const isProduction = import.meta.env.PROD;
@@ -15,6 +16,15 @@ const api = axios.create({
   timeout: 10000,
   // Envia/recebe o cookie httpOnly de sessão (o token não fica mais no localStorage)
   withCredentials: true,
+});
+
+// Injeta o idioma atual (i18n) em toda request como ?lang=. O backend só usa
+// isso nas rotas de catálogo para servir descrições traduzidas (fallback PT);
+// as demais rotas ignoram o parâmetro.
+api.interceptors.request.use((config) => {
+  const lng = (i18n.language || 'pt').slice(0, 2);
+  config.params = { ...(config.params || {}), lang: lng };
+  return config;
 });
 
 // Interceptor para tratamento de erros de autenticação

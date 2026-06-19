@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Info, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { resolveDescription } from '../utils/i18nContent';
 
 export default function HeroCarousel({ movies }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -115,7 +116,7 @@ export default function HeroCarousel({ movies }) {
             </div>
 
             <p className="text-base lg:text-lg text-white/80 mb-7 line-clamp-3 max-w-xl">
-              {currentMovie.overview}
+              {resolveDescription(currentMovie, t)}
             </p>
 
             <div className="flex flex-wrap gap-4">

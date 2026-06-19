@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { customMovies } from '../data/customMovies';
 import api from '../services/api';
 import { useTranslation } from 'react-i18next';
+import { resolveDescription } from '../utils/i18nContent';
 import TrailerModal from '../components/TrailerModal';
 import { ArrowLeft, Play, Star, Clock, Calendar, Check, Plus } from 'lucide-react';
 
@@ -13,8 +14,8 @@ export default function MovieDetails() {
   const navigate = useNavigate();
   const { addToWatchlist, removeFromWatchlist, isInWatchlist } = useWatchlist();
   const { user } = useAuth();
-  const { t } = useTranslation();
-  
+  const { t, i18n } = useTranslation();
+
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showTrailer, setShowTrailer] = useState(false);
@@ -36,7 +37,7 @@ export default function MovieDetails() {
       .catch(() => { if (alive) setMovie(null); })
       .finally(() => { if (alive) setLoading(false); });
     return () => { alive = false; };
-  }, [id]);
+  }, [id, i18n.language]);
 
   // Título da aba reflete o filme atual (SEO/UX)
   useEffect(() => {
@@ -197,7 +198,7 @@ export default function MovieDetails() {
             </div>
 
             <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-8 max-w-3xl">
-              {movie.overview}
+              {resolveDescription(movie, t)}
             </p>
 
             {movie.genres && movie.genres.length > 0 && movie.genres[0].name && (

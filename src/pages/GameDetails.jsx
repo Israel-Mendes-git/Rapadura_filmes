@@ -7,9 +7,10 @@ import api from '../services/api';
 import { isLauncher, getGameState, gameAction } from '../services/launcher';
 import { platformMeta } from '../components/PlatformBadge';
 import { useTranslation } from 'react-i18next';
+import { resolveDescription } from '../utils/i18nContent';
 
 export default function GameDetails() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const [game, setGame] = useState(null);
@@ -24,7 +25,7 @@ export default function GameDetails() {
       .catch(() => { if (alive) setGame(null); })
       .finally(() => { if (alive) setLoading(false); });
     return () => { alive = false; };
-  }, [id]);
+  }, [id, i18n.language]);
 
   useEffect(() => {
     let alive = true;
@@ -160,7 +161,7 @@ export default function GameDetails() {
           )}
 
           <p className="mt-6 whitespace-pre-line leading-relaxed text-gray-700 dark:text-zinc-300">
-            {game.overview || t('games.noDescription')}
+            {resolveDescription(game, t) || t('games.noDescription')}
           </p>
 
           {builds.length > 0 && (

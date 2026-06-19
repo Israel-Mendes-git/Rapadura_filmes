@@ -5,6 +5,7 @@ import { Gamepad2, Sparkles } from 'lucide-react';
 import api from '../services/api';
 import GameCard from '../components/GameCard';
 import { useTranslation } from 'react-i18next';
+import { resolveDescription } from '../utils/i18nContent';
 
 // Skeleton de card (mesma proporcao do GameCard real).
 function GameCardSkeleton() {
@@ -20,7 +21,7 @@ function GameCardSkeleton() {
 }
 
 export default function Games() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,7 +32,7 @@ export default function Games() {
       .catch(() => { if (alive) setGames([]); })
       .finally(() => { if (alive) setLoading(false); });
     return () => { alive = false; };
-  }, []);
+  }, [i18n.language]);
 
   const featured = games[0];
   const rest = featured ? games.slice(1) : games;
@@ -126,7 +127,7 @@ export default function Games() {
                       <p className="mt-1 text-sm font-medium text-purple-200 dark:text-accent-purple/90">{featured.genres.slice(0, 3).join(' · ')}</p>
                     )}
                     {featured.overview && (
-                      <p className="mt-3 line-clamp-2 max-w-md text-sm text-gray-200/90">{featured.overview}</p>
+                      <p className="mt-3 line-clamp-2 max-w-md text-sm text-gray-200/90">{resolveDescription(featured, t)}</p>
                     )}
                     <span className="mt-5 inline-flex w-fit items-center gap-2 rounded-lg bg-purple-600 px-5 py-2
                                      text-sm font-semibold text-white transition-colors group-hover:bg-purple-500

@@ -29,6 +29,7 @@ backend/filmerama.db-*
 backend/filmerama.db.bak_*
 backend/uploads/
 backend/.env
+backend/.env.*
 
 # backups locais (nao versionar)
 backend/*.bak_import

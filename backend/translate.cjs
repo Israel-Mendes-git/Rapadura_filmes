@@ -97,8 +97,24 @@ async function viaLibre(text, target) {
 
 const PROVIDERS = { mymemory: viaMyMemory, deepl: viaDeepL, libre: viaLibre };
 
-// Traduz um texto; retorna null (sem lançar) em qualquer falha — o chamador
-// decide o fallback. 'off' desliga a tradução por completo.
+const CJK = /[㐀-鿿豈-﫿]/;   // ideogramas Han (zh)
+
+// Guard de qualidade: rejeita resultados claramente inválidos para não gravar
+// lixo no cache (ex.: MyMemory devolvendo "Test" para zh, ou ecoando o PT).
+// Retornar false faz o chamador cair no fallback (texto original em PT).
+function isValidTranslation(text, target, source) {
+  if (!text || !String(text).trim()) return false;
+  const out = String(text).trim();
+  // alvo chinês precisa conter ao menos um ideograma
+  if (target === 'zh' && !CJK.test(out)) return false;
+  // eco da fonte (não traduziu) — só rejeita se a fonte tinha tamanho relevante
+  if (source && String(source).trim().length > 3
+      && out.toLowerCase() === String(source).trim().toLowerCase()) return false;
+  return true;
+}
+
+// Traduz um texto; retorna null (sem lançar) em qualquer falha/validação — o
+// chamador decide o fallback. 'off' desliga a tradução por completo.
 async function translateText(text, target) {
   if (PROVIDER === 'off') return null;
   if (!text || !String(text).trim()) return null;
@@ -108,7 +124,12 @@ async function translateText(text, target) {
     return null;
   }
   try {
-    return await fn(String(text), target);
+    const out = await fn(String(text), target);
+    if (!isValidTranslation(out, target, text)) {
+      console.error(`[translate] resultado inválido (${PROVIDER} → ${target}) descartado: "${String(out).slice(0, 40)}"`);
+      return null;
+    }
+    return out;
   } catch (e) {
     console.error(`[translate] falha (${PROVIDER} → ${target}): ${e.message}`);
     return null;

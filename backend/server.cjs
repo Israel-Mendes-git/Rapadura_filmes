@@ -6,6 +6,30 @@ const bcrypt = require('bcrypt');
 const fs = require('fs');
 const path = require('path');
 
+// --- Loader de .env sem dependência externa ---
+// O backend de prod roda via nohup (sem systemd/env file), então config como
+// TRANSLATE_PROVIDER/TRANSLATE_API_KEY fica num arquivo .env.prod (gitignored,
+// chmod 600). Não sobrescreve variáveis já definidas no ambiente.
+function loadEnvFile(file) {
+  try {
+    const raw = fs.readFileSync(file, 'utf8');
+    for (const line of raw.split('\n')) {
+      const t = line.trim();
+      if (!t || t.startsWith('#')) continue;
+      const eq = t.indexOf('=');
+      if (eq === -1) continue;
+      const key = t.slice(0, eq).trim();
+      let val = t.slice(eq + 1).trim();
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+        val = val.slice(1, -1);
+      }
+      if (key && !(key in process.env)) process.env[key] = val;
+    }
+  } catch { /* arquivo ausente: ok */ }
+}
+loadEnvFile(path.join(__dirname, '.env.prod'));
+loadEnvFile(path.join(__dirname, '.env'));
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 

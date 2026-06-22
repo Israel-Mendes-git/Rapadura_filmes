@@ -1,13 +1,12 @@
 // src/App.jsx
-import { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import BackToTop from './components/BackToTop';
-import Footer from './components/Footer';
-import ErrorBoundary from './components/ErrorBoundary';
 import AdminRoute from './components/AdminRoute';
 import { useAuth } from './contexts/AuthContext';
 import { lazyWithRetry } from './lib/lazyWithRetry';
+
+// Layouts (não-lazy: são a casca de cada "mundo").
+import SiteLayout from './pages/SiteLayout';
+import GamesLayout from './pages/GamesLayout';
 
 // Code-splitting: cada página vira um chunk carregado sob demanda.
 // lazyWithRetry recarrega a página uma única vez se o chunk sumir após deploy.
@@ -17,7 +16,9 @@ const Search = lazyWithRetry(() => import('./pages/Search'));
 const Watchlist = lazyWithRetry(() => import('./pages/Watchlist'));
 const Discover = lazyWithRetry(() => import('./pages/Discover'));
 const Games = lazyWithRetry(() => import('./pages/Games'));
+const GamesCatalog = lazyWithRetry(() => import('./pages/GamesCatalog'));
 const GameDetails = lazyWithRetry(() => import('./pages/GameDetails'));
+const Download = lazyWithRetry(() => import('./pages/Download'));
 const Studio = lazyWithRetry(() => import('./pages/Studio'));
 const Login = lazyWithRetry(() => import('./pages/Login'));
 const Register = lazyWithRetry(() => import('./pages/Register'));
@@ -53,60 +54,42 @@ function PublicRoute({ children }) {
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <Navbar />
-      <main className="flex-grow">
-        <ErrorBoundary>
-          <Suspense fallback={<Spinner />}>
-            <Routes>
-              {/* Rotas públicas (login e registro) */}
-              <Route path="/login" element={
-                <PublicRoute>
-                  <Login />
-                </PublicRoute>
-              } />
-              <Route path="/register" element={
-                <PublicRoute>
-                  <Register />
-                </PublicRoute>
-              } />
+    <Routes>
+      {/* ===== Central de jogos — casca PRÓPRIA (sem a navbar do site) ===== */}
+      <Route element={<GamesLayout />}>
+        <Route path="/games" element={<Games />} />
+        <Route path="/games/catalogo" element={<GamesCatalog />} />
+        <Route path="/game/:id" element={<GameDetails />} />
+        <Route path="/download" element={<Download />} />
+      </Route>
 
-              {/* Rotas públicas de navegação (não exigem login) */}
-              <Route path="/" element={<Home />} />
-              <Route path="/movie/:id" element={<MovieDetails />} />
-              <Route path="/discover" element={<Discover />} />
-              <Route path="/games" element={<Games />} />
-              <Route path="/game/:id" element={<GameDetails />} />
-              <Route path="/studio" element={<Studio />} />
-              <Route path="/search" element={<Search />} />
+      {/* ===== Site (filmes) — navbar + rodapé globais ===== */}
+      <Route element={<SiteLayout />}>
+        {/* Públicas (login e registro) */}
+        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+        <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
 
-              {/* Rota protegida (lista pessoal exige login) */}
-              <Route path="/watchlist" element={
-                <ProtectedRoute>
-                  <Watchlist />
-                </ProtectedRoute>
-              } />
+        {/* Navegação pública */}
+        <Route path="/" element={<Home />} />
+        <Route path="/movie/:id" element={<MovieDetails />} />
+        <Route path="/discover" element={<Discover />} />
+        <Route path="/studio" element={<Studio />} />
+        <Route path="/search" element={<Search />} />
 
-              {/* Painel de admin (exige login + is_admin) */}
-              <Route path="/admin" element={
-                <AdminRoute>
-                  <AdminLayout />
-                </AdminRoute>
-              }>
-                <Route index element={<Navigate to="movies" replace />} />
-                <Route path="movies" element={<AdminMovies />} />
-                <Route path="games" element={<AdminGames />} />
-              </Route>
+        {/* Protegida (lista pessoal exige login) */}
+        <Route path="/watchlist" element={<ProtectedRoute><Watchlist /></ProtectedRoute>} />
 
-              {/* Página 404 amigável para qualquer rota desconhecida */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </ErrorBoundary>
-      </main>
-      <Footer />
-      <BackToTop />
-    </div>
+        {/* Painel de admin (exige login + is_admin) */}
+        <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+          <Route index element={<Navigate to="movies" replace />} />
+          <Route path="movies" element={<AdminMovies />} />
+          <Route path="games" element={<AdminGames />} />
+        </Route>
+
+        {/* 404 amigável */}
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
   );
 }
 

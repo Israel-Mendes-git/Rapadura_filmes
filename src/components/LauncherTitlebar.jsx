@@ -36,13 +36,13 @@ export default function LauncherTitlebar() {
   }, [menuOpen]);
 
   // Mapeia o status do update p/ rótulo + ação do botão "Atualizar".
+  // SEMPRE visível (mesmo em dev / já-atualizado), pra não sumir e confundir.
   const updView = (() => {
     switch (upd.status) {
       case 'checking': return { label: 'Verificando…', spin: true, onClick: null, hot: false };
       case 'downloading': return { label: 'Baixando…', spin: true, onClick: null, hot: false };
       case 'downloaded': return { label: 'Reiniciar p/ atualizar', spin: false, onClick: () => update.quitAndInstall(), hot: true };
       case 'error': return { label: 'Tentar de novo', spin: false, onClick: () => update.check(), hot: false };
-      case 'dev': return null; // em dev não há update
       default: return { label: 'Atualizar', spin: false, onClick: () => update.check(), hot: false };
     }
   })();

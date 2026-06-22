@@ -5,10 +5,14 @@ import { Link, NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Gamepad2, Download, LibraryBig, ArrowLeft, Languages } from 'lucide-react';
+import { isLauncher } from '../services/launcher';
 
 export default function GamesNavbar() {
   const { t, i18n } = useTranslation();
   const [showLang, setShowLang] = useState(false);
+  // No launcher (Filmerama Games) a navegação é travada só nos jogos: não faz
+  // sentido oferecer o caminho de volta ao site de filmes.
+  const inLauncher = isLauncher();
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
@@ -70,13 +74,15 @@ export default function GamesNavbar() {
             )}
           </div>
 
-          {/* Voltar ao site de filmes */}
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-xs font-medium text-zinc-400 transition-colors hover:text-white"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" /> {t('games.backToSite', 'Filmerama')}
-          </Link>
+          {/* Voltar ao site de filmes — escondido dentro do launcher (games-only) */}
+          {!inLauncher && (
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 text-xs font-medium text-zinc-400 transition-colors hover:text-white"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" /> {t('games.backToSite', 'Filmerama')}
+            </Link>
+          )}
         </div>
       </div>
     </nav>

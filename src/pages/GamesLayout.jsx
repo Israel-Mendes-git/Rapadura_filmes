@@ -6,6 +6,7 @@ import { Outlet, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import GamesNavbar from '../components/GamesNavbar';
 import ErrorBoundary from '../components/ErrorBoundary';
+import { isLauncher } from '../services/launcher';
 
 function GamesSpinner() {
   return (
@@ -17,6 +18,7 @@ function GamesSpinner() {
 
 export default function GamesLayout() {
   const { t } = useTranslation();
+  const inLauncher = isLauncher();
   return (
     <div className="dark">
       <div className="flex min-h-screen flex-col bg-cinema-bg text-zinc-100">
@@ -33,7 +35,7 @@ export default function GamesLayout() {
             <span>© Rapadura Filmes — Filmerama Games</span>
             <div className="flex items-center gap-4">
               <Link to="/download" className="hover:text-accent-purple">{t('games.downloadLauncher', 'Baixar Launcher')}</Link>
-              <Link to="/" className="hover:text-white">Filmerama</Link>
+              {!inLauncher && <Link to="/" className="hover:text-white">Filmerama</Link>}
             </div>
           </div>
         </footer>

@@ -5,7 +5,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Gamepad2, Download, LibraryBig, ArrowLeft, Languages } from 'lucide-react';
-import { isLauncher } from '../services/launcher';
+import { isLauncher, hasAppChrome } from '../services/launcher';
 
 export default function GamesNavbar() {
   const { t, i18n } = useTranslation();
@@ -13,6 +13,9 @@ export default function GamesNavbar() {
   // No launcher (Filmerama Games) a navegação é travada só nos jogos: não faz
   // sentido oferecer o caminho de volta ao site de filmes.
   const inLauncher = isLauncher();
+  // Quando há a barra de título própria (launcher frameless), a navbar gruda
+  // logo abaixo dela (top-11); senão, no topo.
+  const appChrome = hasAppChrome();
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
@@ -26,17 +29,21 @@ export default function GamesNavbar() {
     }`;
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-accent-green/15 bg-cinema-bg/90 text-zinc-100 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-3">
-        {/* Marca própria — gradiente roxo→verde (vínculo da marca + vibe gamer) */}
-        <Link to="/games" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-to-br from-accent-deep/40 to-accent-green/30 ring-1 ring-accent-green/40">
-            <Gamepad2 className="h-5 w-5 text-accent-green-bright" />
-          </span>
-          <span className="font-display text-lg font-bold tracking-tight">
-            FILMERAMA <span className="text-accent-green-bright">GAMES</span>
-          </span>
-        </Link>
+    <nav className={`sticky z-50 border-b border-accent-green/15 bg-cinema-bg/90 text-zinc-100 backdrop-blur-md
+                     ${appChrome ? 'top-11' : 'top-0'}`}>
+      <div className={`mx-auto flex max-w-7xl flex-wrap items-center gap-4 px-4 py-3
+                       ${appChrome ? 'justify-end' : 'justify-between'}`}>
+        {/* Marca própria — escondida no launcher (a titlebar já mostra a marca) */}
+        {!appChrome && (
+          <Link to="/games" className="flex items-center gap-2">
+            <span className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-to-br from-accent-deep/40 to-accent-green/30 ring-1 ring-accent-green/40">
+              <Gamepad2 className="h-5 w-5 text-accent-green-bright" />
+            </span>
+            <span className="font-display text-lg font-bold tracking-tight">
+              FILMERAMA <span className="text-accent-green-bright">GAMES</span>
+            </span>
+          </Link>
+        )}
 
         <div className="flex flex-wrap items-center gap-5">
           <NavLink to="/games" end className={linkClass}>
@@ -46,14 +53,16 @@ export default function GamesNavbar() {
             <LibraryBig className="h-4 w-4" /> {t('games.navCatalog', 'Catálogo')}
           </NavLink>
 
-          {/* CTA de download em destaque (verde) */}
-          <Link
-            to="/download"
-            className="inline-flex items-center gap-2 rounded-lg bg-accent-green px-4 py-2 text-sm font-semibold
-                       text-cinema-bg shadow-glow-green transition-colors hover:bg-accent-green-bright"
-          >
-            <Download className="h-4 w-4" /> {t('games.downloadLauncher', 'Baixar Launcher')}
-          </Link>
+          {/* CTA de download — escondido DENTRO do launcher (já está nele) */}
+          {!inLauncher && (
+            <Link
+              to="/download"
+              className="inline-flex items-center gap-2 rounded-lg bg-accent-green px-4 py-2 text-sm font-semibold
+                         text-cinema-bg shadow-glow-green transition-colors hover:bg-accent-green-bright"
+            >
+              <Download className="h-4 w-4" /> {t('games.downloadLauncher', 'Baixar Launcher')}
+            </Link>
+          )}
 
           {/* Idioma */}
           <div className="relative">

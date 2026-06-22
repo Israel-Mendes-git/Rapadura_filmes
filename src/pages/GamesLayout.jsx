@@ -5,8 +5,9 @@ import { Suspense } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import GamesNavbar from '../components/GamesNavbar';
+import LauncherTitlebar from '../components/LauncherTitlebar';
 import ErrorBoundary from '../components/ErrorBoundary';
-import { isLauncher } from '../services/launcher';
+import { isLauncher, hasAppChrome } from '../services/launcher';
 
 function GamesSpinner() {
   return (
@@ -19,9 +20,12 @@ function GamesSpinner() {
 export default function GamesLayout() {
   const { t } = useTranslation();
   const inLauncher = isLauncher();
+  const appChrome = hasAppChrome();
   return (
     <div className="dark">
       <div className="flex min-h-screen flex-col bg-cinema-bg text-zinc-100">
+        {/* Barra de título própria do app (só no launcher frameless 0.3.0+) */}
+        {appChrome && <LauncherTitlebar />}
         <GamesNavbar />
         <main className="flex-grow">
           <ErrorBoundary>
@@ -34,7 +38,7 @@ export default function GamesLayout() {
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-6 text-xs text-zinc-500 sm:flex-row">
             <span>© Rapadura Filmes — Filmerama Games</span>
             <div className="flex items-center gap-4">
-              <Link to="/download" className="hover:text-accent-purple">{t('games.downloadLauncher', 'Baixar Launcher')}</Link>
+              {!inLauncher && <Link to="/download" className="hover:text-accent-green-bright">{t('games.downloadLauncher', 'Baixar Launcher')}</Link>}
               {!inLauncher && <Link to="/" className="hover:text-white">Filmerama</Link>}
             </div>
           </div>

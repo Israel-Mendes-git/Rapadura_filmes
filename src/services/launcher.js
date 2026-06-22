@@ -8,6 +8,17 @@ export function isLauncher() {
   return !!(b && typeof b.isLauncher === 'function' && b.isLauncher());
 }
 
+/**
+ * O launcher tem a "casca de app" (janela frameless + controles de janela)?
+ * Detecta a CAPACIDADE (`window.launcher.win`), não só a presença do launcher —
+ * assim um launcher antigo (framed, sem essa API) NÃO renderiza a barra própria,
+ * evitando barra dupla até ele se auto-atualizar.
+ */
+export function hasAppChrome() {
+  const b = bridge();
+  return !!(isLauncher() && b && b.win && typeof b.win.close === 'function');
+}
+
 export async function getGameState(id) {
   if (!isLauncher()) return 'browser';
   try { return await bridge().getGameState(String(id)); }
@@ -27,3 +38,40 @@ export function onStateChange(cb) {
   try { return b.onStateChange(cb) || (() => {}); }
   catch { return () => {}; }
 }
+
+// ---- Chrome do app (frameless / estilo Steam) — só fazem algo no launcher ----
+
+/** Controles da janela. */
+export const win = {
+  minimize: () => bridge()?.win?.minimize?.(),
+  maximizeToggle: () => bridge()?.win?.maximizeToggle?.(),
+  close: () => bridge()?.win?.close?.(),
+};
+
+/** Versão do launcher (string) ou null fora dele. */
+export async function appVersion() {
+  if (!isLauncher()) return null;
+  try { return await bridge().appVersion(); } catch { return null; }
+}
+
+/** Abre a pasta de instalação dos jogos no explorador do SO. */
+export function openGamesFolder() {
+  try { return bridge()?.openGamesFolder?.(); } catch { /* noop */ }
+}
+
+/** Lista de jogos instalados localmente (array) ou [] fora do launcher. */
+export async function listInstalled() {
+  if (!isLauncher()) return [];
+  try { return (await bridge().listInstalled()) || []; } catch { return []; }
+}
+
+/** Auto-update do launcher. */
+export const update = {
+  check: () => bridge()?.update?.check?.(),
+  quitAndInstall: () => bridge()?.update?.quitAndInstall?.(),
+  onStatus: (cb) => {
+    const b = bridge();
+    if (!isLauncher() || !b?.update?.onStatus) return () => {};
+    try { return b.update.onStatus(cb) || (() => {}); } catch { return () => {}; }
+  },
+};

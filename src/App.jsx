@@ -17,6 +17,7 @@ const Watchlist = lazyWithRetry(() => import('./pages/Watchlist'));
 const Discover = lazyWithRetry(() => import('./pages/Discover'));
 const Games = lazyWithRetry(() => import('./pages/Games'));
 const GamesCatalog = lazyWithRetry(() => import('./pages/GamesCatalog'));
+const GamesLibrary = lazyWithRetry(() => import('./pages/GamesLibrary'));
 const GameDetails = lazyWithRetry(() => import('./pages/GameDetails'));
 const Download = lazyWithRetry(() => import('./pages/Download'));
 const Studio = lazyWithRetry(() => import('./pages/Studio'));
@@ -59,6 +60,7 @@ function App() {
       <Route element={<GamesLayout />}>
         <Route path="/games" element={<Games />} />
         <Route path="/games/catalogo" element={<GamesCatalog />} />
+        <Route path="/games/biblioteca" element={<GamesLibrary />} />
         <Route path="/game/:id" element={<GameDetails />} />
         <Route path="/download" element={<Download />} />
       </Route>

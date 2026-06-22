@@ -2,9 +2,9 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Download, Play, RefreshCw, ExternalLink, Loader2, Gamepad2, Package } from 'lucide-react';
+import { ArrowLeft, Download, Play, RefreshCw, ExternalLink, Loader2, Gamepad2, Package, X } from 'lucide-react';
 import api from '../services/api';
-import { isLauncher, getGameState, gameAction } from '../services/launcher';
+import { isLauncher, getGameState, gameAction, onStateChange } from '../services/launcher';
 import { platformMeta } from '../components/PlatformBadge';
 import { useTranslation } from 'react-i18next';
 import { resolveDescription } from '../utils/i18nContent';
@@ -16,6 +16,7 @@ export default function GameDetails() {
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [state, setState] = useState('browser');
+  const [progress, setProgress] = useState(null); // 0..1 (download/install) ou null (indeterminado)
 
   useEffect(() => {
     let alive = true;
@@ -27,15 +28,24 @@ export default function GameDetails() {
     return () => { alive = false; };
   }, [id, i18n.language]);
 
+  // Estado inicial + assinatura AO VIVO do progresso. O estado vive no processo do
+  // launcher, então sobrevive a navegar entre telas; e o download retoma do .part
+  // (instalação persistente). onStateChange traz {state, progress}.
   useEffect(() => {
     let alive = true;
     getGameState(id).then((s) => { if (alive) setState(s); });
-    return () => { alive = false; };
+    const off = onStateChange((e) => {
+      if (!alive || String(e.gameId) !== String(id)) return;
+      setState(e.state);
+      setProgress(typeof e.progress === 'number' ? e.progress : null);
+    });
+    return () => { alive = false; off(); };
   }, [id, game]);
 
   const p = game && (game.poster_path || game.capa);
   const imageUrl = !p ? null : (p.startsWith('http') || p.startsWith('/') ? p : '/' + p);
   const busy = state === 'installing' || state === 'downloading' || state === 'updating';
+  const pct = typeof progress === 'number' ? Math.round(progress * 100) : null;
 
   const actionLabel = !isLauncher() ? t('games.actionOpenLauncher')
     : state === 'installed' ? t('games.actionPlay')
@@ -65,7 +75,7 @@ export default function GameDetails() {
 
   if (loading) return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-cinema-bg">
-      <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-purple-600 dark:border-accent-purple" />
+      <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-purple-600 dark:border-accent-green" />
     </div>
   );
   if (!game) return (
@@ -75,7 +85,7 @@ export default function GameDetails() {
           <Gamepad2 className="h-9 w-9 text-red-500 dark:text-accent-red" />
         </div>
         <p className="mb-4 font-display text-xl text-red-500 dark:text-accent-red">{t('games.notFound', { id })}</p>
-        <button onClick={() => navigate('/games')} className="rounded-lg bg-purple-600 px-5 py-2 font-semibold text-white hover:bg-purple-700 dark:bg-accent-purple dark:text-cinema-bg dark:shadow-glow dark:hover:bg-accent-purple">{t('games.backToGames')}</button>
+        <button onClick={() => navigate('/games')} className="rounded-lg bg-purple-600 px-5 py-2 font-semibold text-white hover:bg-purple-700 dark:bg-accent-green dark:text-cinema-bg dark:shadow-glow dark:hover:bg-accent-green">{t('games.backToGames')}</button>
       </div>
     </div>
   );
@@ -99,7 +109,7 @@ export default function GameDetails() {
           onClick={() => navigate('/games')}
           className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-black/50 px-3 py-1.5
                      text-sm font-medium text-white ring-1 ring-white/20 backdrop-blur-md hover:bg-black/70
-                     dark:hover:ring-accent-purple/40"
+                     dark:hover:ring-accent-green/40"
         >
           <ArrowLeft className="h-4 w-4" /> {t('games.back')}
         </button>
@@ -129,17 +139,43 @@ export default function GameDetails() {
             <button
               onClick={onAction}
               disabled={busy}
-              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-purple-600 px-4 py-3.5
-                         text-base font-semibold text-white shadow-lg shadow-purple-600/25 transition-all
-                         hover:bg-purple-700 hover:shadow-purple-600/40 disabled:opacity-60
-                         dark:bg-accent-purple dark:text-cinema-bg dark:shadow-glow
-                         dark:hover:bg-accent-purple dark:hover:shadow-glow-strong"
+              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-accent-green px-4 py-3.5
+                         text-base font-bold text-cinema-bg shadow-glow-green transition-all
+                         hover:bg-accent-green-bright disabled:opacity-70"
             >
               <ActionIcon className={'h-5 w-5' + (busy ? ' animate-spin' : '')} />
-              {actionLabel}
+              {actionLabel}{busy && pct !== null ? ` ${pct}%` : ''}
             </button>
+
+            {/* Barra de progresso (download/instalação) + cancelar */}
+            {busy && (
+              <div className="mt-3">
+                <div className="h-2 w-full overflow-hidden rounded-full bg-cinema-elevated">
+                  {pct !== null ? (
+                    <div className="h-full rounded-full bg-accent-green transition-[width] duration-200"
+                         style={{ width: `${pct}%` }} />
+                  ) : (
+                    // indeterminado (instalação sem % ainda): barra pulsando
+                    <div className="h-full w-1/3 animate-pulse rounded-full bg-accent-green/70" />
+                  )}
+                </div>
+                <div className="mt-1.5 flex items-center justify-between text-xs text-zinc-400">
+                  <span>
+                    {state === 'downloading' ? t('games.statusDownloading', 'Baixando')
+                      : state === 'updating' ? t('games.statusUpdating', 'Atualizando')
+                      : t('games.statusInstalling', 'Instalando')}
+                    {pct !== null ? ` · ${pct}%` : '…'}
+                  </span>
+                  <button onClick={() => gameAction('cancel', id)}
+                    className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-zinc-400 hover:bg-cinema-elevated hover:text-accent-red">
+                    <X className="h-3.5 w-3.5" /> {t('games.cancel', 'Cancelar')}
+                  </button>
+                </div>
+              </div>
+            )}
+
             {!isLauncher() && (
-              <p className="mt-2 text-center text-xs text-gray-400 dark:text-zinc-500">{t('games.launcherHint')}</p>
+              <p className="mt-2 text-center text-xs text-zinc-500">{t('games.launcherHint')}</p>
             )}
           </motion.div>
         </div>
@@ -152,8 +188,8 @@ export default function GameDetails() {
             <div className="mt-3 flex flex-wrap gap-2">
               {genres.map((g, i) => (
                 <span key={i} className="rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold
-                                         text-purple-700 dark:bg-accent-purple/10 dark:text-accent-purple
-                                         dark:ring-1 dark:ring-accent-purple/20">
+                                         text-purple-700 dark:bg-accent-green/10 dark:text-accent-green
+                                         dark:ring-1 dark:ring-accent-green/20">
                   {g}
                 </span>
               ))}
@@ -167,7 +203,7 @@ export default function GameDetails() {
           {builds.length > 0 && (
             <div className="mt-8">
               <h2 className="mb-3 flex items-center gap-2 font-display text-lg font-semibold text-gray-900 dark:text-white">
-                <Package className="h-5 w-5 text-purple-500 dark:text-accent-purple" /> {t('games.availableVersions')}
+                <Package className="h-5 w-5 text-purple-500 dark:text-accent-green" /> {t('games.availableVersions')}
               </h2>
               <div className="grid gap-3 sm:grid-cols-2">
                 {builds.map((b) => {
@@ -176,9 +212,9 @@ export default function GameDetails() {
                     <div key={b.id}
                          className="flex items-center gap-3 rounded-card border border-gray-200 bg-white p-3
                                     transition-colors dark:border-white/5 dark:bg-cinema-surface
-                                    dark:shadow-poster dark:hover:border-accent-purple/30">
-                      <div className="rounded-lg bg-purple-100 p-2 dark:bg-accent-purple/10">
-                        <Icon className="h-5 w-5 text-purple-600 dark:text-accent-purple" />
+                                    dark:shadow-poster dark:hover:border-accent-green/30">
+                      <div className="rounded-lg bg-purple-100 p-2 dark:bg-accent-green/10">
+                        <Icon className="h-5 w-5 text-purple-600 dark:text-accent-green" />
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
@@ -191,7 +227,7 @@ export default function GameDetails() {
                       </div>
                       {b.obrigatorio && (
                         <span className="shrink-0 rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-semibold
-                                         text-purple-700 dark:bg-accent-purple/15 dark:text-accent-purple">
+                                         text-purple-700 dark:bg-accent-green/15 dark:text-accent-green">
                           {t('games.required')}
                         </span>
                       )}

@@ -83,12 +83,12 @@ export default function Download() {
                       bg-gradient-to-br from-purple-700 via-purple-900 to-gray-950
                       dark:from-cinema-elevated dark:via-cinema-surface dark:to-cinema-bg">
         <div className="pointer-events-none absolute -left-32 top-0 hidden h-96 w-96 rounded-full
-                        bg-accent-purple/10 blur-3xl dark:block" />
+                        bg-accent-green/10 blur-3xl dark:block" />
         <div className="relative mx-auto max-w-5xl px-4 py-14 text-center sm:py-20">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs
                              font-semibold text-white ring-1 ring-white/20 backdrop-blur-sm
-                             dark:bg-accent-purple/10 dark:text-accent-purple dark:ring-accent-purple/30">
+                             dark:bg-accent-green/10 dark:text-accent-green dark:ring-accent-green/30">
               <DownloadIcon className="h-4 w-4" /> {t('download.badge', 'Launcher')}
             </span>
             <h1 className="mt-4 font-display text-4xl font-bold tracking-tight text-white drop-shadow-sm sm:text-5xl">
@@ -106,7 +106,7 @@ export default function Download() {
                 whileTap={{ scale: 0.98 }}
                 className="mt-8 inline-flex items-center gap-3 rounded-xl bg-white px-7 py-3.5 text-base
                            font-semibold text-purple-900 shadow-lg transition-colors hover:bg-purple-50
-                           dark:bg-accent-purple dark:text-cinema-bg dark:shadow-glow dark:hover:bg-amber-400"
+                           dark:bg-accent-green dark:text-cinema-bg dark:shadow-glow-green dark:hover:bg-accent-green-bright"
               >
                 <DownloadIcon className="h-5 w-5" />
                 {t('download.ctaFor', 'Baixar para')} {primary.label}
@@ -141,25 +141,24 @@ export default function Download() {
                 key={p.key}
                 className={`relative flex flex-col items-center rounded-card-lg border p-6 text-center transition
                             ${p.available
-                      ? 'border-purple-200 bg-white hover:shadow-lg dark:border-accent-purple/30 dark:bg-cinema-surface dark:shadow-poster'
+                      ? 'border-purple-200 bg-white hover:shadow-lg dark:border-accent-green/30 dark:bg-cinema-surface dark:shadow-poster'
                       : 'border-gray-200 bg-gray-50/60 opacity-75 dark:border-white/5 dark:bg-cinema-surface/40'}`}
               >
                 {isDetected && (
                   <span className="absolute right-3 top-3 rounded-full bg-purple-600 px-2 py-0.5 text-[10px]
-                                   font-bold uppercase tracking-wide text-white dark:bg-accent-purple dark:text-cinema-bg">
+                                   font-bold uppercase tracking-wide text-white dark:bg-accent-green dark:text-cinema-bg">
                     {t('download.detected', 'detectado')}
                   </span>
                 )}
-                <Icon className={`h-10 w-10 ${p.available ? 'text-purple-600 dark:text-accent-purple' : 'text-gray-400 dark:text-zinc-600'}`} />
+                <Icon className={`h-10 w-10 ${p.available ? 'text-purple-600 dark:text-accent-green' : 'text-gray-400 dark:text-zinc-600'}`} />
                 <h3 className="mt-3 font-display text-lg font-semibold text-gray-900 dark:text-white">{p.label}</h3>
                 <p className="mt-1 text-xs text-gray-500 dark:text-zinc-400">{p.hint}</p>
 
                 {p.available ? (
                   <a
                     href={p.href}
-                    className="mt-4 inline-flex items-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-sm
-                               font-semibold text-white transition-colors hover:bg-purple-500
-                               dark:bg-accent-purple dark:text-cinema-bg dark:hover:bg-amber-400"
+                    className="mt-4 inline-flex items-center gap-2 rounded-lg bg-accent-green px-4 py-2 text-sm
+                               font-semibold text-cinema-bg transition-colors hover:bg-accent-green-bright shadow-glow-green"
                   >
                     <DownloadIcon className="h-4 w-4" /> {p.ext}
                   </a>
@@ -178,13 +177,13 @@ export default function Download() {
         <div className="mx-auto mt-12 max-w-2xl rounded-card-lg border border-gray-200 bg-white p-6
                         dark:border-white/10 dark:bg-cinema-surface">
           <h3 className="flex items-center gap-2 font-display text-base font-semibold text-gray-900 dark:text-white">
-            <CheckCircle2 className="h-5 w-5 text-purple-600 dark:text-accent-purple" />
+            <CheckCircle2 className="h-5 w-5 text-purple-600 dark:text-accent-green" />
             {t('download.howToLinux', 'Como rodar no Linux (AppImage)')}
           </h3>
           <ol className="mt-3 space-y-2 text-sm text-gray-600 dark:text-zinc-300">
             <li>1. {t('download.step1', 'Baixe o arquivo .AppImage.')}</li>
             <li>2. {t('download.step2', 'Dê permissão de execução:')}
-              <code className="ml-1 rounded bg-gray-100 px-1.5 py-0.5 text-xs text-purple-700 dark:bg-black/40 dark:text-accent-purple">
+              <code className="ml-1 rounded bg-gray-100 px-1.5 py-0.5 text-xs text-purple-700 dark:bg-black/40 dark:text-accent-green">
                 chmod +x filmerama-launcher*.AppImage
               </code>
             </li>

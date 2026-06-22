@@ -1,20 +1,20 @@
-// Card de jogo (casa o estilo do MovieCard). Navega para /game/:id.
+// Capsule de jogo (estilo Steam/Epic): arte landscape 16:9 + nome/plataformas
+// embaixo. Identidade da central de jogos: preto + verde (gamer) com toque roxo.
+// Navega para /game/:id.
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Gamepad2 } from 'lucide-react';
+import { Gamepad2, Play } from 'lucide-react';
 import { PlatformBadge } from './PlatformBadge';
 
 export default function GameCard({ game }) {
   const navigate = useNavigate();
   const [imgError, setImgError] = useState(false);
 
-  const p = game.poster_path || game.capa;
-  const imageUrl = !p
-    ? null
-    : (p.startsWith('http') || p.startsWith('/') ? p : '/' + p);
+  // Para capsule landscape, prefere backdrop/capa larga; cai no poster se não houver.
+  const p = game.backdrop_path || game.capa_wide || game.poster_path || game.capa;
+  const imageUrl = !p ? null : (p.startsWith('http') || p.startsWith('/') ? p : '/' + p);
   const showFallback = !imageUrl || imgError;
-
   const platforms = Array.isArray(game.platforms) ? game.platforms : [];
 
   return (
@@ -23,20 +23,20 @@ export default function GameCard({ game }) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/game/' + game.id); }}
-      whileHover={{ y: -8, scale: 1.03 }}
-      whileTap={{ scale: 0.98 }}
+      whileHover={{ y: -6 }}
+      whileTap={{ scale: 0.985 }}
       transition={{ type: 'spring', stiffness: 320, damping: 24 }}
-      className="group relative cursor-pointer overflow-hidden rounded-card bg-zinc-100 shadow-md
-                 ring-1 ring-black/5 hover:shadow-2xl hover:ring-purple-500/40
-                 dark:bg-cinema-surface dark:shadow-poster dark:ring-white/5
-                 dark:hover:shadow-poster-hover dark:hover:ring-accent-purple/50"
+      className="group relative cursor-pointer overflow-hidden rounded-card bg-cinema-surface
+                 ring-1 ring-white/5 shadow-poster transition-shadow
+                 hover:ring-accent-green/60 hover:shadow-glow-green-strong"
     >
-      <div className="relative aspect-[2/3] w-full overflow-hidden">
+      {/* Arte landscape 16:9 */}
+      <div className="relative aspect-video w-full overflow-hidden">
         {showFallback ? (
           <div className="flex h-full w-full flex-col items-center justify-center gap-2
-                          bg-gradient-to-br from-purple-700 via-purple-900 to-zinc-900 p-3 text-center">
-            <Gamepad2 className="h-10 w-10 text-white/80" aria-hidden />
-            <span className="line-clamp-3 text-xs font-semibold text-white/90">{game.title}</span>
+                          bg-gradient-to-br from-accent-deep/40 via-cinema-elevated to-black p-3 text-center">
+            <Gamepad2 className="h-9 w-9 text-accent-green/80" aria-hidden />
+            <span className="line-clamp-2 text-xs font-semibold text-white/90">{game.title}</span>
           </div>
         ) : (
           <img
@@ -44,35 +44,40 @@ export default function GameCard({ game }) {
             alt={game.title}
             loading="lazy"
             onError={() => setImgError(true)}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         )}
 
-        {/* Gradiente para legibilidade do titulo */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t
-                        from-black/90 via-black/20 to-transparent" />
+        {/* Escurece a base p/ legibilidade + realce no hover */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+
+        {/* Botão "ver jogo" que aparece no hover (vibe de loja) */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <span className="inline-flex items-center gap-2 rounded-full bg-accent-green px-4 py-2 text-sm font-bold
+                           text-cinema-bg shadow-glow-green">
+            <Play className="h-4 w-4 fill-current" /> Ver jogo
+          </span>
+        </div>
 
         {/* Badges de plataforma */}
         {platforms.length > 0 && (
           <div className="pointer-events-none absolute right-2 top-2 flex max-w-[80%] flex-wrap justify-end gap-1">
-            {platforms.slice(0, 3).map((pl, i) => (
-              <PlatformBadge key={i} name={pl} />
-            ))}
+            {platforms.slice(0, 3).map((pl, i) => <PlatformBadge key={i} name={pl} />)}
           </div>
         )}
+      </div>
 
-        {/* Titulo sobre a imagem */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 p-3">
-          <h3 className="line-clamp-2 font-display text-sm font-semibold tracking-tight text-white drop-shadow-md">
-            {game.title}
-          </h3>
-          {Array.isArray(game.genres) && game.genres.length > 0 && (
-            <p className="mt-0.5 line-clamp-1 text-[11px] font-medium text-purple-200/90
-                          dark:text-accent-purple/90">
-              {game.genres.slice(0, 3).join(' · ')}
-            </p>
-          )}
-        </div>
+      {/* Rodapé do card: nome + gêneros */}
+      <div className="p-3">
+        <h3 className="line-clamp-1 font-display text-sm font-semibold tracking-tight text-white
+                       transition-colors group-hover:text-accent-green-bright">
+          {game.title}
+        </h3>
+        {Array.isArray(game.genres) && game.genres.length > 0 && (
+          <p className="mt-0.5 line-clamp-1 text-[11px] font-medium text-zinc-400">
+            {game.genres.slice(0, 3).join(' · ')}
+          </p>
+        )}
       </div>
     </motion.div>
   );

@@ -22,19 +22,19 @@ export default function GamesNavbar() {
 
   const linkClass = ({ isActive }) =>
     `flex items-center gap-2 text-sm font-medium transition-colors ${
-      isActive ? 'text-accent-purple' : 'text-zinc-300 hover:text-white'
+      isActive ? 'text-accent-green-bright' : 'text-zinc-300 hover:text-white'
     }`;
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-white/10 bg-cinema-bg/85 text-zinc-100 backdrop-blur-md">
+    <nav className="sticky top-0 z-50 border-b border-accent-green/15 bg-cinema-bg/90 text-zinc-100 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-3">
-        {/* Marca própria */}
+        {/* Marca própria — gradiente roxo→verde (vínculo da marca + vibe gamer) */}
         <Link to="/games" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-accent-purple/15 ring-1 ring-accent-purple/30">
-            <Gamepad2 className="h-5 w-5 text-accent-purple" />
+          <span className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-to-br from-accent-deep/40 to-accent-green/30 ring-1 ring-accent-green/40">
+            <Gamepad2 className="h-5 w-5 text-accent-green-bright" />
           </span>
           <span className="font-display text-lg font-bold tracking-tight">
-            FILMERAMA <span className="text-accent-purple">GAMES</span>
+            FILMERAMA <span className="text-accent-green-bright">GAMES</span>
           </span>
         </Link>
 
@@ -46,11 +46,11 @@ export default function GamesNavbar() {
             <LibraryBig className="h-4 w-4" /> {t('games.navCatalog', 'Catálogo')}
           </NavLink>
 
-          {/* CTA de download em destaque */}
+          {/* CTA de download em destaque (verde) */}
           <Link
             to="/download"
-            className="inline-flex items-center gap-2 rounded-lg bg-accent-purple px-4 py-2 text-sm font-semibold
-                       text-cinema-bg shadow-glow transition-colors hover:bg-amber-400"
+            className="inline-flex items-center gap-2 rounded-lg bg-accent-green px-4 py-2 text-sm font-semibold
+                       text-cinema-bg shadow-glow-green transition-colors hover:bg-accent-green-bright"
           >
             <Download className="h-4 w-4" /> {t('games.downloadLauncher', 'Baixar Launcher')}
           </Link>
@@ -59,17 +59,17 @@ export default function GamesNavbar() {
           <div className="relative">
             <button
               onClick={() => setShowLang(!showLang)}
-              className="rounded-lg bg-cinema-surface p-2 text-zinc-300 transition-colors hover:bg-cinema-elevated hover:text-accent-purple"
+              className="rounded-lg bg-cinema-surface p-2 text-zinc-300 transition-colors hover:bg-cinema-elevated hover:text-accent-green-bright"
               aria-label="Idioma"
             >
               <Languages className="h-4 w-4" />
             </button>
             {showLang && (
-              <div className="absolute right-0 z-50 mt-2 w-36 overflow-hidden rounded-lg border border-white/10 bg-cinema-elevated shadow-glow">
-                <button onClick={() => changeLanguage('pt')} className="block w-full px-4 py-2 text-left text-sm hover:bg-cinema-surface hover:text-accent-purple">Português</button>
-                <button onClick={() => changeLanguage('en')} className="block w-full px-4 py-2 text-left text-sm hover:bg-cinema-surface hover:text-accent-purple">English</button>
-                <button onClick={() => changeLanguage('es')} className="block w-full px-4 py-2 text-left text-sm hover:bg-cinema-surface hover:text-accent-purple">Español</button>
-                <button onClick={() => changeLanguage('zh')} className="block w-full px-4 py-2 text-left text-sm hover:bg-cinema-surface hover:text-accent-purple">中文 (简体)</button>
+              <div className="absolute right-0 z-50 mt-2 w-36 overflow-hidden rounded-lg border border-white/10 bg-cinema-elevated shadow-glow-green">
+                <button onClick={() => changeLanguage('pt')} className="block w-full px-4 py-2 text-left text-sm hover:bg-cinema-surface hover:text-accent-green-bright">Português</button>
+                <button onClick={() => changeLanguage('en')} className="block w-full px-4 py-2 text-left text-sm hover:bg-cinema-surface hover:text-accent-green-bright">English</button>
+                <button onClick={() => changeLanguage('es')} className="block w-full px-4 py-2 text-left text-sm hover:bg-cinema-surface hover:text-accent-green-bright">Español</button>
+                <button onClick={() => changeLanguage('zh')} className="block w-full px-4 py-2 text-left text-sm hover:bg-cinema-surface hover:text-accent-green-bright">中文 (简体)</button>
               </div>
             )}
           </div>

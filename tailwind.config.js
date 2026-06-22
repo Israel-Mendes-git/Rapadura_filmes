@@ -26,6 +26,9 @@ export default {
           purple: '#a855f7',
           deep: '#7c3aed',
           red: '#ef4444',
+          // Acento VERDE — identidade da CENTRAL DE JOGOS (roxo+preto+verde, vibe gamer).
+          green: '#22c55e',
+          'green-bright': '#4ade80',
         },
       },
       fontFamily: {
@@ -36,6 +39,9 @@ export default {
         // Glow roxo sutil para CTAs/elementos de destaque
         glow: '0 0 40px -10px rgba(168,85,247,0.45)',
         'glow-strong': '0 0 60px -10px rgba(168,85,247,0.6)',
+        // Glows VERDES da central de jogos
+        'glow-green': '0 0 40px -10px rgba(34,197,94,0.55)',
+        'glow-green-strong': '0 0 60px -8px rgba(74,222,128,0.7)',
         // Sombras fortes para pôsteres
         poster: '0 10px 30px -8px rgba(0,0,0,0.7)',
         'poster-hover': '0 22px 45px -10px rgba(0,0,0,0.85)',

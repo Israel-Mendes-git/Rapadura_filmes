@@ -1,20 +1,21 @@
-// Vitrine publica de jogos. Busca /api/catalog/games (publicados).
+// Home da CENTRAL DE JOGOS. Busca /api/catalog/games (publicados).
+// Identidade própria: preto + verde (gamer) com toque roxo da marca.
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Gamepad2, Sparkles } from 'lucide-react';
+import { Gamepad2, Sparkles, Play } from 'lucide-react';
 import api from '../services/api';
 import GameCard from '../components/GameCard';
 import { useTranslation } from 'react-i18next';
 import { resolveDescription } from '../utils/i18nContent';
 
-// Skeleton de card (mesma proporcao do GameCard real).
+// Skeleton de card (landscape 16:9, mesma proporção do GameCard real).
 function GameCardSkeleton() {
   return (
-    <div className="animate-pulse overflow-hidden rounded-card bg-zinc-100 dark:bg-cinema-surface dark:shadow-poster">
-      <div className="aspect-[2/3] w-full bg-zinc-200 dark:bg-cinema-elevated" />
+    <div className="animate-pulse overflow-hidden rounded-card bg-cinema-surface shadow-poster">
+      <div className="aspect-video w-full bg-cinema-elevated" />
       <div className="space-y-2 p-3">
-        <div className="h-3 w-3/4 rounded bg-zinc-200 dark:bg-cinema-elevated" />
-        <div className="h-2.5 w-1/2 rounded bg-zinc-200 dark:bg-cinema-elevated" />
+        <div className="h-3 w-3/4 rounded bg-cinema-elevated" />
+        <div className="h-2.5 w-1/2 rounded bg-cinema-elevated" />
       </div>
     </div>
   );
@@ -39,38 +40,33 @@ export default function Games() {
 
   const featuredImg = (() => {
     if (!featured) return null;
-    const p = featured.poster_path || featured.capa;
+    const p = featured.backdrop_path || featured.poster_path || featured.capa;
     if (!p) return null;
     return p.startsWith('http') || p.startsWith('/') ? p : '/' + p;
   })();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-cinema-bg">
-      {/* Hero / cabecalho */}
-      <div className="relative overflow-hidden border-b border-black/5 dark:border-white/5
-                      bg-gradient-to-br from-purple-700 via-purple-900 to-gray-950
-                      dark:from-cinema-elevated dark:via-cinema-surface dark:to-cinema-bg">
-        <div className="pointer-events-none absolute inset-0 opacity-20 dark:opacity-10"
+    <div className="min-h-screen bg-cinema-bg">
+      {/* Hero: preto com glow roxo→verde */}
+      <div className="relative overflow-hidden border-b border-accent-green/10
+                      bg-gradient-to-br from-cinema-elevated via-cinema-surface to-cinema-bg">
+        {/* malha de pontos sutil */}
+        <div className="pointer-events-none absolute inset-0 opacity-[0.07]"
              style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, white 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
-        {/* Glow âmbar cinematográfico (somente no escuro) */}
-        <div className="pointer-events-none absolute -left-32 top-0 hidden h-96 w-96 rounded-full
-                        bg-accent-purple/10 blur-3xl dark:block" />
-        <div className="relative mx-auto max-w-7xl px-4 py-12 sm:py-16">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1
-                             text-xs font-semibold text-white ring-1 ring-white/20 backdrop-blur-sm
-                             dark:bg-accent-purple/10 dark:text-accent-purple dark:ring-accent-purple/30">
-              <Gamepad2 className="h-4 w-4" /> {t('jogos')}
+        {/* glows: roxo à esquerda, verde à direita */}
+        <div className="pointer-events-none absolute -left-32 -top-10 h-96 w-96 rounded-full bg-accent-deep/20 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 top-10 h-80 w-80 rounded-full bg-accent-green/15 blur-3xl" />
+        <div className="relative mx-auto max-w-7xl px-4 py-14 sm:py-20">
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <span className="inline-flex items-center gap-2 rounded-full bg-accent-green/10 px-3 py-1
+                             text-xs font-semibold text-accent-green-bright ring-1 ring-accent-green/30 backdrop-blur-sm">
+              <Gamepad2 className="h-4 w-4" /> {t('games.badge', 'Central de Jogos')}
             </span>
-            <h1 className="mt-4 font-display text-4xl font-bold tracking-tight text-white drop-shadow-sm sm:text-5xl">
-              {t('jogos')}
+            <h1 className="mt-4 font-display text-4xl font-bold tracking-tight text-white drop-shadow-sm sm:text-6xl">
+              {t('games.heroTitle', 'Jogos da Filmerama')}
             </h1>
-            <p className="mt-3 max-w-2xl text-base text-purple-100/90 sm:text-lg dark:text-zinc-300">
-              {t('games.heroSubtitle')}
+            <p className="mt-3 max-w-2xl text-base text-zinc-300 sm:text-lg">
+              {t('games.heroSubtitle', 'Baixe, instale e jogue pelo launcher — direto no seu computador.')}
             </p>
           </motion.div>
         </div>
@@ -78,70 +74,58 @@ export default function Games() {
 
       <div className="mx-auto max-w-7xl px-4 py-8">
         {loading ? (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-            {Array.from({ length: 12 }).map((_, i) => <GameCardSkeleton key={i} />)}
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {Array.from({ length: 8 }).map((_, i) => <GameCardSkeleton key={i} />)}
           </div>
         ) : games.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-card-lg border border-dashed
-                          border-gray-300 py-24 text-center dark:border-white/10 dark:bg-cinema-surface/40">
-            <div className="mb-4 rounded-full bg-purple-100 p-5 dark:bg-accent-purple/10 dark:ring-1 dark:ring-accent-purple/20">
-              <Gamepad2 className="h-10 w-10 text-purple-600 dark:text-accent-purple" />
+                          border-accent-green/15 bg-cinema-surface/40 py-24 text-center">
+            <div className="mb-4 rounded-full bg-accent-green/10 p-5 ring-1 ring-accent-green/20">
+              <Gamepad2 className="h-10 w-10 text-accent-green-bright" />
             </div>
-            <h2 className="font-display text-xl font-semibold text-gray-900 dark:text-white">
-              {t('games.emptyTitle')}
-            </h2>
-            <p className="mt-2 max-w-md text-sm text-gray-500 dark:text-zinc-400">
-              {t('games.emptyMessage')}
-            </p>
+            <h2 className="font-display text-xl font-semibold text-white">{t('games.emptyTitle', 'Nenhum jogo ainda')}</h2>
+            <p className="mt-2 max-w-md text-sm text-zinc-400">{t('games.emptyMessage', 'Em breve novos jogos por aqui.')}</p>
           </div>
         ) : (
           <>
-            {/* Destaque opcional */}
+            {/* Destaque */}
             {featured && (
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-                className="mb-10"
-              >
-                <h2 className="mb-3 flex items-center gap-2 font-display text-lg font-semibold text-gray-900 dark:text-white">
-                  <Sparkles className="h-5 w-5 text-purple-500 dark:text-accent-purple" /> {t('games.featured')}
+              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="mb-10">
+                <h2 className="mb-3 flex items-center gap-2 font-display text-lg font-semibold text-white">
+                  <Sparkles className="h-5 w-5 text-accent-green-bright" /> {t('games.featured', 'Em destaque')}
                 </h2>
-                <a
-                  href={'/game/' + featured.id}
-                  className="group relative block overflow-hidden rounded-card-lg shadow-lg ring-1 ring-black/5
-                             dark:shadow-poster dark:ring-white/10 dark:hover:shadow-poster-hover"
-                >
+                <a href={'/game/' + featured.id}
+                   className="group relative block overflow-hidden rounded-card-lg ring-1 ring-white/10
+                              shadow-poster transition-shadow hover:ring-accent-green/50 hover:shadow-glow-green-strong">
                   <div className="relative h-56 w-full overflow-hidden sm:h-72 md:h-80">
                     {featuredImg ? (
                       <img src={featuredImg} alt={featured.title}
                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     ) : (
-                      <div className="h-full w-full bg-gradient-to-br from-purple-700 via-purple-900 to-zinc-900" />
+                      <div className="h-full w-full bg-gradient-to-br from-accent-deep/50 via-cinema-elevated to-black" />
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent" />
                   </div>
                   <div className="absolute inset-y-0 left-0 flex max-w-xl flex-col justify-center p-6 sm:p-10">
                     <h3 className="font-display text-2xl font-bold tracking-tight text-white drop-shadow sm:text-3xl">{featured.title}</h3>
                     {Array.isArray(featured.genres) && featured.genres.length > 0 && (
-                      <p className="mt-1 text-sm font-medium text-purple-200 dark:text-accent-purple/90">{featured.genres.slice(0, 3).join(' · ')}</p>
+                      <p className="mt-1 text-sm font-medium text-accent-green-bright/90">{featured.genres.slice(0, 3).join(' · ')}</p>
                     )}
                     {featured.overview && (
-                      <p className="mt-3 line-clamp-2 max-w-md text-sm text-gray-200/90">{resolveDescription(featured, t)}</p>
+                      <p className="mt-3 line-clamp-2 max-w-md text-sm text-zinc-200/90">{resolveDescription(featured, t)}</p>
                     )}
-                    <span className="mt-5 inline-flex w-fit items-center gap-2 rounded-lg bg-purple-600 px-5 py-2
-                                     text-sm font-semibold text-white transition-colors group-hover:bg-purple-500
-                                     dark:bg-accent-purple dark:text-cinema-bg dark:shadow-glow dark:group-hover:bg-amber-400">
-                      {t('games.viewDetails')}
+                    <span className="mt-5 inline-flex w-fit items-center gap-2 rounded-lg bg-accent-green px-5 py-2.5
+                                     text-sm font-bold text-cinema-bg shadow-glow-green transition-colors group-hover:bg-accent-green-bright">
+                      <Play className="h-4 w-4 fill-current" /> {t('games.viewDetails', 'Ver detalhes')}
                     </span>
                   </div>
                 </a>
               </motion.div>
             )}
 
-            {/* Grid */}
-            <h2 className="mb-4 font-display text-lg font-semibold text-gray-900 dark:text-white">{t('games.allGames')}</h2>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 md:gap-5 lg:grid-cols-6">
+            {/* Grade */}
+            <h2 className="mb-4 font-display text-lg font-semibold text-white">{t('games.allGames', 'Todos os jogos')}</h2>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {rest.map((g) => <GameCard key={g.id} game={g} />)}
             </div>
           </>

@@ -44,7 +44,7 @@ export default function Login() {
           <div className="flex justify-center mb-4">
             <img
               src="/logo_filmerama_Final.png"
-              alt="Rapadura Filmes"
+              alt="Filmerama"
               className="h-16 w-auto object-contain"
             />
           </div>

@@ -43,7 +43,7 @@ export default function Navbar() {
           <Link to="/" className="flex items-center">
             <img 
               src="/logo_icon_filmerama_white.png" 
-              alt="Rapadura Filmes" 
+              alt="Filmerama" 
               className="h-10 w-auto object-contain"
             />
           </Link>

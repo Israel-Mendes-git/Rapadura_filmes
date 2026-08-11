@@ -183,7 +183,7 @@ export default function Studio() {
                   <p className="text-gray-700 dark:text-gray-300 mb-4">{t('studioPage.city')}</p>
                   <div className="bg-gray-200/90 dark:bg-cinema-elevated/90 rounded-card overflow-hidden">
                     <iframe
-                      title="Mapa do Estúdio Rapadura Atômica"
+                      title="Mapa do Estúdio Filmerama"
                       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3979.4557663512524!2d-38.25121968491568!3d-4.130365796996868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c749328bc7468d%3A0x3183e03fccf5a30a!2sRapadura%20At%C3%B4mica!5e0!3m2!1spt-BR!2sbr!4v1678463771958!5m2!1spt-BR!2sbr"
                       width="100%"
                       height="300"

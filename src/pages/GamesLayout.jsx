@@ -36,7 +36,7 @@ export default function GamesLayout() {
         </main>
         <footer className="border-t border-white/10 bg-cinema-bg">
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-6 text-xs text-zinc-500 sm:flex-row">
-            <span>© Rapadura Filmes — Filmerama Games</span>
+            <span>© Filmerama Games</span>
             <div className="flex items-center gap-4">
               {!inLauncher && <Link to="/download" className="hover:text-accent-green-bright">{t('games.downloadLauncher', 'Baixar Launcher')}</Link>}
               {!inLauncher && <Link to="/" className="hover:text-white">Filmerama</Link>}

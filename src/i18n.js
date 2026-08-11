@@ -35,7 +35,7 @@ const resources = {
         "registerError": "Erro ao cadastrar",
         "networkError": "Erro de conexão. Tente novamente."
       },
-      "title": "Rapadura Atômica",
+      "title": "Filmerama",
       "search": "Buscar conteúdo...",
       "watchlist": "Minha Lista",
       "discover": "Explorar",
@@ -92,7 +92,7 @@ const resources = {
       "discoverTitle": "Descobrir Conteúdo",
       "footer": {
         "about": "Sobre o Estúdio",
-        "description": "Rapadura Atômica é um estúdio de animação e jogos digitais focado em criar experiências únicas e originais.",
+        "description": "Filmerama é um estúdio de animação e jogos digitais focado em criar experiências únicas e originais.",
         "features": "Conteúdo",
         "credits": "Créditos",
         "feature1": "Animações Originais",
@@ -102,7 +102,7 @@ const resources = {
         "tech": "Tecnologias"
       },
       "studioPage": {
-        "title": "Rapadura Atômica",
+        "title": "Filmerama",
         "subtitle": "Estúdio de Animação e Jogos Digitais",
         "about": "Sobre o Estúdio",
         "clients": "Clientes & Parceiros",
@@ -124,18 +124,18 @@ const resources = {
         "infrastructure": "Infraestrutura",
         "infrastructureDesc": "Servidores Xeon e cabine de gravação própria.",
         "outsourcing": "Outsourcing de animação e games",
-        "outsourcingDesc": "Atendemos demandas de estúdios parceiros e demais clientes com nosso time formado no Rapadura.",
+        "outsourcingDesc": "Atendemos demandas de estúdios parceiros e demais clientes com nosso time formado na Filmerama.",
         "schoolProject": "Projeto Estúdio-Escola",
         "labteca": "LABTECA",
         "labtecaDesc": "Em parceria com o LABTECA oferecemos formação de artistas ilustradores e animadores para a comunidade.",
         "address": "Avenida Chanceler Edson Queiroz 3406 - Altos",
         "city": "62850-000 Cascavel/CE",
         "cnpj": "CNPJ: 24.800.280/0001-80",
-        "copyright": "Rapadura Atômica Estúdio de Animação e Jogos Digitais Ltda.",
+        "copyright": "Filmerama Estúdio de Animação e Jogos Digitais Ltda.",
         "historyDesc1": "Desde 2016 atuamos em diversos projetos, seja publicidade, institucional, ou atendendo a produção de conteúdo original para streaming, cinema, TV e Internet.",
         "historyDesc2": "Estamos sediados em Cascavel, Ceará, 60km de Fortaleza, onde temos o ecosistema perfeito de criação e formação de novos animadores.",
         "record": "Cabine de Gravação",
-        "team": "Equipe Rapadura",
+        "team": "Equipe Filmerama",
         "studioStructure": "Estrutura do Estúdio",
         "location": "Endereço"
       },
@@ -327,7 +327,7 @@ const resources = {
   },
   "en": {
     "translation": {
-      "title": "Rapadura Atômica",
+      "title": "Filmerama",
       "search": "Search content...",
       "watchlist": "My List",
       "discover": "Discover",
@@ -384,7 +384,7 @@ const resources = {
       "discoverTitle": "Discover Content",
       "footer": {
         "about": "About the Studio",
-        "description": "Rapadura Atômica is an animation and digital games studio focused on creating unique and original experiences.",
+        "description": "Filmerama is an animation and digital games studio focused on creating unique and original experiences.",
         "features": "Content",
         "credits": "Credits",
         "feature1": "Original Animations",
@@ -394,7 +394,7 @@ const resources = {
         "tech": "Technologies"
       },
       "studioPage": {
-        "title": "Rapadura Atômica",
+        "title": "Filmerama",
         "subtitle": "Animation and Digital Games Studio",
         "about": "About the Studio",
         "clients": "Clients & Partners",
@@ -416,18 +416,18 @@ const resources = {
         "infrastructure": "Infrastructure",
         "infrastructureDesc": "Xeon servers and own recording booth.",
         "outsourcing": "Animation and games outsourcing",
-        "outsourcingDesc": "We serve partner studios and clients with our Rapadura-trained team.",
+        "outsourcingDesc": "We serve partner studios and clients with our Filmerama-trained team.",
         "schoolProject": "Studio-School Project",
         "labteca": "LABTECA",
         "labtecaDesc": "In partnership with LABTECA, we offer training for illustrators and animators.",
         "address": "Avenida Chanceler Edson Queiroz 3406 - Altos",
         "city": "62850-000 Cascavel/CE",
         "cnpj": "CNPJ: 24.800.280/0001-80",
-        "copyright": "Rapadura Atômica Animation and Digital Games Studio Ltd.",
+        "copyright": "Filmerama Animation and Digital Games Studio Ltd.",
         "historyDesc1": "Since 2016 we have worked on several projects, whether advertising, institutional, or producing original content for streaming, cinema, TV and the Internet.",
         "historyDesc2": "We are based in Cascavel, Ceará, 60km from Fortaleza, where we have the perfect ecosystem for creating and training new animators.",
         "record": "Recording Booth",
-        "team": "Rapadura Team",
+        "team": "Filmerama Team",
         "studioStructure": "Studio Structure",
         "location": "Address"
       },
@@ -697,7 +697,7 @@ const resources = {
   },
   "es": {
     "translation": {
-      "title": "Rapadura Atómica",
+      "title": "Filmerama",
       "search": "Buscar contenido...",
       "watchlist": "Mi Lista",
       "discover": "Descubrir",
@@ -754,7 +754,7 @@ const resources = {
       "discoverTitle": "Descubrir Contenido",
       "footer": {
         "about": "Sobre el Estudio",
-        "description": "Rapadura Atómica es un estudio de animación y juegos digitales enfocado en crear experiencias únicas y originales.",
+        "description": "Filmerama es un estudio de animación y juegos digitales enfocado en crear experiencias únicas y originales.",
         "features": "Contenido",
         "credits": "Créditos",
         "feature1": "Animaciones Originales",
@@ -764,7 +764,7 @@ const resources = {
         "tech": "Tecnologías"
       },
       "studioPage": {
-        "title": "Rapadura Atómica",
+        "title": "Filmerama",
         "subtitle": "Estudio de Animación y Juegos Digitales",
         "about": "Sobre el Estudio",
         "clients": "Clientes & Socios",
@@ -793,11 +793,11 @@ const resources = {
         "address": "Avenida Chanceler Edson Queiroz 3406 - Altos",
         "city": "62850-000 Cascavel/CE",
         "cnpj": "CNPJ: 24.800.280/0001-80",
-        "copyright": "Rapadura Atómica Estudio de Animación y Juegos Digitales Ltd.",
+        "copyright": "Filmerama Estudio de Animación y Juegos Digitales Ltd.",
         "historyDesc1": "Desde 2016 hemos trabajado en diversos proyectos, ya sea publicidad, institucional, o produciendo contenido original para streaming, cine, TV e Internet.",
         "historyDesc2": "Estamos ubicados en Cascavel, Ceará, a 60km de Fortaleza, donde tenemos el ecosistema perfecto para la creación y formación de nuevos animadores.",
         "record": "Cabina de Grabación",
-        "team": "Equipo Rapadura",
+        "team": "Equipo Filmerama",
         "studioStructure": "Estructura del Estudio",
         "location": "Dirección"
       },
@@ -1067,7 +1067,7 @@ const resources = {
   },
   "zh": {
     "translation": {
-      "title": "Rapadura Atômica",
+      "title": "Filmerama",
       "search": "搜索内容...",
       "watchlist": "我的列表",
       "discover": "发现",
@@ -1124,7 +1124,7 @@ const resources = {
       "discoverTitle": "发现内容",
       "footer": {
         "about": "关于工作室",
-        "description": "Rapadura Atômica 是一家动画与数字游戏工作室，专注于创造独特而原创的体验。",
+        "description": "Filmerama 是一家动画与数字游戏工作室，专注于创造独特而原创的体验。",
         "features": "内容",
         "credits": "致谢",
         "feature1": "原创动画",
@@ -1134,7 +1134,7 @@ const resources = {
         "tech": "技术"
       },
       "studioPage": {
-        "title": "Rapadura Atômica",
+        "title": "Filmerama",
         "subtitle": "动画与数字游戏工作室",
         "about": "关于工作室",
         "clients": "客户与合作伙伴",
@@ -1156,18 +1156,18 @@ const resources = {
         "infrastructure": "基础设施",
         "infrastructureDesc": "Xeon服务器和自有录音棚。",
         "outsourcing": "动画与游戏外包",
-        "outsourcingDesc": "我们凭借在Rapadura培养的团队，为合作工作室及其他客户提供服务。",
+        "outsourcingDesc": "我们凭借在Filmerama培养的团队，为合作工作室及其他客户提供服务。",
         "schoolProject": "工作室-学校项目",
         "labteca": "LABTECA",
         "labtecaDesc": "我们与LABTECA合作，为社区培养插画师和动画师。",
         "address": "Avenida Chanceler Edson Queiroz 3406 - Altos",
         "city": "62850-000 塞阿拉州卡斯卡韦尔",
         "cnpj": "CNPJ: 24.800.280/0001-80",
-        "copyright": "Rapadura Atômica Estúdio de Animação e Jogos Digitais Ltda.",
+        "copyright": "Filmerama Estúdio de Animação e Jogos Digitais Ltda.",
         "historyDesc1": "自2016年以来，我们参与了众多项目，包括广告、机构宣传，以及为流媒体、电影、电视和互联网制作原创内容。",
         "historyDesc2": "我们位于塞阿拉州卡斯卡韦尔，距福塔莱萨60公里，这里拥有培养新动画师的理想生态环境。",
         "record": "录音棚",
-        "team": "Rapadura 团队",
+        "team": "Filmerama 团队",
         "studioStructure": "工作室架构",
         "location": "地址"
       },

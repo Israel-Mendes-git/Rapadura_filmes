@@ -41,8 +41,8 @@ export default function MovieDetails() {
 
   // Título da aba reflete o filme atual (SEO/UX)
   useEffect(() => {
-    document.title = movie ? `${movie.title} — Rapadura Atômica` : 'Rapadura Atômica';
-    return () => { document.title = 'Rapadura Atômica'; };
+    document.title = movie ? `${movie.title} — Filmerama` : 'Filmerama';
+    return () => { document.title = 'Filmerama'; };
   }, [movie]);
 
   const inWatchlist = movie ? isInWatchlist(movie.id) : false;

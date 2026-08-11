@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
-import { FaSearch, FaList, FaCompass, FaSun, FaMoon, FaLanguage, FaBuilding, FaGamepad, FaUser, FaSignOutAlt, FaSignInAlt, FaUserPlus, FaUserShield } from 'react-icons/fa';
+import { FaSearch, FaList, FaCompass, FaSun, FaMoon, FaLanguage, FaGamepad, FaUser, FaSignOutAlt, FaSignInAlt, FaUserPlus, FaUserShield } from 'react-icons/fa';
 
 export default function Navbar() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -75,14 +75,6 @@ export default function Navbar() {
               <FaGamepad /> {t('jogos')}
             </Link>
 
-            {/* Link Estúdio - sempre visível */}
-            <Link
-              to="/studio"
-              className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-accent-purple transition-colors flex items-center gap-2"
-            >
-              <FaBuilding /> {t('studio')}
-            </Link>
-            
             {/* Busca - escondida se não logado */}
             {user && (
               <form onSubmit={handleSearch} className="flex-1 max-w-md">

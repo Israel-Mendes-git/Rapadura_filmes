@@ -20,7 +20,6 @@ const GamesCatalog = lazyWithRetry(() => import('./pages/GamesCatalog'));
 const GamesLibrary = lazyWithRetry(() => import('./pages/GamesLibrary'));
 const GameDetails = lazyWithRetry(() => import('./pages/GameDetails'));
 const Download = lazyWithRetry(() => import('./pages/Download'));
-const Studio = lazyWithRetry(() => import('./pages/Studio'));
 const Login = lazyWithRetry(() => import('./pages/Login'));
 const Register = lazyWithRetry(() => import('./pages/Register'));
 const NotFound = lazyWithRetry(() => import('./pages/NotFound'));
@@ -75,7 +74,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/movie/:id" element={<MovieDetails />} />
         <Route path="/discover" element={<Discover />} />
-        <Route path="/studio" element={<Studio />} />
         <Route path="/search" element={<Search />} />
 
         {/* Protegida (lista pessoal exige login) */}
